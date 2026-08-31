@@ -1,0 +1,7 @@
+{
+  "name": "(주)와이즈텍 - 비파괴검사 및 자율안전검사 전문기업",
+  "description": "비파괴검사(RT, UT, MT, PT, LT) 및 산업안전보건법 제98조 자율안전검사 위탁 전문기업 (주)와이즈텍 공식 홈페이지. ISO 9001/45001 인증 및 곤돌라 고정식 진공상자 누설검사시스템 특허 보유.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

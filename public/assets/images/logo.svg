@@ -1,0 +1,56 @@
+
+<svg width="600" height="520" viewBox="0 0 600 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="50" y1="50" x2="550" y2="350" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="0" y1="280" x2="600" y2="80" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.3" />
+      <stop offset="35%" stop-color="#fbbf24" />
+      <stop offset="75%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" stop-opacity="0.85" />
+    </linearGradient>
+    <filter id="subtleShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.12" />
+    </filter>
+  </defs>
+
+  <!-- Golden Orbital Ring - Back section -->
+  <path d="M 120 160 C 110 90, 230 25, 390 20 C 490 18, 560 55, 570 120"
+        fill="none" stroke="url(#ringGrad)" stroke-width="22" stroke-linecap="round" opacity="0.85" />
+
+  <!-- WT Monogram Core -->
+  <g filter="url(#subtleShadow)">
+    <!-- Letter 'W' (Bold Solid Slate/Black with dynamic forward italic slant) -->
+    <!-- W Left Leg -->
+    <path d="M 70 120 L 126 120 L 195 305 L 145 305 Z" fill="#0f172a" />
+    <path d="M 145 305 L 195 305 L 260 155 L 215 155 Z" fill="#0f172a" />
+    <!-- W Right Leg -->
+    <path d="M 230 155 L 275 155 L 335 305 L 290 305 Z" fill="#1e293b" />
+    <path d="M 290 305 L 335 305 L 390 180 L 350 180 Z" fill="#0f172a" />
+
+    <!-- Letter 'T' (Vibrant Dynamic Golden Amber Monogram) -->
+    <!-- Top Horizontal Crossbar of 'T' -->
+    <path d="M 305 85 L 515 85 C 535 85, 545 100, 535 118 C 525 136, 505 145, 480 145 L 415 145 L 368 305 L 315 305 L 362 145 L 328 145 C 310 145, 300 132, 305 115 C 310 98, 318 85, 305 85 Z"
+          fill="url(#goldGrad)" />
+    
+    <!-- Dynamic T Vertical Stem Highlight -->
+    <path d="M 352 145 L 400 145 L 352 305 L 315 305 Z" fill="url(#goldGrad)" />
+  </g>
+
+  <!-- Golden Orbital Ring - Front section wrapping around -->
+  <path d="M 570 120 C 580 185, 520 280, 390 345 C 260 410, 110 395, 75 320 C 55 270, 80 230, 120 160"
+        fill="none" stroke="url(#ringGrad)" stroke-width="26" stroke-linecap="round" />
+
+  <!-- Main Brand Name: WISETEC -->
+  <text x="300" y="415" font-family="'Pretendard', 'Inter', 'Arial Black', sans-serif" font-weight="900" font-size="70" fill="#0f172a" text-anchor="middle" letter-spacing="5">
+    WISETEC
+  </text>
+
+  <!-- Subtitle: Technical Engineering Company -->
+  <text x="300" y="475" font-family="'Pretendard', 'Inter', 'Segoe UI', sans-serif" font-weight="700" font-size="28" fill="#334155" text-anchor="middle" letter-spacing="2">
+    Technical Engineering Company
+  </text>
+</svg>
