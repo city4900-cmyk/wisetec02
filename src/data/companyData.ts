@@ -13,18 +13,18 @@ export const COMPANY_INFO: CompanyInfo = {
   ceo: '한명옥',
   establishedDate: '2021년 09월 01일',
   businessNumber: '581-86-02568',
-  address: '전라남도 광양시 중마청룡길 30-6, 2층(중동)',
-  addressDetail: '광양시청 및 중마버스터미널 인근',
+  address: '전남광주 광양시 동광길 33 2층',
+  addressDetail: '광양시 동광길 33 2층',
   businessType: '전문, 과학 및 기술서비스업',
-  businessItem: '비파괴, 기술시험 검사 및 분석업',
-  phone: '061-791-0256',
+  businessItem: '자율안전검사 위탁, 비파괴 기술시험 및 분석업',
+  phone: '061-791-0992',
   fax: '061-791-0257',
   email: 'wisetec@wisetec.co.kr',
   workingHours: '평일 08:30 ~ 18:00 (주말/공휴일 긴급 검사 대응 가능)',
   logoUrl: '/로고-배경삭제.png',
   mainServices: [
-    '산업안전보건법 제98조에 의거한 자율안전검사 위탁업',
-    '교육과학기술부 등록 비파괴검사 (UT, MT, PT, LT)',
+    '산업안전보건법에 따른 자율안전검사 기관 (자율안전검사 위탁)',
+    '비파괴검사 전문 기술 용역 및 검사',
     '플랜트 설비 및 산업 구조물 비파괴 종합 진단 및 건전성 평가',
     '한국가스안전공사 공인 ISO 9001 / ISO 45001 인증 품질·안전 관리체계',
   ],
@@ -110,15 +110,15 @@ export const CERTIFICATES: CertificateItem[] = [
   },
   {
     id: 'cert-outsource-reg',
-    title: '외주작업 협력업체 등록증',
+    title: '외주품질관리 등록증',
     category: 'license',
-    code: '광양제철소 외주등록 (POS-GY-2024-NDT)',
+    code: '한국가스안전공사 외주품질관리 등록',
     issueDate: '2024년 ~ 2028년 04월 27일 만료',
-    issuer: '포스코 광양제철소 외주협력처',
-    scope: '광양제철소 및 주요 플랜트 설비 비파괴검사 및 진단 용역',
-    description: '포스코 광양제철소 및 인근 주요 석유화학 플랜트 단지 외주작업 적격업체로 공식 등록되어 상시 안전 진단 및 검사를 수행합니다.',
+    issuer: '한국가스안전공사',
+    scope: '플랜트 및 가스 관련 주요 설비 비파괴검사 및 외주품질관리',
+    description: '한국가스안전공사에 외주품질관리 등록 적격업체로 공식 등록되어 공인된 절차와 기술 규정에 따라 정밀 검사를 수행합니다.',
     imagePlaceholderColor: 'from-teal-700 to-slate-900',
-    badge: '광양제철소 외주등록',
+    badge: '가스안전공사 외주등록',
     imageUrl: '/외주등록증-(주)와이즈텍-2024 광양_2028.04.27 만료_페이지_1.jpg',
     altImageUrl: '/assets/images/외주등록증-(주)와이즈텍-2024 광양_2028.04.27 만료_페이지_1.jpg',
     downloadName: '외주등록증-(주)와이즈텍-2024 광양_2028.04.27 만료_페이지_1.jpg',
@@ -128,7 +128,7 @@ export const CERTIFICATES: CertificateItem[] = [
 export const NDT_SERVICES: NdtServiceItem[] = [
   {
     id: 'ut',
-    nameKo: '초음파비파괴검사',
+    nameKo: '초음파',
     nameEn: 'Ultrasonic Testing',
     code: 'UT / PAUT',
     summary: '초음파 펄스를 시험체 내부에 전파시켜 내부 불연속부로부터 반사되어 되돌아오는 신호를 분석하여 결함을 검출합니다.',
@@ -150,7 +150,7 @@ export const NDT_SERVICES: NdtServiceItem[] = [
   },
   {
     id: 'mt',
-    nameKo: '자분탐상검사',
+    nameKo: '자분',
     nameEn: 'Magnetic Particle Testing',
     code: 'MT',
     summary: '강자성체 재질을 자화시켰을 때 결함부에 형성되는 누설 자속에 자분을 도포하여 표면 및 표면 직하의 미세 균열을 육안으로 검출합니다.',
@@ -172,7 +172,7 @@ export const NDT_SERVICES: NdtServiceItem[] = [
   },
   {
     id: 'pt',
-    nameKo: '침투탐상검사',
+    nameKo: '침투',
     nameEn: 'Liquid Penetrant Testing',
     code: 'PT',
     summary: '모세관 현상을 이용하여 검사 대상물 표면에 열려있는 미세 결함에 침투액을 침투시킨 후 현상제를 뿌려 결함을 확대 지시합니다.',
@@ -194,7 +194,7 @@ export const NDT_SERVICES: NdtServiceItem[] = [
   },
   {
     id: 'lt',
-    nameKo: '누설비파괴검사',
+    nameKo: '누설',
     nameEn: 'Leak Testing',
     code: 'LT',
     summary: '압력용기, 저장탱크, 배관 시스템의 기밀성(Tightness)을 검증하고 유체나 가스의 미세 누설 위치와 누설량을 정밀 측정합니다.',
@@ -316,7 +316,7 @@ export const NOTICES: NoticeItem[] = [
     isImportant: false,
     content: `고객 여러분의 편의성을 높이고자 (주)와이즈텍 공식 웹사이트를 새롭게 개편하였습니다.
 
-홈페이지를 통해 비파괴검사 공인 4대 분야(UT, MT, PT, LT), 자율안전검사 위탁, 등록 면허 및 ISO 인증 현황을 손쉽게 확인하실 수 있으며, '온라인 견적 문의'를 통해 빠르고 정확한 비용 산출 및 일정 조율이 가능합니다.
+홈페이지를 통해 자율안전검사 위탁, 비파괴검사 공인 4대 분야(UT, MT, PT, LT), 등록 면허 및 ISO 인증 현황을 손쉽게 확인하실 수 있으며, '온라인 견적 문의'를 통해 빠르고 정확한 비용 산출 및 일정 조율이 가능합니다.
 
 언제나 최상의 서비스를 제공하는 (주)와이즈텍이 되겠습니다. 감사합니다.`,
   },
@@ -325,20 +325,20 @@ export const NOTICES: NoticeItem[] = [
 export const FAQS: FaqItem[] = [
   {
     id: 1,
+    question: '산업안전보건법상 자율안전검사를 위탁해야 하는 이유는 무엇인가요?',
+    answer: '산업안전보건법에 따라 유해·위험 기계(크레인, 리프트, 압력용기 등)의 사업주는 자체 또는 지정 전문검사기관에 안전검사를 위탁하여 주기적으로 안전 성능을 확인해야 합니다. 전문 업체를 통한 위탁 검사는 기계 고장과 안전사고를 미연에 방지할 뿐만 아니라, 법정 검사 미이행에 따른 과태료(최대 1,000만원 이하) 처분을 예방할 수 있습니다.',
+    category: '자율안전',
+  },
+  {
+    id: 2,
     question: '비파괴검사(NDT) 견적 산출 시 필요한 정보는 무엇인가요?',
     answer: '검사 대상 품목(배관, 압력용기, 탱크 등), 재질 및 두께, 검사 수량(Point 또는 길이 m), 희망 검사 방식(UT, MT, PT, LT), 검사 현장 위치 및 일정 등을 알려주시면 가장 신속하고 정확한 맞춤 견적서를 산출해 드립니다. 도면이나 사양서가 있으시면 온라인 문의 시 첨부해주시면 더욱 정확합니다.',
     category: '견적/일정',
   },
   {
-    id: 2,
-    question: '전국 어디든 출장 비파괴검사 및 자율안전검사가 가능한가요?',
-    answer: '네, 가능합니다. (주)와이즈텍은 전남 광양 본사를 중심으로 여수 석유화학단지, 광양 제철단지뿐만 아니라 울산, 포항, 당진, 군산, 인천 등 전국의 주요 산업단지 및 건설 플랜트 현장에 전문 검사원과 이동형 검사장비를 신속히 파견하고 있습니다.',
-    category: 'NDT',
-  },
-  {
     id: 3,
-    question: '산업안전보건법상 자율안전검사를 위탁해야 하는 이유는 무엇인가요?',
-    answer: '산업안전보건법 제98조에 따라 유해·위험 기계(크레인, 리프트, 압력용기 등)의 사업주는 자체 또는 지정 전문검사기관에 안전검사를 위탁하여 주기적으로 안전 성능을 확인해야 합니다. 전문 업체를 통한 위탁 검사는 기계 고장과 안전사고를 미연에 방지할 뿐만 아니라, 법정 검사 미이행에 따른 과태료(최대 1,000만원 이하) 처분을 예방할 수 있습니다.',
+    question: '전국 어디든 출장 자율안전검사 및 비파괴검사가 가능한가요?',
+    answer: '네, 가능합니다. (주)와이즈텍은 전남 광양 본사를 중심으로 여수 석유화학단지, 광양 제철단지뿐만 아니라 울산, 포항, 당진, 군산, 인천 등 전국의 주요 산업단지 및 건설 플랜트 현장에 전문 검사원과 이동형 검사장비를 신속히 파견하고 있습니다.',
     category: '자율안전',
   },
   {

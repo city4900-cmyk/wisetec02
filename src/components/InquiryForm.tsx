@@ -18,12 +18,12 @@ import { InquiryFormData } from '../types';
 import { COMPANY_INFO } from '../data/companyData';
 
 interface InquiryFormProps {
-  initialServiceCategory?: 'ndt' | 'safety' | 'patent_leak' | 'consulting' | 'other';
+  initialServiceCategory?: 'safety' | 'ndt' | 'patent_leak' | 'consulting' | 'other';
   onSubmittedSuccess?: () => void;
 }
 
 export const InquiryForm: React.FC<InquiryFormProps> = ({
-  initialServiceCategory = 'ndt',
+  initialServiceCategory = 'safety',
   onSubmittedSuccess,
 }) => {
   const [formData, setFormData] = useState<InquiryFormData>({
@@ -52,10 +52,10 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const ndtOptions = [
-    { code: 'UT', label: '초음파비파괴검사 (UT)' },
-    { code: 'MT', label: '자분탐상검사 (MT)' },
-    { code: 'PT', label: '침투탐상검사 (PT)' },
-    { code: 'LT', label: '누설비파괴검사 (LT)' },
+    { code: 'UT', label: '초음파 (UT)' },
+    { code: 'MT', label: '자분 (MT)' },
+    { code: 'PT', label: '침투 (PT)' },
+    { code: 'LT', label: '누설 (LT)' },
   ];
 
   const handleNdtCheckbox = (code: string) => {
@@ -329,19 +329,6 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <button
                 type="button"
-                onClick={() => setFormData({ ...formData, serviceCategory: 'ndt' })}
-                className={`p-3 rounded-xl border text-left transition-all ${
-                  formData.serviceCategory === 'ndt'
-                    ? 'bg-blue-50 border-blue-600 text-blue-900 font-bold ring-1 ring-blue-600'
-                    : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
-                }`}
-              >
-                <div className="text-xs text-blue-600 font-semibold mb-1">정밀 검사</div>
-                <div className="text-sm font-bold">비파괴검사 (NDT)</div>
-              </button>
-
-              <button
-                type="button"
                 onClick={() => setFormData({ ...formData, serviceCategory: 'safety' })}
                 className={`p-3 rounded-xl border text-left transition-all ${
                   formData.serviceCategory === 'safety'
@@ -349,8 +336,21 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({
                     : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
                 }`}
               >
-                <div className="text-xs text-emerald-600 font-semibold mb-1">산안법 제98조</div>
+                <div className="text-xs text-emerald-600 font-semibold mb-1">산업안전보건법</div>
                 <div className="text-sm font-bold">자율안전검사 위탁</div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setFormData({ ...formData, serviceCategory: 'ndt' })}
+                className={`p-3 rounded-xl border text-left transition-all ${
+                  formData.serviceCategory === 'ndt'
+                    ? 'bg-blue-50 border-blue-600 text-blue-900 font-bold ring-1 ring-blue-600'
+                    : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                }`}
+              >
+                <div className="text-xs text-blue-600 font-semibold mb-1">공인 정밀검사</div>
+                <div className="text-sm font-bold">비파괴검사 (NDT)</div>
               </button>
 
               <button

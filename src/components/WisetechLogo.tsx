@@ -174,7 +174,7 @@ export const WisetechLogo: React.FC<WisetechLogoProps> = ({
           </div>
           {showSubtitle && (
             <span className={`font-semibold tracking-tight ${sizeConfig.subSize}`} style={{ color: subTextColor }}>
-              비파괴검사(UT·MT·PT·LT) · 자율안전검사
+              자율안전검사 · 비파괴검사
             </span>
           )}
         </div>

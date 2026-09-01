@@ -44,7 +44,7 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
 
             <p className="text-sm text-slate-300 leading-relaxed max-w-md">
-              비파괴검사(NDT) 및 산업안전보건법 제98조 자율안전검사 위탁 전문기업.
+              산업안전보건법에 따른 자율안전검사 위탁 및 비파괴검사(NDT) 전문기술 엔지니어링 기업.
               첨단 기술력과 ISO 인증 경영시스템을 바탕으로 안전하고 정밀한 검사 서비스를 제공합니다.
             </p>
 
@@ -127,22 +127,22 @@ export const Footer: React.FC<FooterProps> = ({
                 <button
                   onClick={() => {
                     onSelectTab('services');
-                    if (onSelectServicesSubTab) onSelectServicesSubTab('ndt');
+                    if (onSelectServicesSubTab) onSelectServicesSubTab('safety');
                   }}
                   className="hover:text-blue-400 transition-colors"
                 >
-                  비파괴검사 (UT · MT · PT · LT)
+                  자율안전검사 위탁 (산업안전보건법)
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => {
                     onSelectTab('services');
-                    if (onSelectServicesSubTab) onSelectServicesSubTab('safety');
+                    if (onSelectServicesSubTab) onSelectServicesSubTab('ndt');
                   }}
                   className="hover:text-blue-400 transition-colors"
                 >
-                  자율안전검사 위탁 (산안법 제98조)
+                  비파괴검사
                 </button>
               </li>
               <li>
@@ -219,7 +219,7 @@ export const Footer: React.FC<FooterProps> = ({
               <span>주소: {COMPANY_INFO.address}</span>
             </p>
             <p>
-              주요사업: 비파괴검사, 자율안전검사 위탁, 기술시험 및 분석
+              주요사업: 자율안전검사 위탁, 비파괴검사, 기술시험 및 분석
             </p>
             <p className="text-slate-400 pt-1">
               Copyright © (주)와이즈텍. All Rights Reserved.

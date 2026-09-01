@@ -58,7 +58,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
             신뢰와 기술로 미래 산업 안전을 선도합니다
           </h1>
           <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-            (주)와이즈텍은 비파괴검사 및 산업안전보건법 제98조 자율안전검사 위탁 전문기업으로서,
+            (주)와이즈텍은 산업안전보건법에 따른 자율안전검사 기관이자 비파괴검사 전문기업으로서,
             ISO 9001/45001 인증 품질·안전 관리체계와 독자 특허 기술을 기반으로 고객사의 소중한 설비와 안전을 지킵니다.
           </p>
         </div>
@@ -164,7 +164,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
                   현대 산업 현장은 고도화된 기술과 함께 대형화·복잡화되고 있으며, 이에 따라 구조물의 결함 조기 발견과 작업장 내 위험 기계에 대한 체계적인 안전 검사의 중요성은 그 어느 때보다 강조되고 있습니다.
                 </p>
                 <p>
-                  (주)와이즈텍은 <strong>비파괴검사(NDT: UT, MT, PT, LT)</strong> 및 <strong>산업안전보건법 제89조에 따른 자율안전검사 위탁</strong>을 주력으로 수행하는 전문 기술 엔지니어링 기업입니다.
+                  (주)와이즈텍은 <strong>산업안전보건법에 따른 자율안전검사 기관</strong>으로서 <strong>자율안전검사 위탁</strong> 및 <strong>비파괴검사</strong>를 주력으로 수행하는 전문 기술 엔지니어링 기업입니다.
                 </p>
                 <p>
                   당사는 공인인증기관인 한국가스안전공사(KGS)로부터 <strong>ISO 9001(품질경영)</strong> 및 <strong>ISO 45001(안전보건경영)</strong> 인증을 획득하여 글로벌 스탠다드에 부합하는 철저한 프로세스를 운영하고 있으며, 자체 개발한 <strong>'곤돌라 고정식 진공상자 누설검사시스템(특허 제 10-2613687 호)'</strong>을 통해 고소 작업 환경에서도 안전성과 정밀도를 비약적으로 혁신하였습니다.
@@ -249,13 +249,13 @@ export const AboutView: React.FC<AboutViewProps> = ({
                     <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">
                       1
                     </span>
-                    <span>산업안전보건법 제98조에 의거한 자율안전검사 위탁업</span>
+                    <span>산업안전보건법에 따른 자율안전검사 기관 (자율안전검사 위탁)</span>
                   </p>
                   <p className="flex items-center gap-2 font-medium">
                     <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">
                       2
                     </span>
-                    <span>교육과학기술부 등록 비파괴검사 (UT, MT, PT, LT)</span>
+                    <span>비파괴검사 등록기업 (비파괴검사 기술용역)</span>
                   </p>
                   <p className="flex items-center gap-2 text-slate-600 text-xs">
                     <span className="w-5 h-5 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">

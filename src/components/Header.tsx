@@ -193,19 +193,6 @@ export const Header: React.FC<HeaderProps> = ({
               {openDropdown === 'services' && (
                 <div className="absolute left-0 mt-1 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-2 animate-in fade-in slide-in-from-top-1 duration-150 z-50">
                   <button
-                    onClick={() => handleNavClick('services', () => onSelectServicesSubTab && onSelectServicesSubTab('ndt'))}
-                    className="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 flex items-center justify-between"
-                  >
-                    <div className="flex items-center gap-2">
-                      <Wrench className="w-4 h-4 text-blue-500" />
-                      <div>
-                        <span className="font-semibold block">비파괴검사 (NDT)</span>
-                        <span className="text-xs text-slate-500 font-normal">UT · MT · PT · LT</span>
-                      </div>
-                    </div>
-                    <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold">4개분야</span>
-                  </button>
-                  <button
                     onClick={() => handleNavClick('services', () => onSelectServicesSubTab && onSelectServicesSubTab('safety'))}
                     className="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 flex items-center justify-between"
                   >
@@ -213,10 +200,23 @@ export const Header: React.FC<HeaderProps> = ({
                       <Shield className="w-4 h-4 text-emerald-500" />
                       <div>
                         <span className="font-semibold block">자율안전검사</span>
-                        <span className="text-xs text-slate-500 font-normal">산안법 제98조 위탁업</span>
+                        <span className="text-xs text-slate-500 font-normal">산업안전보건법 위탁업</span>
                       </div>
                     </div>
                     <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded font-bold">법정검사</span>
+                  </button>
+                  <button
+                    onClick={() => handleNavClick('services', () => onSelectServicesSubTab && onSelectServicesSubTab('ndt'))}
+                    className="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Wrench className="w-4 h-4 text-blue-500" />
+                      <div>
+                        <span className="font-semibold block">비파괴검사</span>
+                        <span className="text-xs text-slate-500 font-normal">전문 비파괴 정밀 기술용역</span>
+                      </div>
+                    </div>
+                    <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold">정밀검사</span>
                   </button>
                 </div>
               )}
@@ -344,16 +344,16 @@ export const Header: React.FC<HeaderProps> = ({
               <div className="text-xs font-bold text-slate-400 px-3.5 uppercase tracking-wider">사업분야 (Services)</div>
               <div className="mt-1 space-y-0.5">
                 <button
-                  onClick={() => handleNavClick('services', () => onSelectServicesSubTab && onSelectServicesSubTab('ndt'))}
-                  className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-md"
-                >
-                  비파괴검사 (UT, MT, PT, LT)
-                </button>
-                <button
                   onClick={() => handleNavClick('services', () => onSelectServicesSubTab && onSelectServicesSubTab('safety'))}
                   className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-md"
                 >
-                  자율안전검사 (산안법 제98조 위탁)
+                  자율안전검사 (산업안전보건법 위탁)
+                </button>
+                <button
+                  onClick={() => handleNavClick('services', () => onSelectServicesSubTab && onSelectServicesSubTab('ndt'))}
+                  className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-md"
+                >
+                  비파괴검사
                 </button>
               </div>
             </div>

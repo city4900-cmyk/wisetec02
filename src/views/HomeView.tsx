@@ -47,7 +47,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onOpenCertificateModal,
   onOpenNoticeModal,
 }) => {
-  const [selectedNdtTab, setSelectedNdtTab] = useState<string>('rt');
+  const [selectedNdtTab, setSelectedNdtTab] = useState<string>('ut');
   const [activeFaq, setActiveFaq] = useState<number | null>(1);
 
   const currentNdt = NDT_SERVICES.find((s) => s.id === selectedNdtTab) || NDT_SERVICES[0];
@@ -72,9 +72,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 <span>ISO 9001 · 45001 인증 & 특허보유</span>
               </div>
 
-              {/* Main Slogan (User Prompt Specification) */}
+              {/* Main Slogan */}
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-[1.2] text-white">
-                비파괴검사 및 산업안전 분야의{' '}
+                자율안전검사 및 비파괴검사 분야의{' '}
                 <span className="bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent">
                   신뢰할 수 있는 파트너
                 </span>
@@ -82,13 +82,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 (주)와이즈텍
               </h1>
 
-              {/* Sub Slogan (User Prompt Specification) */}
+              {/* Sub Slogan */}
               <p className="text-base sm:text-lg text-slate-300 font-normal leading-relaxed max-w-2xl">
-                첨단 기술력과 ISO 인증 경영시스템을 바탕으로 안전하고 정밀한 검사 서비스를 제공합니다.
-                비파괴검사(NDT)부터 산업안전보건법 제98조 자율안전검사 위탁까지 완벽한 솔루션을 제시합니다.
+                산업안전보건법에 따른 자율안전검사 기관으로서 자율안전검사 위탁부터 비파괴검사까지 정밀하고 안전한 검사 솔루션을 제공합니다.
               </p>
 
-              {/* 3 Core Highlight Badges (User Prompt Specification) */}
+              {/* 3 Core Highlight Badges */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
                 <div
                   onClick={() => {
@@ -151,7 +150,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   id="hero-services-btn"
                   onClick={() => {
                     onSelectTab('services');
-                    onSelectServicesSubTab('ndt');
+                    onSelectServicesSubTab('safety');
                   }}
                   className="px-6 py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white font-semibold text-sm border border-slate-700 hover:border-slate-600 transition-all flex items-center gap-2"
                 >
@@ -185,15 +184,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   </div>
 
                   <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80">
-                    <span className="text-xs text-slate-400 block">NDT 검사 영역</span>
-                    <span className="text-xl font-black text-blue-400 font-mono">4대 분야</span>
-                    <span className="text-[10px] text-slate-400 block mt-0.5">UT · MT · PT · LT</span>
+                    <span className="text-xs text-slate-400 block">자율안전 검사</span>
+                    <span className="text-xl font-black text-emerald-400 font-mono">산업안전보건법</span>
+                    <span className="text-[10px] text-slate-400 block mt-0.5">법정 자율안전검사 위탁</span>
                   </div>
 
                   <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80">
-                    <span className="text-xs text-slate-400 block">산업안전 검사</span>
-                    <span className="text-xl font-black text-emerald-400 font-mono">산안법 98조</span>
-                    <span className="text-[10px] text-slate-400 block mt-0.5">자율안전검사 위탁</span>
+                    <span className="text-xs text-slate-400 block">비파괴검사</span>
+                    <span className="text-xl font-black text-blue-400 font-mono">비파괴검사</span>
+                    <span className="text-[10px] text-slate-400 block mt-0.5">전문 기술인력보유</span>
                   </div>
 
                   <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80">
@@ -230,7 +229,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* 2. Core Business Areas (비파괴검사 & 자율안전검사) */}
+      {/* 2. Core Business Areas (자율안전검사 & 비파괴검사) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold">
@@ -241,13 +240,71 @@ export const HomeView: React.FC<HomeViewProps> = ({
             전문성과 신뢰를 갖춘 핵심 검사 서비스
           </h2>
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-            비파괴검사 공인 기법(UT, MT, PT, LT)과 산업안전보건법에 따른 자율안전검사 위탁을 통해 고객사의 시설물 건전성과 무재해 사업장 구축을 지원합니다.
+            산업안전보건법에 따른 자율안전검사 기관으로서 자율안전검사 위탁과 공인 비파괴검사를 통해 고객사의 무재해 사업장 구축과 시설물 건전성을 완벽히 지원합니다.
           </p>
         </div>
 
-        {/* 2 Major Service Pillars */}
+        {/* 2 Major Service Pillars (Safety Inspection First, NDT Second) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {/* Service Pillar 1: 비파괴검사 */}
+          {/* Service Pillar 1: 자율안전검사 */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all flex flex-col justify-between relative overflow-hidden group">
+            <div className="space-y-4">
+              <div className="flex justify-between items-start">
+                <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-lg">
+                  SAFE
+                </div>
+                <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  산업안전보건법 위탁
+                </span>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                  자율안전검사 (Safety Inspection)
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  근로자의 안전 확보 및 산업재해 예방을 위한 법적 근거에 따른 주기적 성능 검사 위탁
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2">
+                {['크레인/호이스트', '리프트/승강설비', '곤돌라', '압력용기', '프레스/전단기', '롤러/사출기'].map(
+                  (item, idx) => (
+                    <div key={idx} className="p-2.5 rounded-lg bg-emerald-50/50 border border-emerald-100 text-center">
+                      <span className="text-xs font-bold text-slate-800 block">{item}</span>
+                      <span className="text-[10px] text-emerald-700 block">주기적 법정검사</span>
+                    </div>
+                  )
+                )}
+              </div>
+
+              <ul className="space-y-2 text-xs text-slate-600 pt-2">
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>공인 자격 검사원의 정밀 안전진단 및 성적서 발급</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>미검사 시 법적 과태료 처분 사전 예방 및 리스크 관리</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between">
+              <button
+                onClick={() => {
+                  onSelectTab('services');
+                  onSelectServicesSubTab('safety');
+                }}
+                className="text-sm font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1.5"
+              >
+                <span>자율안전검사 대상 및 주기 안내</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Service Pillar 2: 비파괴검사 */}
           <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all flex flex-col justify-between relative overflow-hidden group">
             <div className="space-y-4">
               <div className="flex justify-between items-start">
@@ -302,64 +359,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </button>
             </div>
           </div>
-
-          {/* Service Pillar 2: 자율안전검사 */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all flex flex-col justify-between relative overflow-hidden group">
-            <div className="space-y-4">
-              <div className="flex justify-between items-start">
-                <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-lg">
-                  SAFE
-                </div>
-                <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
-                  산안법 제98조 위탁
-                </span>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
-                  자율안전검사 (Safety Inspection)
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  근로자의 안전 확보 및 산업재해 예방을 위한 법적 근거에 따른 주기적 성능 검사 위탁
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2">
-                {['크레인/호이스트', '리프트/승강설비', '곤돌라', '압력용기', '프레스/전단기', '롤러/사출기'].map(
-                  (item, idx) => (
-                    <div key={idx} className="p-2.5 rounded-lg bg-emerald-50/50 border border-emerald-100 text-center">
-                      <span className="text-xs font-bold text-slate-800 block">{item}</span>
-                      <span className="text-[10px] text-emerald-700 block">주기적 법정검사</span>
-                    </div>
-                  )
-                )}
-              </div>
-
-              <ul className="space-y-2 text-xs text-slate-600 pt-2">
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>공인 자격 검사원의 정밀 안전진단 및 성적서 발급</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>미검사 시 법적 과태료 처분 사전 예방 및 리스크 관리</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between">
-              <button
-                onClick={() => {
-                  onSelectTab('services');
-                  onSelectServicesSubTab('safety');
-                }}
-                className="text-sm font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1.5"
-              >
-                <span>자율안전검사 대상 및 주기 안내</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
         </div>
 
         {/* Interactive NDT Method Deep-Dive Tab */}
@@ -381,7 +380,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                       : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
                   }`}
                 >
-                  {item.code} ({item.nameKo.slice(0, 3)})
+                  {item.code} ({item.nameKo})
                 </button>
               ))}
             </div>
@@ -470,7 +469,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 품질·안전보건 및 공인 등록현황
               </h2>
               <p className="text-xs sm:text-sm text-slate-600">
-                한국가스안전공사(KGS) ISO 인증서, 비파괴검사업 등록증 및 POSCO 외주작업 인증서 원본을 확인하실 수 있습니다.
+                한국가스안전공사(KGS) ISO 인증서, 비파괴검사업 등록증 및 한국가스안전공사 외주품질관리 등록증 원본을 확인하실 수 있습니다.
               </p>
             </div>
 
