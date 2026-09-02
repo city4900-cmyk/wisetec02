@@ -21,6 +21,7 @@ import {
 import { AboutSubTab, CertificateItem } from '../types';
 import { COMPANY_INFO, CERTIFICATES } from '../data/companyData';
 import { WisetechLogo } from '../components/WisetechLogo';
+import { NaverLocationMap } from '../components/NaverLocationMap';
 
 interface AboutViewProps {
   initialSubTab?: AboutSubTab;
@@ -559,7 +560,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
                 <span className="text-xs font-bold text-slate-700 block">내비게이션 및 지도 앱 바로가기</span>
                 <div className="grid grid-cols-2 gap-2">
                   <a
-                    href="https://map.kakao.com/?q=전라남도 광양시 중마청룡길 30-6"
+                    href={`https://map.kakao.com/?q=${encodeURIComponent(COMPANY_INFO.address)}`}
                     target="_blank"
                     rel="noreferrer"
                     className="p-2.5 rounded-lg bg-amber-400/10 border border-amber-400/40 text-amber-900 text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-amber-400/20 transition-colors"
@@ -569,7 +570,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
                   </a>
 
                   <a
-                    href="https://map.naver.com/v5/search/전라남도 광양시 중마청룡길 30-6"
+                    href={`https://map.naver.com/v5/search/${encodeURIComponent(COMPANY_INFO.address)}`}
                     target="_blank"
                     rel="noreferrer"
                     className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-emerald-100 transition-colors"
@@ -581,49 +582,24 @@ export const AboutView: React.FC<AboutViewProps> = ({
               </div>
             </div>
 
-            {/* Right Interactive SVG Map / Transport Guide */}
+            {/* Right Naver Maps & Transport Guide */}
             <div className="lg:col-span-7 space-y-6">
-              {/* Map Preview Canvas */}
-              <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6 text-white overflow-hidden shadow-lg relative min-h-[300px] flex flex-col justify-between">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="bg-blue-600 text-white font-bold px-2.5 py-1 rounded-md">
-                    (주)와이즈텍 본사 사옥
-                  </span>
-                  <span className="text-slate-400">광양시청 · 중마터미널 생활권</span>
-                </div>
-
-                {/* Styled Schematic Map Visualizer */}
-                <div className="my-6 p-6 bg-slate-950/80 rounded-xl border border-slate-800 text-center space-y-3">
-                  <div className="w-12 h-12 rounded-full bg-blue-600/30 border border-blue-400 text-blue-300 flex items-center justify-center mx-auto">
-                    <MapPin className="w-6 h-6 text-blue-400 animate-bounce" />
-                  </div>
-                  <div>
-                    <h4 className="text-base font-bold text-white">(주)와이즈텍 본사</h4>
-                    <p className="text-xs text-slate-400 mt-1">{COMPANY_INFO.address}</p>
-                  </div>
-                  <div className="text-[11px] text-slate-500">
-                    전남 광양 국가산단 및 여수 화학단지 신속 검사 대응 거점
-                  </div>
-                </div>
-
-                <div className="text-xs text-slate-400 text-center">
-                  주차 공간 완비 / 방문 전 전화 주시면 상세 안내 및 주차 지원해 드립니다.
-                </div>
-              </div>
+              {/* Interactive Naver Map */}
+              <NaverLocationMap />
 
               {/* Transportation Methods */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-2">
+                <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-2 shadow-xs">
                   <div className="flex items-center gap-2 text-slate-900 font-bold text-sm">
                     <Car className="w-4 h-4 text-blue-600" />
                     <span>자가용 이용 시</span>
                   </div>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    <strong>동광양 IC</strong> 또는 <strong>옥곡 IC</strong> 진출 후 광양시청 및 중마동 방면으로 약 10분 소요 (네비게이션 '중마청룡길 30-6' 검색)
+                    <strong>동광양 IC</strong> 또는 <strong>옥곡 IC</strong> 진출 후 광양시청 및 중마동 방면으로 약 10분 소요 (네비게이션 '광양시 동광길 33' 검색)
                   </p>
                 </div>
 
-                <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-2">
+                <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-2 shadow-xs">
                   <div className="flex items-center gap-2 text-slate-900 font-bold text-sm">
                     <Bus className="w-4 h-4 text-emerald-600" />
                     <span>대중교통 / KTX 이용 시</span>
