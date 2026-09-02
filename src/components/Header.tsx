@@ -154,13 +154,6 @@ export const Header: React.FC<HeaderProps> = ({
                     <span>기업개요 및 연혁</span>
                   </button>
                   <button
-                    onClick={() => handleNavClick('about', () => onSelectAboutSubTab && onSelectAboutSubTab('certifications'))}
-                    className="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2"
-                  >
-                    <Shield className="w-4 h-4 text-blue-500" />
-                    <span>인증 및 등록현황</span>
-                  </button>
-                  <button
                     onClick={() => handleNavClick('about', () => onSelectAboutSubTab && onSelectAboutSubTab('location'))}
                     className="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2"
                   >
@@ -323,12 +316,6 @@ export const Header: React.FC<HeaderProps> = ({
                   className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-md"
                 >
                   기업개요 및 연혁
-                </button>
-                <button
-                  onClick={() => handleNavClick('about', () => onSelectAboutSubTab && onSelectAboutSubTab('certifications'))}
-                  className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-md font-medium text-blue-600"
-                >
-                  특허 및 인증현황 (ISO/특허)
                 </button>
                 <button
                   onClick={() => handleNavClick('about', () => onSelectAboutSubTab && onSelectAboutSubTab('location'))}

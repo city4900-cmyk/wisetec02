@@ -1,6 +1,6 @@
 export type NavTab = 'home' | 'about' | 'services' | 'technology' | 'contact';
 
-export type AboutSubTab = 'greeting' | 'overview' | 'certifications' | 'location';
+export type AboutSubTab = 'greeting' | 'overview' | 'location';
 export type ServicesSubTab = 'ndt' | 'safety';
 export type TechSubTab = 'patent-system' | 'comparison' | 'process';
 export type ContactSubTab = 'inquiry' | 'notice' | 'faq';

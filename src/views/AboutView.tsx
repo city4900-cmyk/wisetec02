@@ -15,37 +15,29 @@ import {
   Bus,
   Car,
   Clock,
-  Eye,
   Check,
 } from 'lucide-react';
 import { AboutSubTab, CertificateItem } from '../types';
-import { COMPANY_INFO, CERTIFICATES } from '../data/companyData';
+import { COMPANY_INFO } from '../data/companyData';
 import { WisetechLogo } from '../components/WisetechLogo';
 import { NaverLocationMap } from '../components/NaverLocationMap';
 
 interface AboutViewProps {
   initialSubTab?: AboutSubTab;
-  onOpenCertificateModal: (cert: CertificateItem) => void;
+  onOpenCertificateModal?: (cert: CertificateItem) => void;
 }
 
 export const AboutView: React.FC<AboutViewProps> = ({
   initialSubTab = 'greeting',
-  onOpenCertificateModal,
 }) => {
   const [activeSubTab, setActiveSubTab] = useState<AboutSubTab>(initialSubTab);
   const [copiedAddress, setCopiedAddress] = useState(false);
-  const [certFilter, setCertFilter] = useState<'all' | 'patent' | 'iso' | 'license'>('all');
 
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(COMPANY_INFO.address);
     setCopiedAddress(true);
     setTimeout(() => setCopiedAddress(false), 2000);
   };
-
-  const filteredCerts =
-    certFilter === 'all'
-      ? CERTIFICATES
-      : CERTIFICATES.filter((c) => c.category === certFilter);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10">
@@ -89,18 +81,6 @@ export const AboutView: React.FC<AboutViewProps> = ({
         >
           <Building2 className="w-4 h-4" />
           <span>기업개요 및 연혁 (Overview)</span>
-        </button>
-
-        <button
-          onClick={() => setActiveSubTab('certifications')}
-          className={`pb-4 px-4 text-sm font-bold border-b-2 whitespace-nowrap transition-all flex items-center gap-2 ${
-            activeSubTab === 'certifications'
-              ? 'border-blue-600 text-blue-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
-          }`}
-        >
-          <Shield className="w-4 h-4" />
-          <span>특허 및 인증현황 (Certifications)</span>
         </button>
 
         <button
@@ -222,7 +202,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
                 <span className="text-slate-800 sm:col-span-3 font-mono">{COMPANY_INFO.establishedDate}</span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-4 p-4 sm:p-5 hover:bg-slate-50">
+              <div className="grid grid-cols-1 sm:grid-cols-4 p-4 sm:p-5 hover:bg-slate-50 items-center">
                 <span className="font-bold text-slate-600 sm:col-span-1">사업자등록번호</span>
                 <span className="text-slate-900 sm:col-span-3 font-mono font-bold">
                   {COMPANY_INFO.businessNumber}
@@ -380,130 +360,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
         </div>
       )}
 
-      {/* Sub-tab 3: 특허 및 인증현황 (Certifications & Patents Gallery) */}
-      {activeSubTab === 'certifications' && (
-        <div className="space-y-8 animate-in fade-in duration-200">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h3 className="text-2xl font-black text-slate-900">특허 및 공인 인증현황</h3>
-              <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
-                (주)와이즈텍이 보유한 특허증, ISO 9001/45001 인증서 및 정식 면허 증빙
-              </p>
-            </div>
-
-            {/* Filter Tabs */}
-            <div className="flex flex-wrap gap-1.5 bg-slate-100 p-1 rounded-xl">
-              <button
-                onClick={() => setCertFilter('all')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                  certFilter === 'all' ? 'bg-white text-blue-700 shadow-xs' : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                전체보기
-              </button>
-              <button
-                onClick={() => setCertFilter('patent')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                  certFilter === 'patent' ? 'bg-white text-amber-700 shadow-xs' : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                특허증 (Patent)
-              </button>
-              <button
-                onClick={() => setCertFilter('iso')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                  certFilter === 'iso' ? 'bg-white text-blue-700 shadow-xs' : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                ISO 인증서
-              </button>
-              <button
-                onClick={() => setCertFilter('license')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                  certFilter === 'license' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                등록증/인가서
-              </button>
-            </div>
-          </div>
-
-          {/* Certificates Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCerts.map((cert) => (
-              <div
-                key={cert.id}
-                onClick={() => onOpenCertificateModal(cert)}
-                className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all cursor-pointer group flex flex-col justify-between hover:border-blue-300"
-              >
-                {/* Certificate Visual Banner / Document Image Preview */}
-                <div className="relative bg-slate-100 border-b border-slate-200 overflow-hidden aspect-[4/3] flex items-center justify-center p-3">
-                  {cert.imageUrl ? (
-                    <img
-                      src={cert.imageUrl}
-                      alt={cert.title}
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300 rounded"
-                      onError={(e) => {
-                        if (cert.altImageUrl && e.currentTarget.src !== cert.altImageUrl) {
-                          e.currentTarget.src = cert.altImageUrl;
-                        }
-                      }}
-                    />
-                  ) : (
-                    <div className="w-14 h-14 rounded-2xl bg-white border border-slate-200 shadow-md flex items-center justify-center text-blue-700">
-                      {cert.category === 'patent' ? (
-                        <Sparkles className="w-7 h-7 text-amber-500" />
-                      ) : cert.category === 'iso' ? (
-                        <Award className="w-7 h-7 text-blue-600" />
-                      ) : (
-                        <Shield className="w-7 h-7 text-slate-700" />
-                      )}
-                    </div>
-                  )}
-
-                  {/* Top Badge */}
-                  <div className="absolute top-3 right-3 text-[11px] bg-slate-900/90 backdrop-blur-xs text-white px-2.5 py-1 rounded-full font-bold shadow">
-                    {cert.badge}
-                  </div>
-
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-blue-900/0 group-hover:bg-blue-900/20 transition-colors flex items-center justify-center">
-                    <span className="opacity-0 group-hover:opacity-100 bg-white/95 text-blue-700 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 transition-opacity transform translate-y-2 group-hover:translate-y-0">
-                      <Eye className="w-3.5 h-3.5" />
-                      <span>원본 사진 및 상세 보기</span>
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-5 space-y-3 flex-1 flex flex-col justify-between bg-white">
-                  <div>
-                    <div className="text-[11px] font-mono text-slate-500 font-bold">
-                      {cert.code}
-                    </div>
-                    <h4 className="font-bold text-base text-slate-900 group-hover:text-blue-700 transition-colors mt-0.5">
-                      {cert.title}
-                    </h4>
-                    <p className="text-xs text-slate-600 mt-1.5 line-clamp-2 leading-relaxed">
-                      {cert.description}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span className="text-slate-400 font-mono">{cert.issueDate}</span>
-                    <span className="font-bold text-blue-600 flex items-center gap-1">
-                      <span>사진 원본</span>
-                      <Eye className="w-3.5 h-3.5" />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Sub-tab 4: 오시는 길 (Location) */}
+      {/* Sub-tab 3: 오시는 길 (Location) */}
       {activeSubTab === 'location' && (
         <div className="space-y-8 animate-in fade-in duration-200">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

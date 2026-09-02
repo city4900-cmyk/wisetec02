@@ -24,7 +24,7 @@ import {
   CertificateItem,
   NoticeItem,
 } from '../types';
-import { COMPANY_INFO, CERTIFICATES, NDT_SERVICES, NOTICES, FAQS } from '../data/companyData';
+import { COMPANY_INFO, NDT_SERVICES, NOTICES, FAQS } from '../data/companyData';
 import { PatentVisualizer } from '../components/PatentVisualizer';
 import { InquiryForm } from '../components/InquiryForm';
 
@@ -92,7 +92,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 <div
                   onClick={() => {
                     onSelectTab('about');
-                    onSelectAboutSubTab('certifications');
+                    onSelectAboutSubTab('overview');
                   }}
                   className="p-3.5 rounded-xl bg-slate-900/80 border border-blue-500/30 hover:border-blue-400/60 transition-all cursor-pointer group"
                 >
@@ -106,7 +106,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 <div
                   onClick={() => {
                     onSelectTab('about');
-                    onSelectAboutSubTab('certifications');
+                    onSelectAboutSubTab('greeting');
                   }}
                   className="p-3.5 rounded-xl bg-slate-900/80 border border-emerald-500/30 hover:border-emerald-400/60 transition-all cursor-pointer group"
                 >
@@ -452,98 +452,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Certifications & Gallery Section (User Prompt Recommendation) */}
-      <section className="bg-slate-100/70 py-16 border-y border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-blue-100 text-blue-800 text-xs font-bold">
-                <Award className="w-3.5 h-3.5" />
-                <span>공인 인증 및 등록현황</span>
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                품질·안전보건 및 공인 등록현황
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-600">
-                한국가스안전공사(KGS) ISO 인증서, 비파괴검사업 등록증 및 한국가스안전공사 외주품질관리 등록증 원본을 확인하실 수 있습니다.
-              </p>
-            </div>
-
-            <button
-              onClick={() => {
-                onSelectTab('about');
-                onSelectAboutSubTab('certifications');
-              }}
-              className="text-xs sm:text-sm font-bold text-blue-700 hover:text-blue-800 flex items-center gap-1 shrink-0"
-            >
-              <span>인증서 전체 갤러리 보기</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-
-          {/* Certificate Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-5">
-            {CERTIFICATES.map((cert) => (
-              <div
-                key={cert.id}
-                onClick={() => onOpenCertificateModal(cert)}
-                className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all cursor-pointer group flex flex-col justify-between hover:border-blue-300"
-              >
-                {/* Document Image Thumbnail */}
-                <div className="relative bg-slate-100 border-b border-slate-200 overflow-hidden aspect-[4/3] flex items-center justify-center p-2.5">
-                  {cert.imageUrl ? (
-                    <img
-                      src={cert.imageUrl}
-                      alt={cert.title}
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-300 rounded"
-                      onError={(e) => {
-                        if (cert.altImageUrl && e.currentTarget.src !== cert.altImageUrl) {
-                          e.currentTarget.src = cert.altImageUrl;
-                        }
-                      }}
-                    />
-                  ) : (
-                    <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center text-blue-600">
-                      {cert.category === 'patent' ? (
-                        <Sparkles className="w-5 h-5 text-amber-500" />
-                      ) : cert.category === 'iso' ? (
-                        <Award className="w-5 h-5 text-blue-600" />
-                      ) : (
-                        <Shield className="w-5 h-5 text-slate-700" />
-                      )}
-                    </div>
-                  )}
-
-                  <div className="absolute top-2 right-2 text-[10px] bg-slate-900/90 backdrop-blur-xs text-white px-2 py-0.5 rounded-full font-bold">
-                    {cert.badge}
-                  </div>
-                </div>
-
-                <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
-                  <div>
-                    <h4 className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-blue-700 transition-colors line-clamp-2">
-                      {cert.title}
-                    </h4>
-                    <p className="text-[11px] text-slate-500 mt-1 line-clamp-2 leading-relaxed">
-                      {cert.issuer}
-                    </p>
-                  </div>
-
-                  <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                    <span className="text-slate-400 font-mono truncate">{cert.code}</span>
-                    <span className="font-bold text-blue-600 flex items-center gap-0.5 shrink-0">
-                      <span>사진보기</span>
-                      <Eye className="w-3 h-3" />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>

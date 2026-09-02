@@ -120,32 +120,60 @@ export const TechnologyView: React.FC<TechnologyViewProps> = ({
           </div>
         </div>
 
-        {/* Certificate Quick Preview Card */}
+        {/* Certificate Quick Preview Card (Real Original Scanned Document Preview) */}
         {patentCert && (
           <div
             onClick={() => onOpenCertificateModal(patentCert)}
-            className="lg:col-span-4 bg-gradient-to-b from-amber-500/10 to-amber-600/5 rounded-2xl border-2 border-amber-400/40 p-6 flex flex-col justify-between cursor-pointer hover:border-amber-400 transition-all shadow-md group"
+            className="lg:col-span-4 bg-gradient-to-b from-amber-500/10 via-white to-amber-600/5 rounded-2xl border-2 border-amber-400/50 p-5 flex flex-col justify-between cursor-pointer hover:border-amber-500 transition-all shadow-md hover:shadow-xl group"
           >
-            <div className="space-y-4 text-center">
-              <div className="w-14 h-14 bg-amber-500 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-amber-500/30 group-hover:scale-110 transition-transform">
-                <Sparkles className="w-7 h-7" />
-              </div>
-              <div>
-                <span className="text-xs font-mono font-bold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-bold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-300">
                   특허증 제 10-2613687 호
                 </span>
-                <h4 className="text-base font-bold text-slate-900 mt-2">
+                <span className="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded font-bold">
+                  원본 스캔본 등록
+                </span>
+              </div>
+
+              {/* Real Patent Certificate Image Preview */}
+              <div className="relative aspect-[3/4] bg-slate-100 rounded-xl overflow-hidden p-2 border border-amber-200/80 shadow-sm flex items-center justify-center">
+                <img
+                  src={encodeURI(patentCert.imageUrl)}
+                  alt="대한민국 특허청 특허증 원본"
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300 rounded"
+                  onError={(e) => {
+                    if (patentCert.altImageUrl && e.currentTarget.src !== patentCert.altImageUrl) {
+                      e.currentTarget.src = encodeURI(patentCert.altImageUrl);
+                    }
+                  }}
+                />
+
+                <div className="absolute inset-0 bg-amber-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span className="bg-white/95 text-amber-900 text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg flex items-center gap-1.5 border border-amber-200">
+                    <Eye className="w-3.5 h-3.5 text-amber-700" />
+                    <span>특허증 원본 고해상도 확대</span>
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-bold text-slate-900 group-hover:text-amber-700 transition-colors">
                   대한민국 특허청 등록증 원본
                 </h4>
-                <p className="text-xs text-slate-600 mt-1">
-                  클릭하시면 고해상도 특허증 원본 및 상세 명세서를 확인하실 수 있습니다.
+                <p className="text-[11px] text-slate-500 mt-0.5">
+                  곤돌라 고정식 진공상자 누설검사시스템 공식 특허 문서
                 </p>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-amber-200/60 flex items-center justify-center gap-2 text-xs font-bold text-amber-900 group-hover:text-amber-800">
-              <Eye className="w-4 h-4 text-amber-600" />
-              <span>특허증 원본 확대보기</span>
+            <div className="pt-3 border-t border-amber-200/60 flex items-center justify-between text-xs font-bold text-amber-900 group-hover:text-amber-800">
+              <span className="text-slate-500 font-normal text-[11px]">2023.12.11 등록</span>
+              <span className="flex items-center gap-1">
+                <span>원본 보기 및 다운로드</span>
+                <Eye className="w-3.5 h-3.5 text-amber-600" />
+              </span>
             </div>
           </div>
         )}

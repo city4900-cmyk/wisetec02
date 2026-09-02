@@ -96,17 +96,6 @@ export const Footer: React.FC<FooterProps> = ({
                 <button
                   onClick={() => {
                     onSelectTab('about');
-                    if (onSelectAboutSubTab) onSelectAboutSubTab('certifications');
-                  }}
-                  className="hover:text-blue-400 transition-colors text-slate-300 font-medium"
-                >
-                  특허 및 인증현황 (ISO)
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => {
-                    onSelectTab('about');
                     if (onSelectAboutSubTab) onSelectAboutSubTab('location');
                   }}
                   className="hover:text-blue-400 transition-colors"
@@ -143,17 +132,6 @@ export const Footer: React.FC<FooterProps> = ({
                   className="hover:text-blue-400 transition-colors"
                 >
                   비파괴검사
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => {
-                    onSelectTab('about');
-                    if (onSelectAboutSubTab) onSelectAboutSubTab('certifications');
-                  }}
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  공인 면허 및 인증서 확인
                 </button>
               </li>
               <li>
