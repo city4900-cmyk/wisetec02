@@ -18,7 +18,7 @@ import { InquiryFormData } from '../types';
 import { COMPANY_INFO } from '../data/companyData';
 
 interface InquiryFormProps {
-  initialServiceCategory?: 'safety' | 'ndt' | 'patent_leak' | 'consulting' | 'other';
+  initialServiceCategory?: 'safety' | 'ndt' | 'other';
   onSubmittedSuccess?: () => void;
 }
 
@@ -33,7 +33,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({
     phoneNumber: '',
     email: '',
     serviceCategory: initialServiceCategory,
-    ndtSubCategories: ['UT', 'MT'],
+    ndtSubCategories: ['UT', 'PAUT'],
     targetEquipment: '',
     location: '',
     preferredDate: '',
@@ -53,9 +53,9 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({
 
   const ndtOptions = [
     { code: 'UT', label: '초음파 (UT)' },
+    { code: 'PAUT', label: '위상배열 초음파 (PAUT)' },
     { code: 'MT', label: '자분 (MT)' },
     { code: 'PT', label: '침투 (PT)' },
-    { code: 'LT', label: '누설 (LT)' },
   ];
 
   const handleNdtCheckbox = (code: string) => {
@@ -202,9 +202,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({
                   ? `비파괴검사 (${submittedReceipt.data.ndtSubCategories.join(', ')})`
                   : submittedReceipt.data.serviceCategory === 'safety'
                   ? '자율안전검사 위탁'
-                  : submittedReceipt.data.serviceCategory === 'patent_leak'
-                  ? '특허 곤돌라 진공 누설검사'
-                  : '기타 기술시험/컨설팅'}
+                  : '기타 업무 문의'}
               </span>
             </div>
             <div className="flex justify-between border-t border-slate-200 pt-2">
@@ -224,7 +222,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({
                   phoneNumber: '',
                   email: '',
                   serviceCategory: 'ndt',
-                  ndtSubCategories: ['UT', 'MT'],
+                  ndtSubCategories: ['UT', 'PAUT'],
                   targetEquipment: '',
                   location: '',
                   preferredDate: '',
@@ -326,11 +324,11 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({
             </h4>
 
             {/* Main Category Tabs */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, serviceCategory: 'safety' })}
-                className={`p-3 rounded-xl border text-left transition-all ${
+                className={`p-3.5 rounded-xl border text-left transition-all ${
                   formData.serviceCategory === 'safety'
                     ? 'bg-emerald-50 border-emerald-600 text-emerald-900 font-bold ring-1 ring-emerald-600'
                     : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
@@ -343,7 +341,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, serviceCategory: 'ndt' })}
-                className={`p-3 rounded-xl border text-left transition-all ${
+                className={`p-3.5 rounded-xl border text-left transition-all ${
                   formData.serviceCategory === 'ndt'
                     ? 'bg-blue-50 border-blue-600 text-blue-900 font-bold ring-1 ring-blue-600'
                     : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
@@ -355,28 +353,15 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({
 
               <button
                 type="button"
-                onClick={() => setFormData({ ...formData, serviceCategory: 'patent_leak' })}
-                className={`p-3 rounded-xl border text-left transition-all ${
-                  formData.serviceCategory === 'patent_leak'
-                    ? 'bg-amber-50 border-amber-600 text-amber-900 font-bold ring-1 ring-amber-600'
+                onClick={() => setFormData({ ...formData, serviceCategory: 'other' })}
+                className={`p-3.5 rounded-xl border text-left transition-all ${
+                  formData.serviceCategory === 'other'
+                    ? 'bg-slate-800 border-slate-900 text-white font-bold ring-1 ring-slate-800'
                     : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
                 }`}
               >
-                <div className="text-xs text-amber-600 font-semibold mb-1">특허 보유기술</div>
-                <div className="text-sm font-bold">곤돌라 진공 누설검사</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setFormData({ ...formData, serviceCategory: 'consulting' })}
-                className={`p-3 rounded-xl border text-left transition-all ${
-                  formData.serviceCategory === 'consulting'
-                    ? 'bg-indigo-50 border-indigo-600 text-indigo-900 font-bold ring-1 ring-indigo-600'
-                    : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
-                }`}
-              >
-                <div className="text-xs text-indigo-600 font-semibold mb-1">종합 컨설팅</div>
-                <div className="text-sm font-bold">기술시험 및 분석</div>
+                <div className="text-xs text-slate-500 font-semibold mb-1">기타 문의</div>
+                <div className="text-sm font-bold">업무 제휴 및 일반</div>
               </button>
             </div>
 
@@ -386,7 +371,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({
                 <span className="text-xs font-bold text-slate-700 block">
                   상세 NDT 검사 기법 (복수 선택 가능):
                 </span>
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {ndtOptions.map((opt) => {
                     const checked = formData.ndtSubCategories.includes(opt.code);
                     return (

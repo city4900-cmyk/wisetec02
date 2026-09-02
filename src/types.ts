@@ -69,7 +69,7 @@ export interface InquiryFormData {
   position: string;
   phoneNumber: string;
   email: string;
-  serviceCategory: 'ndt' | 'safety' | 'patent_leak' | 'consulting' | 'other';
+  serviceCategory: 'ndt' | 'safety' | 'other';
   ndtSubCategories: string[];
   targetEquipment: string;
   location: string;

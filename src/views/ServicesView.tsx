@@ -216,7 +216,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
             </div>
 
             <p className="text-sm text-slate-700 leading-relaxed max-w-4xl">
-              비파괴검사란 구조물이나 부품, 소재를 손상시키거나 파괴하지 않고 물리적 현상(초음파, 자기, 침투, 기밀 누설 등)을 응용하여 내부 및 표면의 결함 여부와 상태를 판정하는 공인 정밀 기술 서비스입니다.
+              비파괴검사란 구조물이나 부품, 소재를 손상시키거나 파괴하지 않고 물리적 현상(초음파 음향 전파, 위상배열 전자 빔 집속, 자속 누설, 모세관 침투 등)을 응용하여 내부 및 표면의 결함 여부와 건전성을 판정하는 공인 정밀 기술 서비스입니다.
               (주)와이즈텍은 최고의 숙련 기술자와 첨단 검사장비를 통해 신뢰할 수 있는 성적서를 제공합니다.
             </p>
           </div>
@@ -262,10 +262,10 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                 </div>
 
                 <div className="text-xs text-slate-500 font-medium">
-                  {selectedNdt.id === 'lt' && (
-                    <span className="bg-amber-50 text-amber-900 border border-amber-300 px-3 py-1 rounded-lg font-bold flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                      <span>와이즈텍 특허 곤돌라 시스템 연계</span>
+                  {selectedNdt.id === 'paut' && (
+                    <span className="bg-blue-50 text-blue-900 border border-blue-300 px-3 py-1 rounded-lg font-bold flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                      <span>RT 대체 친환경 첨단 검사</span>
                     </span>
                   )}
                 </div>
@@ -342,7 +342,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                 { step: '01', title: '의뢰 및 도면 검토', desc: '검사 부위 및 재질, 규격 확인' },
                 { step: '02', title: '검사 계획 수립', desc: 'NDT 기법 선정 및 인력 편성' },
                 { step: '03', title: '현장 방문 & 전처리', desc: '검사면 세척 및 안전 점검' },
-                { step: '04', title: '정밀 비파괴 탐상', desc: 'UT/MT/PT/LT 표준 검사 수행' },
+                { step: '04', title: '정밀 비파괴 탐상', desc: 'UT/PAUT/MT/PT 표준 검사 수행' },
                 { step: '05', title: '결함 분석 & 판정', desc: '기술책임자 정밀 데이터 판독' },
                 { step: '06', title: '공식 성적서 발행', desc: '시험성적서 및 보고서 납품' },
               ].map((p) => (

@@ -64,7 +64,7 @@ export const ContactView: React.FC<ContactViewProps> = ({
             고객지원 및 온라인 견적·상담 문의
           </h1>
           <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-            비파괴검사(NDT), 자율안전검사 위탁, 특허 곤돌라 누설검사 등 궁금하신 사항을 남겨주시면
+            비파괴검사(NDT: UT, PAUT, MT, PT), 자율안전검사 위탁 등 궁금하신 사항을 남겨주시면
             전문 엔지니어가 신속하고 정확하게 맞춤 상담을 진행해 드립니다.
           </p>
         </div>
