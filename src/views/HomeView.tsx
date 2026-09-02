@@ -100,7 +100,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     <Award className="w-4 h-4" />
                     <span className="text-xs font-bold text-slate-200">ISO 9001</span>
                   </div>
-                  <div className="text-xs text-slate-400">품질경영시스템 인증 (KGS 비파괴검사)</div>
+                  <div className="text-xs text-slate-400">품질경영시스템 인증</div>
                 </div>
 
                 <div
@@ -114,7 +114,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     <Shield className="w-4 h-4" />
                     <span className="text-xs font-bold text-slate-200">ISO 45001</span>
                   </div>
-                  <div className="text-xs text-slate-400">안전보건경영시스템 인증 (KGS 비파괴검사)</div>
+                  <div className="text-xs text-slate-400">안전보건경영시스템 인증</div>
                 </div>
 
                 <div
