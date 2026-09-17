@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+User-agent: Yeti
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Daumoa
+Allow: /
+
+# Sitemap location
+Sitemap: https://wisetec.co.kr/sitemap.xml

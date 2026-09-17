@@ -1,6 +1,6 @@
 {
   "name": "(주)와이즈텍 - 자율안전검사 및 비파괴검사 전문기업",
-  "description": "산업안전보건법에 따른 자율안전검사 기관이자 비파괴검사 전문기업 (주)와이즈텍 공식 홈페이지. 한국가스안전공사 ISO 9001/45001 인증 및 곤돌라 고정식 진공상자 누설검사시스템 특허 보유.",
+  "description": "산업안전보건법에 따른 자율안전검사 공인기관이자 비파괴검사 전문기업 (주)와이즈텍. RT, UT, MT, PT, LT 비파괴검사, 크레인·리프트·압력용기 자율안전검사 및 기술시험 서비스.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
