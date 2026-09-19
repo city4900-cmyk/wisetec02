@@ -19,7 +19,7 @@ export const COMPANY_INFO: CompanyInfo = {
   businessItem: '자율안전검사 위탁, 비파괴 기술시험 및 분석업',
   phone: '061-791-0992',
   fax: '061-791-0257',
-  email: 'wisetec@wisetec.co.kr',
+  email: 'wisetec@wisetec.kr',
   workingHours: '평일 08:30 ~ 18:00 (주말/공휴일 긴급 검사 대응 가능)',
   logoUrl: '/로고-배경삭제.png',
   mainServices: [
