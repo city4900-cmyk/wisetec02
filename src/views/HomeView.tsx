@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import { useScrollReveal } from '../components/useScrollReveal';
+import { useHomeSectionScroll } from '../components/useHomeSectionScroll';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   Shield,
   Award,
   Sparkles,
   ArrowRight,
   CheckCircle,
-  FileText,
   Phone,
   Send,
   Wrench,
   Search,
   ExternalLink,
-  ChevronRight,
+  ChevronDown,
   Eye,
-  Zap,
 } from 'lucide-react';
 import {
   NavTab,
@@ -26,540 +26,285 @@ import {
 } from '../types';
 import { COMPANY_INFO, NDT_SERVICES, NOTICES, FAQS } from '../data/companyData';
 import { PatentVisualizer } from '../components/PatentVisualizer';
-import { InquiryForm } from '../components/InquiryForm';
+import { NaverMapPreview } from '../components/NaverMapPreview';
 
 interface HomeViewProps {
   onSelectTab: (tab: NavTab) => void;
   onSelectAboutSubTab: (sub: AboutSubTab) => void;
   onSelectServicesSubTab: (sub: ServicesSubTab) => void;
+  onSelectNdtMethod: (method: string) => void;
   onSelectTechSubTab: (sub: TechSubTab) => void;
   onSelectContactSubTab: (sub: ContactSubTab) => void;
   onOpenCertificateModal: (cert: CertificateItem) => void;
   onOpenNoticeModal: (notice: NoticeItem) => void;
 }
 
+const inspectionMethods = [
+  {
+    id: 'ut',
+    title: 'UT 초음파 (Ultrasonic Testing)',
+    description: '고주파 초음파 펄스를 시험체 내부에 전파시켜 내부 불연속부로부터 반사되는 에코 신호를 분석하여 결함 및 잔여 두께를 정밀 검출합니다.',
+    photo: '/figma-assets/frame190-photo-ut.png',
+    card: '/figma-assets/frame190-card-ut.png',
+  },
+  {
+    id: 'paut',
+    title: 'PAUT 위상배열 초음파 (Phased Array Ultrasonic Testing)',
+    description: '다채널 미세 진동자를 전자적으로 제어하여 빔 각도와 초점을 가변 스캔하며, 결함의 단면 및 입체 형상을 실시간 2D/3D 컬러 영상으로 시각화합니다.',
+    photo: '/figma-assets/frame190-photo-paut.png',
+    card: '/figma-assets/frame190-card-paut.png',
+  },
+  {
+    id: 'mt',
+    title: 'MT 자분 (Magnetic Particle Testing)',
+    description: '강자성체 재질을 자화시켰을 때 결함부에 형성되는 누설 자속에 자분을 도포하여 표면 및 표면 직하의 미세 균열을 육안으로 검출합니다.',
+    photo: '/figma-assets/frame190-photo-mt.png',
+    card: '/figma-assets/frame190-card-mt.png',
+  },
+  {
+    id: 'pt',
+    title: 'PT 침투 (Liquid Penetrant Testing)',
+    description: '모세관 현상을 이용하여 검사 대상물 표면에 열려있는 미세 결함에 침투액을 침투시킨 후 현상제를 뿌려 결함을 확대 지시합니다.',
+    photo: '/figma-assets/frame190-photo-pt.png',
+    card: '/figma-assets/frame190-card-pt.png',
+  },
+] as const;
+
 export const HomeView: React.FC<HomeViewProps> = ({
   onSelectTab,
   onSelectAboutSubTab,
   onSelectServicesSubTab,
+  onSelectNdtMethod,
   onSelectTechSubTab,
   onSelectContactSubTab,
   onOpenCertificateModal,
   onOpenNoticeModal,
 }) => {
-  const [selectedNdtTab, setSelectedNdtTab] = useState<string>('ut');
-  const [activeFaq, setActiveFaq] = useState<number | null>(1);
+  useHomeSectionScroll();
 
-  const currentNdt = NDT_SERVICES.find((s) => s.id === selectedNdtTab) || NDT_SERVICES[0];
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [homeFitScale, setHomeFitScale] = useState<number | null>(null);
+  const [trustStripHeight, setTrustStripHeight] = useState(0);
+  const trustStripRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const strip = trustStripRef.current;
+    if (!strip) return;
+    const measure = () => setTrustStripHeight(strip.getBoundingClientRect().height);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(strip);
+    return () => observer.disconnect();
+  }, []);
+  const [activeInspectionId, setActiveInspectionId] = useState<(typeof inspectionMethods)[number]['id']>('ut');
+  const [hoveredInspectionId, setHoveredInspectionId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fitHeroToViewport = () => {
+      if (window.innerWidth < 1024) {
+        setHomeFitScale(null);
+        return;
+      }
+
+      const headerHeight = document.querySelector('.wisetec-header')?.getBoundingClientRect().height ?? 84;
+      const availableHeight = Math.max(320, window.innerHeight - headerHeight);
+      setHomeFitScale(Math.min(1, window.innerWidth / 1440, availableHeight / 904));
+    };
+
+    fitHeroToViewport();
+    window.addEventListener('resize', fitHeroToViewport);
+    return () => window.removeEventListener('resize', fitHeroToViewport);
+  }, []);
+
+
+
+  const homeMotionRef = useRef<HTMLDivElement>(null);
+  useScrollReveal(homeMotionRef, 'home', '[data-scroll-reveal]:not(.home-hero-reveal)');
+
+  useEffect(() => {
+    const hero = document.querySelector<HTMLElement>('.figma-home-hero');
+    const targets = hero?.querySelectorAll<HTMLElement>('.home-hero-reveal');
+    if (!hero || !targets?.length) return;
+
+    if (!('IntersectionObserver' in window)) {
+      hero.classList.add('home-hero-active');
+      targets.forEach((target) => target.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      hero.classList.toggle('home-hero-active', entry.isIntersecting);
+      targets.forEach((target) => target.classList.toggle('is-visible', entry.isIntersecting));
+    }, { threshold: 0.18 });
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+
 
   return (
-    <div className="space-y-16 sm:space-y-24 pb-16">
-      {/* 1. Hero Banner Section */}
-      <section className="relative overflow-hidden bg-slate-950 text-white pt-12 sm:pt-20 pb-20 sm:pb-28">
-        {/* Background Radial Glow & Grid Pattern */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/40 via-slate-950 to-slate-950"></div>
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:32px_32px] opacity-20"></div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left Col: Main Headlines & CTA */}
-            <div className="lg:col-span-7 space-y-6 text-left">
-              {/* Trust Badge Top */}
-              <div className="inline-flex flex-wrap items-center gap-2 p-1 pr-3 rounded-full bg-slate-900/90 border border-blue-500/30 text-xs font-semibold text-blue-300 shadow-lg">
-                <span className="px-2.5 py-0.5 rounded-full bg-blue-600 text-white font-bold text-[11px]">
-                  기술 신뢰 보증
-                </span>
-                <span>ISO 9001 · 45001 인증 & 특허보유</span>
-              </div>
-
-              {/* Main Slogan */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-[1.2] text-white">
-                자율안전검사 및 비파괴검사 분야의{' '}
-                <span className="bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent">
-                  신뢰할 수 있는 파트너
-                </span>
-                ,<br />
-                (주)와이즈텍
-              </h1>
-
-              {/* Sub Slogan */}
-              <p className="text-base sm:text-lg text-slate-300 font-normal leading-relaxed max-w-2xl">
-                산업안전보건법에 따른 자율안전검사 기관으로서 자율안전검사 위탁부터 비파괴검사까지 정밀하고 안전한 검사 솔루션을 제공합니다.
-              </p>
-
-              {/* 3 Core Highlight Badges */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                <div
-                  onClick={() => {
-                    onSelectTab('about');
-                    onSelectAboutSubTab('overview');
-                  }}
-                  className="p-3.5 rounded-xl bg-slate-900/80 border border-blue-500/30 hover:border-blue-400/60 transition-all cursor-pointer group"
-                >
-                  <div className="flex items-center gap-2 text-blue-400 mb-1">
-                    <Award className="w-4 h-4" />
-                    <span className="text-xs font-bold text-slate-200">ISO 9001</span>
-                  </div>
-                  <div className="text-xs text-slate-400">품질경영시스템 인증</div>
-                </div>
-
-                <div
-                  onClick={() => {
-                    onSelectTab('about');
-                    onSelectAboutSubTab('greeting');
-                  }}
-                  className="p-3.5 rounded-xl bg-slate-900/80 border border-emerald-500/30 hover:border-emerald-400/60 transition-all cursor-pointer group"
-                >
-                  <div className="flex items-center gap-2 text-emerald-400 mb-1">
-                    <Shield className="w-4 h-4" />
-                    <span className="text-xs font-bold text-slate-200">ISO 45001</span>
-                  </div>
-                  <div className="text-xs text-slate-400">안전보건경영시스템 인증</div>
-                </div>
-
-                <div
-                  onClick={() => {
-                    onSelectTab('technology');
-                    onSelectTechSubTab('patent-system');
-                  }}
-                  className="p-3.5 rounded-xl bg-slate-900/80 border border-amber-500/40 hover:border-amber-400/70 transition-all cursor-pointer group"
-                >
-                  <div className="flex items-center gap-2 text-amber-400 mb-1">
-                    <Sparkles className="w-4 h-4" />
-                    <span className="text-xs font-bold text-amber-300">특허 제10-2613687호</span>
-                  </div>
-                  <div className="text-xs text-slate-400">곤돌라 고정식 진공상자 누설검사시스템</div>
-                </div>
-              </div>
-
-              {/* Call to Actions */}
-              <div className="flex flex-wrap items-center gap-4 pt-4">
-                <button
-                  id="hero-inquiry-btn"
-                  onClick={() => {
-                    onSelectTab('contact');
-                    onSelectContactSubTab('inquiry');
-                  }}
-                  className="px-7 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold text-sm shadow-xl shadow-blue-600/30 hover:shadow-blue-600/50 transition-all flex items-center gap-2 active:scale-95"
-                >
-                  <Send className="w-4 h-4" />
-                  <span>온라인 견적 및 기술상담</span>
-                </button>
-
-                <button
-                  id="hero-services-btn"
-                  onClick={() => {
-                    onSelectTab('services');
-                    onSelectServicesSubTab('safety');
-                  }}
-                  className="px-6 py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white font-semibold text-sm border border-slate-700 hover:border-slate-600 transition-all flex items-center gap-2"
-                >
-                  <span>사업분야 둘러보기</span>
-                  <ArrowRight className="w-4 h-4 text-slate-400" />
-                </button>
-              </div>
-            </div>
-
-            {/* Right Col: Interactive Visual Dashboard / Trust Card */}
-            <div className="lg:col-span-5">
-              <div className="relative bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 rounded-2xl border border-slate-800 p-6 sm:p-8 shadow-2xl space-y-6">
-                <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
-                    <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-                      (주)와이즈텍 엔지니어링 센터
-                    </span>
-                  </div>
-                  <span className="text-[11px] font-mono text-blue-400 bg-blue-950/80 px-2 py-0.5 rounded border border-blue-800">
-                    전국 출장 대응
-                  </span>
-                </div>
-
-                {/* Key Overview Metrics */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80">
-                    <span className="text-xs text-slate-400 block">설립 및 업력</span>
-                    <span className="text-xl font-black text-white font-mono">2021.09</span>
-                    <span className="text-[10px] text-emerald-400 block mt-0.5">정식 법인 등록기업</span>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80">
-                    <span className="text-xs text-slate-400 block">자율안전 검사</span>
-                    <span className="text-xl font-black text-emerald-400 font-mono">산업안전보건법</span>
-                    <span className="text-[10px] text-slate-400 block mt-0.5">법정 자율안전검사 위탁</span>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80">
-                    <span className="text-xs text-slate-400 block">비파괴검사</span>
-                    <span className="text-xl font-black text-blue-400 font-mono">비파괴검사</span>
-                    <span className="text-[10px] text-slate-400 block mt-0.5">전문 기술인력보유</span>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80">
-                    <span className="text-xs text-slate-400 block">품질·안전 인증</span>
-                    <span className="text-xl font-black text-amber-400 font-mono">KGS ISO</span>
-                    <span className="text-[10px] text-amber-300 block mt-0.5">9001 / 45001</span>
-                  </div>
-                </div>
-
-                {/* Direct Contact Hotline Bar */}
-                <div className="p-4 rounded-xl bg-gradient-to-r from-blue-900/40 to-slate-900 border border-blue-500/30 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-blue-600 text-white flex items-center justify-center">
-                      <Phone className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-[11px] text-slate-400 block">신속 유선 기술상담</span>
-                      <span className="text-base font-bold text-white font-mono">{COMPANY_INFO.phone}</span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => {
-                      onSelectTab('contact');
-                      onSelectContactSubTab('inquiry');
-                    }}
-                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-colors"
-                  >
-                    문의 접수
-                  </button>
-                </div>
-              </div>
-            </div>
+    <div ref={homeMotionRef} className="home-motion">
+      {/* 1. Figma Home hero — frame 103:582 */}
+      <section
+        className="figma-home-hero snap-start relative min-h-[calc(100svh-60px)] overflow-hidden bg-white backdrop-blur-[5px] lg:h-[904px] lg:min-h-0"
+        style={{
+          '--trust-strip-height': `${trustStripHeight}px`,
+          ...(homeFitScale === null ? {} : { height: `${904 * homeFitScale - trustStripHeight}px` }),
+        } as React.CSSProperties}
+      >
+        <img
+          className="home-hero-backdrop pointer-events-none absolute inset-0 h-full w-full object-cover opacity-20"
+          src="/figma-assets/home-hero-source.png"
+          alt=""
+        />
+        <div aria-hidden="true" className="home-hero-shade pointer-events-none absolute inset-0 bg-black/10" />
+        <div
+          className="relative mx-auto h-full min-h-[calc(100svh-60px)] max-w-[1440px] px-6 pb-6 pt-6 lg:absolute lg:left-1/2 lg:top-0 lg:ml-[-720px] lg:mx-0 lg:w-[1440px] lg:max-w-none lg:min-h-0 lg:px-0 lg:pb-0 lg:pt-0"
+          style={homeFitScale === null ? undefined : { transform: `scale(${homeFitScale})`, transformOrigin: 'top center' }}
+        >
+          <div data-scroll-reveal className="home-hero-reveal relative z-10 flex flex-wrap items-center gap-3 lg:absolute lg:left-[96px] lg:top-[178px]" style={{ '--hero-delay': '80ms' } as React.CSSProperties}>
+            <span className="flex h-[30px] w-[40px] shrink-0 items-center justify-center lg:h-[64px] lg:w-[60px]" aria-label="KCs 인증">
+              <img src="/figma-assets/kcs-logo-transparent.png" alt="KCs 인증" className="h-full w-full object-contain" />
+            </span>
+            <span className="flex h-[30px] items-center rounded-full bg-[#0048ef] px-3 text-[13px] font-bold text-white sm:px-4 sm:text-[15px] lg:h-[36px] lg:px-5 lg:text-[21px]">
+              기술신뢰보증
+            </span>
+            <span className="flex min-h-[30px] max-w-full items-center rounded-full border border-[rgba(0,0,0,0.25)] px-3 py-1 text-[12px] font-semibold leading-tight text-black sm:px-4 sm:text-[14px] lg:h-[36px] lg:min-h-0 lg:w-max lg:whitespace-nowrap lg:px-5 lg:py-0 lg:text-[21px]">
+              ISO 9001/45001 인증 &amp; 특허보유
+            </span>
           </div>
-        </div>
-      </section>
 
-      {/* 2. Core Business Areas (자율안전검사 & 비파괴검사) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold">
-            <Wrench className="w-3.5 h-3.5" />
-            <span>사업분야 (Services)</span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-            전문성과 신뢰를 갖춘 핵심 검사 서비스
-          </h2>
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-            산업안전보건법에 따른 자율안전검사 기관으로서 자율안전검사 위탁과 공인 비파괴검사를 통해 고객사의 무재해 사업장 구축과 시설물 건전성을 완벽히 지원합니다.
+          <h1 data-scroll-reveal className="home-hero-reveal relative z-10 mt-5 break-keep text-[clamp(25px,7vw,34px)] font-bold leading-[1.2] text-black lg:absolute lg:left-[96px] lg:top-[248px] lg:mt-0 lg:break-normal lg:text-[50px] lg:leading-[normal]" style={{ '--hero-delay': '220ms' } as React.CSSProperties}>
+            자율안전검사 및 비파괴검사 분야의<br />
+            <span className="bg-gradient-to-r from-[#0048ef] to-[#9747ff] bg-clip-text text-transparent">신뢰할 수 있는 파트너</span>,<br />
+            <span className="lg:text-[52px]">(주)와이즈텍</span>
+          </h1>
+
+          <p data-scroll-reveal className="home-hero-reveal relative z-10 mt-5 max-w-[878px] text-[14px] font-normal leading-[1.7] text-black sm:text-[18px] lg:absolute lg:left-[96px] lg:top-[488px] lg:mt-0 lg:w-[1248px] lg:max-w-none lg:text-[22px] lg:leading-[1.45]" style={{ '--hero-delay': '360ms' } as React.CSSProperties}>
+            <span className="block lg:whitespace-nowrap">(주)와이즈텍은 산업안전보건법에 따른 자율안전검사기관이자, 과학기술정보통신부 등록 비파괴검사기관입니다.</span>
+            <span className="block lg:whitespace-nowrap">기중기, 이동식 크레인, 고소작업차, 카고크레인 등 건설기계의 법정 안전성 검사와 정밀 비파괴검사(NDT)를 통해 현장의 안전을 완벽히 지켜드립니다.</span>
           </p>
+
+
         </div>
+      </section>
 
-        {/* 2 Major Service Pillars (Safety Inspection First, NDT Second) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {/* Service Pillar 1: 자율안전검사 */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all flex flex-col justify-between relative overflow-hidden group">
-            <div className="space-y-4">
-              <div className="flex justify-between items-start">
-                <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-lg">
-                  SAFE
-                </div>
-                <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
-                  산업안전보건법 위탁
-                </span>
-              </div>
+      <div ref={trustStripRef} data-reveal-group className="home-trust-strip" aria-label="인증 및 검사 기술">
+        <p className="home-trust-intro">현장의 신뢰를 만드는 기술</p>
+        <div className="home-trust-item"><p>ISO <strong>9001</strong></p><span>품질경영시스템</span></div>
+        <div className="home-trust-item"><p>ISO <strong>45001</strong></p><span>안전보건경영시스템</span></div>
+        <div className="home-trust-item home-trust-patent"><p>특허 <strong>제10-2613687호</strong></p><span>곤돌라 고정식 진공상자 누설검사시스템</span></div>
+      </div>
 
-              <div>
-                <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
-                  자율안전검사 (Safety Inspection)
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  근로자의 안전 확보 및 산업재해 예방을 위한 법적 근거에 따른 주기적 성능 검사 위탁
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2">
-                {['크레인/호이스트', '리프트/승강설비', '곤돌라', '압력용기', '프레스/전단기', '롤러/사출기'].map(
-                  (item, idx) => (
-                    <div key={idx} className="p-2.5 rounded-lg bg-emerald-50/50 border border-emerald-100 text-center">
-                      <span className="text-xs font-bold text-slate-800 block">{item}</span>
-                      <span className="text-[10px] text-emerald-700 block">주기적 법정검사</span>
-                    </div>
-                  )
-                )}
-              </div>
-
-              <ul className="space-y-2 text-xs text-slate-600 pt-2">
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>공인 자격 검사원의 정밀 안전진단 및 성적서 발급</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>미검사 시 법적 과태료 처분 사전 예방 및 리스크 관리</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between">
-              <button
-                onClick={() => {
-                  onSelectTab('services');
-                  onSelectServicesSubTab('safety');
-                }}
-                className="text-sm font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1.5"
-              >
-                <span>자율안전검사 대상 및 주기 안내</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* Service Pillar 2: 비파괴검사 */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all flex flex-col justify-between relative overflow-hidden group">
-            <div className="space-y-4">
-              <div className="flex justify-between items-start">
-                <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-black text-lg">
-                  NDT
-                </div>
-                <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 border border-blue-200">
-                  교육과학기술부 등록
-                </span>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
-                  비파괴검사 (Non-Destructive Testing)
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  구조물이나 제품을 파괴하지 않고 내부 및 표면의 결함을 정밀 탐지하는 핵심 기술 서비스
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
-                {NDT_SERVICES.map((s) => (
-                  <div key={s.id} className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-center">
-                    <span className="text-xs font-extrabold text-blue-700 block">{s.code}</span>
-                    <span className="text-[11px] text-slate-600 block truncate">{s.nameKo}</span>
-                  </div>
-                ))}
-              </div>
-
-              <ul className="space-y-2 text-xs text-slate-600 pt-2">
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-blue-600 shrink-0" />
-                  <span>배관, 압력용기, 저장탱크 용접부 결함 정밀 분석</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-blue-600 shrink-0" />
-                  <span>석유화학 플랜트 및 제철설비 잔여 수명 평가</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between">
-              <button
-                onClick={() => {
-                  onSelectTab('services');
-                  onSelectServicesSubTab('ndt');
-                }}
-                className="text-sm font-bold text-blue-700 hover:text-blue-800 flex items-center gap-1.5"
-              >
-                <span>비파괴검사 4대 분야 상세 보기</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
+      <section className="home-refresh-panel home-business-panel" style={{ height: homeFitScale === null ? undefined : `${904 * homeFitScale}px` }}>
+        <div className="home-refresh-panel-inner home-business-refresh" >
+        <div className="home-refresh-heading" data-scroll-reveal><div><h2>현장을 이해하고,<br /><em>안전의 답을 찾습니다.</em></h2></div><p>자율안전검사부터 정밀 비파괴검사까지.<br />현장의 조건에 맞는 검사 솔루션을 제공합니다.</p></div>
+        <div className="home-business-grid">
+          {[
+            { id: 'safety' as const, tone: '#007c53', hover: '자율안전검사 주요 대상 설비 및 법정 검사 주기', title: '자율안전검사', label: 'SAFETY INSPECTION', image: 'frame189-safety.png', copy: '주요 위험 설비의 안전 성능과 건전성을 확인합니다.' },
+            { id: 'construction' as const, tone: '#306395', hover: '건설기계 주요 검사 대상 및 주기 안내', title: '건설기계 안전성 검사', label: 'CONSTRUCTION EQUIPMENT', image: 'construction-crane-reference.png', copy: '구조부부터 작동 성능까지, 현장의 안전을 살핍니다.' },
+            { id: 'ndt' as const, tone: '#0048ef', hover: '비파괴검사 4대 분야 상세 보기', title: '비파괴검사', label: 'NON-DESTRUCTIVE TESTING', image: 'frame189-ndt.jpeg', copy: '손상 없이 내부와 표면의 결함을 정밀하게 진단합니다.' },
+          ].map((service, index) => <button key={service.id} data-scroll-reveal style={{ transitionDelay: `${index * 90}ms`, '--service-tone': service.tone } as React.CSSProperties} onClick={() => onSelectServicesSubTab(service.id)} className="home-business-tile"><div className="home-business-image"><img src={'/figma-assets/' + service.image} alt={service.title + ' 현장'} loading="lazy" /><span>0{index + 1}</span><i><ArrowRight size={23} /></i><span className="home-service-overlay"><strong>{service.hover}</strong><ArrowRight size={40} strokeWidth={1} /></span></div><span className="home-kicker">{service.label}</span><h3>{service.title}</h3><p>{service.copy}</p></button>)}
         </div>
+      </div>
+      </section>
 
-        {/* Interactive NDT Method Deep-Dive Tab */}
-        <div className="bg-slate-50 rounded-2xl border border-slate-200 p-6 sm:p-8">
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-slate-200 pb-4">
-            <div>
-              <h4 className="text-base font-bold text-slate-900">비파괴검사 4대 분야 기법별 특성</h4>
-              <p className="text-xs text-slate-500">원하시는 검사 공법을 선택하여 원리와 적용분야를 확인하세요.</p>
-            </div>
-
-            <div className="flex flex-wrap gap-1.5">
-              {NDT_SERVICES.map((item) => (
+      {/* Component 28 / Frame 190: NDT technique details */}
+      {(() => {
+        const activeInspection = inspectionMethods.find((method) => method.id === (hoveredInspectionId ?? activeInspectionId)) ?? inspectionMethods[0];
+        return (
+          <section className="snap-start relative overflow-hidden bg-white lg:h-[903px]" style={homeFitScale === null ? undefined : { height: `${903 * homeFitScale}px` }}>
+            <div
+              className="relative mx-auto hidden h-[903px] w-[1440px] max-w-none lg:block lg:absolute lg:left-1/2 lg:top-0 lg:ml-[-720px]"
+              style={homeFitScale === null ? undefined : { transform: `scale(${homeFitScale})`, transformOrigin: 'top center' }}
+            >
+              <img key={`photo-${activeInspection.id}`} className="inspection-photo-enter pointer-events-none absolute left-[600px] top-0 h-[683px] w-[840px] object-fill" src={activeInspection.photo} alt="" />
+              <h2 data-scroll-reveal className="absolute left-0 top-[68px] w-[500px] whitespace-nowrap text-[35px] font-bold leading-[normal] text-black">비파괴검사 4대 분야 기법별 특성</h2>
+              <h3 key={`title-${activeInspection.id}`} className="inspection-copy-enter absolute left-0 top-[168px] w-[500px] text-[35px] font-bold leading-[normal] text-black">{activeInspection.title}</h3>
+              <p key={`description-${activeInspection.id}`} className="inspection-copy-enter inspection-description-enter absolute left-0 top-[405px] w-[504px] text-[23px] font-medium leading-[normal] text-[rgba(44,44,44,0.8)]">{activeInspection.description}</p>
+              {inspectionMethods.map((method, index) => (
                 <button
-                  key={item.id}
-                  onClick={() => setSelectedNdtTab(item.id)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    selectedNdtTab === item.id
-                      ? 'bg-blue-600 text-white shadow-sm'
-                      : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
-                  }`}
+                  key={method.id}
+                  type="button"
+                  aria-label={`${method.title} 상세 보기`}
+                  aria-pressed={activeInspectionId === method.id}
+                  onMouseEnter={() => {
+                    setHoveredInspectionId(method.id);
+                    setActiveInspectionId(method.id);
+                  }}
+                  onMouseLeave={() => setHoveredInspectionId(null)}
+                  onFocus={() => setHoveredInspectionId(method.id)}
+                  onBlur={() => setHoveredInspectionId(null)}
+                  onClick={() => onSelectNdtMethod(method.id)}
+                  data-scroll-reveal
+                  style={{ left: `${index * 370}px`, transitionDelay: `${index * 70}ms` }}
+                  className="absolute top-[628px] h-[240px] w-[330px] cursor-pointer text-white"
                 >
-                  {item.code} ({item.nameKo})
+                  <img className="pointer-events-none absolute inset-0 h-full w-full object-cover" src={method.card} alt="" />
+                  <span className={`absolute inset-0 bg-[rgba(0,72,239,0.9)] transition-opacity duration-300 ease-in-out motion-reduce:transition-none ${hoveredInspectionId === method.id ? 'opacity-100' : 'pointer-events-none opacity-0'}`} />
+                  <span className={`absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center whitespace-nowrap transition-opacity duration-300 ease-in-out motion-reduce:transition-none ${hoveredInspectionId === method.id ? 'opacity-100' : 'pointer-events-none opacity-0'}`}>
+                    <span className="text-[40px] font-bold leading-[48px]">read more</span>
+                    <svg className="mt-3 h-[10px] w-[122px]" viewBox="0 0 122 10" fill="none" aria-hidden="true">
+                      <path d="M1 5H119M119 5L114 1M119 5L114 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
                 </button>
               ))}
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-            <div className="lg:col-span-2 space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="text-xl font-black text-blue-700 font-mono">{currentNdt.code}</span>
-                <h5 className="text-lg font-bold text-slate-900">{currentNdt.nameKo} ({currentNdt.nameEn})</h5>
-              </div>
-
-              <p className="text-sm text-slate-700 leading-relaxed">{currentNdt.summary}</p>
-
-              <div className="p-4 bg-white rounded-xl border border-slate-200 text-xs text-slate-600 space-y-2">
-                <span className="font-bold text-slate-900 block">검사 원리 (Principle):</span>
-                <p className="leading-relaxed">{currentNdt.principle}</p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                <div className="p-3 bg-white rounded-xl border border-slate-200">
-                  <span className="text-xs font-bold text-slate-900 block mb-1.5">주요 적용 분야</span>
-                  <ul className="space-y-1 text-xs text-slate-600">
-                    {currentNdt.targetApplications.slice(0, 3).map((app, i) => (
-                      <li key={i} className="flex items-start gap-1.5">
-                        <span className="text-blue-500 shrink-0">•</span>
-                        <span>{app}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="p-3 bg-white rounded-xl border border-slate-200">
-                  <span className="text-xs font-bold text-slate-900 block mb-1.5">기술적 강점</span>
-                  <ul className="space-y-1 text-xs text-slate-600">
-                    {currentNdt.advantages.slice(0, 3).map((adv, i) => (
-                      <li key={i} className="flex items-start gap-1.5">
-                        <span className="text-emerald-500 shrink-0">✓</span>
-                        <span>{adv}</span>
-                      </li>
-                    ))}
-                  </ul>
+            <div className="px-5 py-10 lg:hidden">
+              <h2 data-scroll-reveal className="text-[24px] font-bold leading-tight text-black">비파괴검사 4대 분야 기법별 특성</h2>
+              <div data-scroll-reveal className="mt-6 overflow-hidden rounded-xl">
+                <div className="relative h-[230px] bg-white">
+                  <img key={`mobile-photo-${activeInspection.id}`} className="inspection-photo-enter absolute inset-0 h-full w-full object-cover" src={activeInspection.photo} alt="" />
                 </div>
               </div>
-            </div>
-
-            {/* Equipment Box */}
-            <div className="bg-white rounded-xl border border-slate-200 p-5 space-y-3">
-              <div className="flex items-center gap-2 text-slate-900 font-bold text-sm">
-                <Wrench className="w-4 h-4 text-blue-600" />
-                <span>주요 보유 검사장비</span>
-              </div>
-              <ul className="space-y-2 text-xs text-slate-600">
-                {currentNdt.equipment.map((eq, i) => (
-                  <li key={i} className="p-2 rounded-lg bg-slate-50 border border-slate-200 font-medium">
-                    {eq}
-                  </li>
-                ))}
-              </ul>
-
-              <button
-                onClick={() => {
-                  onSelectTab('contact');
-                  onSelectContactSubTab('inquiry');
-                }}
-                className="w-full mt-3 py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
-              >
-                <span>{currentNdt.code} 검사 견적 문의</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Notices & FAQ Quick Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left: Latest Notices */}
-          <div className="lg:col-span-6 space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <FileText className="w-4 h-4 text-blue-600" />
-                <span>공지사항 및 소식</span>
-              </h3>
-              <button
-                onClick={() => {
-                  onSelectTab('contact');
-                  onSelectContactSubTab('notice');
-                }}
-                className="text-xs font-semibold text-slate-500 hover:text-blue-600 flex items-center gap-1"
-              >
-                <span>전체보기</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-
-            <div className="space-y-2.5">
-              {NOTICES.slice(0, 3).map((notice) => (
-                <div
-                  key={notice.id}
-                  onClick={() => onOpenNoticeModal(notice)}
-                  className="p-4 rounded-xl bg-white border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all cursor-pointer group"
-                >
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                        notice.isImportant
-                          ? 'bg-rose-100 text-rose-700 border border-rose-200'
-                          : 'bg-blue-50 text-blue-700 border border-blue-200'
-                      }`}
-                    >
-                      {notice.category}
-                    </span>
-                    <span className="text-xs text-slate-400 font-mono">{notice.date}</span>
-                  </div>
-                  <h4 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
-                    {notice.title}
-                  </h4>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right: FAQ Accordion */}
-          <div className="lg:col-span-6 space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <Zap className="w-4 h-4 text-amber-500" />
-                <span>자주 묻는 질문 (FAQ)</span>
-              </h3>
-              <button
-                onClick={() => {
-                  onSelectTab('contact');
-                  onSelectContactSubTab('faq');
-                }}
-                className="text-xs font-semibold text-slate-500 hover:text-blue-600 flex items-center gap-1"
-              >
-                <span>더보기</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-
-            <div className="space-y-2.5">
-              {FAQS.slice(0, 3).map((faq) => {
-                const isOpen = activeFaq === faq.id;
-                return (
-                  <div
-                    key={faq.id}
-                    className="bg-white rounded-xl border border-slate-200 overflow-hidden transition-all"
+              <h3 key={`mobile-title-${activeInspection.id}`} className="inspection-copy-enter mt-5 text-[23px] font-bold leading-tight text-black">{activeInspection.title}</h3>
+              <p key={`mobile-description-${activeInspection.id}`} className="inspection-copy-enter inspection-description-enter mt-3 text-[14px] font-medium leading-relaxed text-[rgba(44,44,44,0.8)]">{activeInspection.description}</p>
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                {inspectionMethods.map((method) => (
+                  <button
+                    key={method.id}
+                    type="button"
+                    aria-label={`${method.title} 상세 보기`}
+                    aria-pressed={activeInspectionId === method.id}
+                    onClick={() => onSelectNdtMethod(method.id)}
+                    onMouseEnter={() => {
+                      setHoveredInspectionId(method.id);
+                      setActiveInspectionId(method.id);
+                    }}
+                    onMouseLeave={() => setHoveredInspectionId(null)}
+                    onFocus={() => setHoveredInspectionId(method.id)}
+                    onBlur={() => setHoveredInspectionId(null)}
+                    data-scroll-reveal
+                    style={{ transitionDelay: `${method.id === 'ut' ? 0 : method.id === 'paut' ? 70 : method.id === 'mt' ? 140 : 210}ms` }}
+                    className="relative aspect-[330/240] overflow-hidden rounded-sm"
                   >
-                    <button
-                      onClick={() => setActiveFaq(isOpen ? null : faq.id)}
-                      className="w-full p-3.5 text-left text-xs sm:text-sm font-bold text-slate-800 hover:text-blue-600 flex justify-between items-center gap-2"
-                    >
-                      <span>Q. {faq.question}</span>
-                      <ChevronRight
-                        className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${
-                          isOpen ? 'rotate-90 text-blue-600' : ''
-                        }`}
-                      />
-                    </button>
-                    {isOpen && (
-                      <div className="p-3.5 bg-slate-50 border-t border-slate-100 text-xs text-slate-600 leading-relaxed">
-                        {faq.answer}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+                    <img className="absolute inset-0 h-full w-full object-cover" src={method.card} alt="" />
+                    <span className={`absolute inset-0 flex items-center justify-center bg-[rgba(0,72,239,0.9)] text-[20px] font-bold text-white transition-opacity duration-300 ease-in-out motion-reduce:transition-none ${hoveredInspectionId === method.id ? 'opacity-100' : 'pointer-events-none opacity-0'}`}>read more</span>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          </section>
+        );
+      })()}
+
+      <section className="home-refresh-panel home-support-panel" style={{ height: homeFitScale === null ? undefined : `${904 * homeFitScale}px` }}>
+        <div className="home-refresh-panel-inner home-support-refresh" >
+        <div className="home-refresh-heading" data-scroll-reveal><div><h2>와이즈텍의 새로운 소식과<br /><em>궁금한 이야기를 만나보세요.</em></h2></div></div>
+        <div className="home-support-columns">
+          <div data-scroll-reveal><div className="home-support-title"><h3>와이즈텍 소식</h3><button onClick={() => onSelectContactSubTab('notice')}>전체보기 <ArrowRight size={16} /></button></div><div data-reveal-group className="home-news-rows">{NOTICES.slice(0, 4).map(notice => <button key={notice.id} onClick={() => onOpenNoticeModal(notice)}><time>{notice.date}</time><span>{notice.title}</span><ArrowRight size={18} /></button>)}</div></div>
+          <div data-scroll-reveal><div className="home-support-title"><h3>자주 묻는 질문</h3><button onClick={() => onSelectContactSubTab('faq')}>전체보기 <ArrowRight size={16} /></button></div><div data-reveal-group className="home-faq-rows">{[FAQS[1], FAQS[2], FAQS[0]].map(faq => <div key={faq.id}><button aria-expanded={activeFaq === faq.id} aria-controls={`home-faq-${faq.id}`} onClick={() => setActiveFaq(activeFaq === faq.id ? null : faq.id)}><span className="home-faq-q">Q.</span><span>{faq.question}</span><ChevronDown size={18} className={activeFaq === faq.id ? 'rotate-180' : ''} /></button>{activeFaq === faq.id && <p id={`home-faq-${faq.id}`}>{faq.answer}</p>}</div>)}</div></div>
         </div>
+      </div>
+      </section>
+      <section className="home-refresh-panel home-contact-panel" style={{ height: homeFitScale === null ? undefined : `${904 * homeFitScale}px` }}>
+        <div className="home-refresh-panel-inner home-contact-refresh" >
+        <div className="home-contact-copy" data-scroll-reveal><p>검사 대상과 현장 조건을 알려주시면<br />필요한 검사부터 함께 확인하겠습니다.</p><div className="home-contact-details"><a href={`tel:${COMPANY_INFO.phone}`}>{COMPANY_INFO.phone}</a><a href={`mailto:${COMPANY_INFO.email}`}>{COMPANY_INFO.email}</a><span>평일 08:30–18:00 · 주말/공휴일 긴급 검사 대응 가능</span></div></div>
+        <div className="home-contact-map" data-scroll-reveal><div className="home-map-frame"><NaverMapPreview /></div><div className="home-map-caption"><span>OUR OFFICE</span><p>전라남도 광양시 동광길 33, 2층</p></div></div>
+      </div>
       </section>
 
-      {/* 6. Online Inquiry Form Section on Home (Prompt Recommendation) */}
-      <section id="home-inquiry-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <InquiryForm initialServiceCategory="ndt" />
-      </section>
     </div>
   );
 };

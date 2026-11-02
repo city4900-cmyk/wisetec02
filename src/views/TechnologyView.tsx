@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Sparkles,
   Shield,
@@ -16,8 +16,10 @@ import {
 import { TechSubTab, NavTab, ContactSubTab, CertificateItem } from '../types';
 import { CERTIFICATES } from '../data/companyData';
 import { PatentVisualizer } from '../components/PatentVisualizer';
+import { useScrollReveal } from '../components/useScrollReveal';
 
 interface TechnologyViewProps {
+  onSubTabChange?: (sub: TechSubTab) => void;
   initialSubTab?: TechSubTab;
   onSelectTab: (tab: NavTab) => void;
   onSelectContactSubTab: (sub: ContactSubTab) => void;
@@ -26,14 +28,18 @@ interface TechnologyViewProps {
 
 export const TechnologyView: React.FC<TechnologyViewProps> = ({
   initialSubTab = 'patent-system',
+  onSubTabChange,
   onSelectTab,
   onSelectContactSubTab,
   onOpenCertificateModal,
 }) => {
+  const contentRef = useRef<HTMLDivElement>(null);
+  useScrollReveal(contentRef, initialSubTab, ':scope > div');
+
   const patentCert = CERTIFICATES.find((c) => c.category === 'patent');
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10">
+    <div ref={contentRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10">
       {/* Technology Hero Banner */}
       <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 rounded-2xl p-8 sm:p-12 text-white text-left relative overflow-hidden shadow-xl">
         <div className="relative z-10 max-w-3xl space-y-3">

@@ -1,359 +1,280 @@
-import React, { useState } from 'react';
-import {
-  Wrench,
-  Shield,
-  CheckCircle,
-  FileCheck,
-  ArrowRight,
-  Sparkles,
-  AlertTriangle,
-  Layers,
-  Send,
-} from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { InspectionProcess, ServiceStrengths } from '../components/ServiceContent';
 import { ServicesSubTab, NavTab, ContactSubTab } from '../types';
 import { NDT_SERVICES, SAFETY_INSPECTION_ITEMS } from '../data/companyData';
+import { SiteSection } from '../components/SectionSwitcher';
+import { SectionNavigation } from '../components/SectionNavigation';
+import { ConstructionInspection } from '../components/ConstructionInspection';
+import { SectionHero } from '../components/SectionHero';
+import { useScrollReveal } from '../components/useScrollReveal';
 
 interface ServicesViewProps {
+  onSubTabChange?: (sub: ServicesSubTab) => void;
   initialSubTab?: ServicesSubTab;
+  initialNdtMethod?: string;
+  scrollToNdtDetails?: boolean;
   onSelectTab: (tab: NavTab) => void;
   onSelectContactSubTab: (sub: ContactSubTab) => void;
+  onSelectSection?: (section: SiteSection) => void;
 }
 
 export const ServicesView: React.FC<ServicesViewProps> = ({
   initialSubTab = 'safety',
+  onSubTabChange,
+  initialNdtMethod = 'ut',
+  scrollToNdtDetails = false,
   onSelectTab,
   onSelectContactSubTab,
+  onSelectSection,
 }) => {
+  const reduceMotion = useReducedMotion();
+  const servicesRef = useRef<HTMLDivElement>(null);
   const [activeSubTab, setActiveSubTab] = useState<ServicesSubTab>(initialSubTab);
-  const [selectedNdtDetail, setSelectedNdtDetail] = useState<string>('ut');
+  const [selectedNdtDetail, setSelectedNdtDetail] = useState<string>(initialNdtMethod);
+
+  useScrollReveal(servicesRef, activeSubTab);
+
+  useEffect(() => setActiveSubTab(initialSubTab), [initialSubTab]);
+  useEffect(() => setSelectedNdtDetail(initialNdtMethod), [initialNdtMethod]);
+  useEffect(() => {
+    if (!scrollToNdtDetails) return;
+    const frame = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.getElementById('ndt-technique-details')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [scrollToNdtDetails]);
 
   const selectedNdt = NDT_SERVICES.find((s) => s.id === selectedNdtDetail) || NDT_SERVICES[0];
+  const ndtCardCopy: Record<string, { principle: string; applications: string[]; strengths: string[] }> = {
+    ut: {
+      principle: '압전소자로 0.5~15MHz 고주파 음파를 재료에 주입한 뒤, 내부 결함이나 밑면에서 반사되는 에코 신호의 전파 시간과 진폭을 분석해 결함의 위치·크기 및 잔여 두께를 정밀 측정합니다.',
+      applications: ['후판·단조재 및 배관 잔여 두께 측정 (Corrosion Mapping)', '압력용기 및 배관 용접부 내부 균열·용융 불량 검사', '샤프트·롤러·회전기계 축의 피로 균열 검사'],
+      strengths: ['방사선 피폭 위험 없이 현장에서 즉시 검사', '두꺼운 부재 내부의 깊은 결함까지 검출', 'A-Scan으로 결함 깊이와 위치를 바로 확인'],
+    },
+    paut: {
+      principle: '다채널 탐촉자의 시간차를 제어해 초음파 빔의 각도와 초점을 조절하고, 용접부 단면을 영상으로 분석해 결함의 위치와 크기를 확인합니다.',
+      applications: ['고온·고압 배관 및 플랜트 용접부 검사', '방사선 위험 없이 수행하는 RT 대체 검사', '플랜지·노즐·엘보 등 복잡한 형상 검사'],
+      strengths: ['한 번의 스캔으로 넓은 범위를 검사', '결함을 2D·3D 영상으로 확인', '데이터를 디지털로 저장해 판독·비교 가능'],
+    },
+    mt: {
+      principle: '강자성체를 자화한 뒤 자분을 도포합니다. 표면이나 표면 가까이의 균열에서 새어 나오는 자속에 자분이 모여 결함을 보여줍니다.',
+      applications: ['탄소강·저합금강 용접부 표면 균열 검사', '크레인 및 리프팅 구조물 피로 균열 검사', '단조품·주강품의 표면 결함 검사'],
+      strengths: ['미세한 표면 균열도 쉽게 확인', '검사 속도가 빠르고 현장 적용이 간편', '형광 자분으로 높은 검출 감도 확보'],
+    },
+    pt: {
+      principle: '표면에 침투액을 도포해 열린 결함에 스며들게 한 뒤, 현상제를 사용해 침투액을 드러내고 미세 균열을 확인합니다.',
+      applications: ['스테인리스강·알루미늄 등 비철금속 용접부', '세라믹·플라스틱 등 비다공성 재료 표면', '터빈 블레이드·밸브·펌프의 미세 균열 검사'],
+      strengths: ['비자성체와 다양한 재료에 적용 가능', '복잡한 형상도 넓은 면적을 한 번에 검사', '별도 전원 없이 현장에서 바로 수행'],
+    },
+  };
+  const selectedNdtCopy = ndtCardCopy[selectedNdt.id];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10">
-      {/* Services Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 rounded-2xl p-8 sm:p-12 text-white text-left relative overflow-hidden shadow-xl">
-        <div className="relative z-10 max-w-3xl space-y-3">
-          <span className="text-xs font-bold text-blue-400 uppercase tracking-widest block">
-            Services & Solutions
-          </span>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight">
-            산업 현장의 안전과 품질을 검증하는 전문 검사 솔루션
-          </h1>
-          <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-            산업안전보건법에 따른 자율안전검사 기관으로서 법정 자율안전검사 위탁과 구조물의 결함을 정밀 판독하는 비파괴검사를 통해 무재해 안전 현장을 완성합니다.
-          </p>
-        </div>
-      </div>
+    <div ref={servicesRef} className="inner-refresh services-content w-full bg-white font-sans">
+      <SectionHero
+        title="사업분야"
+        subtitle="산업 현장의 안전과 품질을 검증하는 전문 검사 솔루션"
+        backgroundImage="/figma-assets/business-hero-frame21.png"
+        backgroundSize="cover"
+        backgroundPosition="center 39%"
+      />
 
       {/* Sub-tab Navigation */}
-      <div className="flex border-b border-slate-200 overflow-x-auto scrollbar-none gap-2">
-        <button
-          onClick={() => setActiveSubTab('safety')}
-          className={`pb-4 px-4 text-sm font-bold border-b-2 whitespace-nowrap transition-all flex items-center gap-2 ${
-            activeSubTab === 'safety'
-              ? 'border-emerald-600 text-emerald-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
-          }`}
-        >
-          <Shield className="w-4 h-4" />
-          <span>자율안전검사 (Safety Inspection)</span>
-        </button>
+      <SectionNavigation
+        section="services"
+        items={[{ id: 'safety', label: '자율안전검사' }, { id: 'construction', label: '건설기계 안전성 검사' }, { id: 'ndt', label: '비파괴검사' }]}
+        active={activeSubTab}
+        onChange={(sub) => onSubTabChange ? onSubTabChange(sub) : setActiveSubTab(sub)}
+        onSelectSection={onSelectSection}
+      />
 
-        <button
-          onClick={() => setActiveSubTab('ndt')}
-          className={`pb-4 px-4 text-sm font-bold border-b-2 whitespace-nowrap transition-all flex items-center gap-2 ${
-            activeSubTab === 'ndt'
-              ? 'border-blue-600 text-blue-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
-          }`}
-        >
-          <Wrench className="w-4 h-4" />
-          <span>비파괴검사 (NDT Services)</span>
-        </button>
-      </div>
+      {activeSubTab === 'construction' && <ConstructionInspection />}
 
       {/* 1. Safety Inspection Tab (자율안전검사) */}
       {activeSubTab === 'safety' && (
-        <div className="space-y-12 animate-in fade-in duration-200">
-          {/* Safety Overview Bar */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-6 mb-6">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full">
-                    산업안전보건법에 따른 자율안전검사 기관
-                  </span>
-                  <span className="text-xs font-bold bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-full">
-                    법정 위탁 검사
-                  </span>
-                </div>
-                <h2 className="text-2xl font-black text-slate-900">
-                  자율안전검사 위탁 (Safety Inspection)
-                </h2>
-              </div>
-
-              <button
-                onClick={() => {
-                  onSelectTab('contact');
-                  onSelectContactSubTab('inquiry');
-                }}
-                className="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all shadow-md shrink-0 flex items-center gap-2"
-              >
-                <Send className="w-4 h-4" />
-                <span>자율안전검사 상담 및 위탁 신청</span>
-              </button>
+        <div >
+          <section data-reveal-group className="service-introduction border-b border-[#d9d9d9] px-[5.6%]">
+            <div className="mb-4 flex flex-wrap items-center gap-3">
+              <img src="/figma-assets/kcs-logo-transparent.png" alt="KCs 인증" className="h-[39px] w-[37px] shrink-0 object-contain" />
+              <span className="rounded-full bg-[#007c53] px-5 py-1 text-[12px] font-bold text-white sm:text-[14px]">
+                산업안전보건법에 따른 자율안전검사 기관
+              </span>
+              <span className="rounded-full border border-[#cbcbcb] px-5 py-1 text-[12px] font-semibold text-black sm:text-[14px]">
+                법정 검사
+              </span>
             </div>
-
-            <div className="space-y-4 text-sm text-slate-700 leading-relaxed max-w-4xl">
+            <h2 className="mb-6 text-[24px] font-bold text-black sm:text-[28px]">
+              자율안전검사 (Safety Inspection)
+            </h2>
+            <div className="w-full space-y-4 text-[15px] leading-[1.55] text-[rgba(44,44,44,0.8)]">
               <p>
-                <strong>산업안전보건법(자율안전검사 프로그램 등)</strong>에 따라 유해하거나 위험한 기계·기구 및 설비를 사용하는 사업주는 안전인증 기준을 충족하는지 정기적으로 검사해야 합니다.
+                산업안전보건법(자율안전검사 프로그램 등)에 따라 유해하거나 위험한 기계·기구 및 설비를 사용하는 사업주는 안전인증 기준을 충족하는지 정기적으로 검사해야 합니다.
               </p>
               <p>
                 (주)와이즈텍은 법적 자격을 갖춘 전문 검사원을 통해 크레인, 리프트, 곤돌라, 압력용기, 프레스 등 사업장 내 주요 위험 설비에 대한 안전 성능 검사를 대행하여 작업장 무재해 달성과 법적 리스크를 사전에 완벽히 차단합니다.
               </p>
             </div>
-          </div>
+          </section>
 
-          {/* Legal Target Equipment & Cycles Table */}
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden space-y-4">
-            <div className="p-6 bg-slate-50 border-b border-slate-200">
-              <h3 className="text-lg font-bold text-slate-900">
-                자율안전검사 주요 대상 설비 및 법정 검사 주기
-              </h3>
-              <p className="text-xs text-slate-500">
-                정기 검사 주기를 확인하여 법적 과태료 처분을 사전에 방지하시기 바랍니다.
-              </p>
-            </div>
-
-            <div className="p-6 overflow-x-auto">
-              <table className="w-full text-left text-xs sm:text-sm border-collapse">
+          <section data-reveal-group className="px-[5.6%] pb-12 pt-14 sm:pb-16">
+            <h3 className="content-section-heading mb-10 font-bold">
+              자율안전검사 주요 대상 설비 및 법정 검사 주기
+            </h3>
+            <p className="mobile-table-hint">표를 좌우로 밀어 전체 내용을 확인하세요.</p>
+            <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="자율안전검사 대상 및 검사 주기 표">
+              <table className="mx-auto w-full min-w-[710px] table-fixed border-collapse text-left sm:w-[calc(100%-50px)]">
+                <colgroup><col className="w-[29.7%]" /><col className="w-[35.15%]" /><col className="w-[35.15%]" /></colgroup>
                 <thead>
-                  <tr className="bg-slate-100 text-slate-800 border-b border-slate-300">
-                    <th className="p-3.5 font-bold w-1/4">대상 기계·기구</th>
-                    <th className="p-3.5 font-bold w-1/3">법정 검사 주기</th>
-                    <th className="p-3.5 font-bold">주요 검사 항목 및 범위</th>
+                  <tr className="border-b border-[#d9d9d9] text-[15px] font-semibold text-black sm:text-[17px]">
+                    <th className="h-[53px] px-3">대상 기계·기구</th>
+                    <th className="h-[53px] px-3">법정 검사 주기</th>
+                    <th className="h-[53px] px-3">주요 검사 항목 및 범위</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200">
+                <tbody>
                   {SAFETY_INSPECTION_ITEMS.map((item) => (
-                    <tr key={item.id} className="hover:bg-slate-50">
-                      <td className="p-3.5 font-bold text-slate-900">{item.targetEquipment}</td>
-                      <td className="p-3.5 text-emerald-800 font-semibold">{item.legalCycle}</td>
-                      <td className="p-3.5 text-slate-600">{item.inspectionScope}</td>
+                    <tr key={item.id} className="border-b border-[#d9d9d9] text-[13px] leading-[1.45] text-black sm:text-[15px]">
+                      <td className="min-h-[60px] px-3 py-3 align-middle">{item.targetEquipment}</td>
+                      <td className="px-3 py-3 align-middle">{item.legalCycle}</td>
+                      <td className="px-3 py-3 align-middle">{item.inspectionScope}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          </div>
 
-          {/* Why Entrust with WISETEC? */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-2">
-              <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold mb-3">
-                01
-              </div>
-              <h4 className="font-bold text-slate-900 text-base">NDT 정밀 기술 결합</h4>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                단순 육안 점검을 넘어 초음파 두께 측정 및 비파괴 용접부 검사를 함께 결합하여 기계 내부 잔여 수명과 피로 균열까지 정밀 진단합니다.
-              </p>
-            </div>
-
-            <div className="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-2">
-              <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold mb-3">
-                02
-              </div>
-              <h4 className="font-bold text-slate-900 text-base">신속한 일정 및 전국 출장</h4>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                공정 가동 중단(Shut-down) 시간을 최소화하기 위해 주말 및 야간 맞춤형 검사 스케줄 조율과 신속한 성적서 발송을 지원합니다.
-              </p>
-            </div>
-
-            <div className="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-2">
-              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold mb-3">
-                03
-              </div>
-              <h4 className="font-bold text-slate-900 text-base">중대재해처벌법 대비 컨설팅</h4>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                기계적 결함 발견 시 개선 조치 보고서와 함께 사업장의 안전보건 관리체계 구축을 위한 실질적인 안전 가이드를 제공합니다.
-              </p>
-            </div>
-          </div>
+          </section>
+          <ServiceStrengths items={[
+            { title: '정밀한 검사', text: <><strong>초음파 두께 측정과 비파괴 용접부 검사</strong>를 결합해, 육안으로 확인하기 어려운 내부 상태와 피로 균열까지 진단합니다.</> },
+            { title: '유연한 검사 일정', text: <>공정 중단 부담을 줄이도록 <strong>주말·야간 일정을 조율</strong>합니다. 전국 출장 검사와 신속한 성적서 발송을 지원합니다.</> },
+            { title: '검사 후 안전관리', text: <>결함 발견 시 <strong>개선 조치 보고서와 안전 가이드</strong>를 제공합니다. 검사 결과가 현장의 안전관리로 이어지도록 돕습니다.</> },
+          ]} />
         </div>
       )}
 
       {/* 2. NDT Tab */}
       {activeSubTab === 'ndt' && (
-        <div className="space-y-12 animate-in fade-in duration-200">
-          {/* NDT Overview Bar */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-6 mb-6">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full">
-                    교육과학기술부 등록업체
-                  </span>
-                  <span className="text-xs font-bold bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-full">
-                    ISO 9001/45001 인증
-                  </span>
-                </div>
-                <h2 className="text-2xl font-black text-slate-900">
-                  비파괴검사 (Non-Destructive Testing)
-                </h2>
+        <div >
+          <section data-reveal-group className="service-introduction border-b border-[#d9d9d9] px-[5.6%]">
+            <div className="mb-5 flex flex-wrap items-center gap-3">
+              <img src="/figma-assets/kgs-quality-assurance.png" alt="한국가스안전공사 품질보증" className="h-10 w-12 shrink-0 object-contain" />
+              <span className="rounded-full bg-[#eef2f6] px-5 py-1 text-[12px] font-bold text-[#29445f] sm:text-[14px]">
+                과학기술정보통신부 등록 업체
+              </span>
+              <span className="rounded-full border border-[#cbcbcb] px-5 py-1 text-[12px] font-medium text-black sm:text-[14px]">
+                KGS 인증 ISO 9001 / 45001
+              </span>
+            </div>
+            <h2 className="mb-5 text-[24px] font-bold text-black sm:text-[28px]">
+              비파괴검사 (Non-Destructive Testing)
+            </h2>
+            <div className="max-w-[1278px] space-y-[15px] text-[15px] leading-[1.65] text-[#333]">
+              <p>
+                비파괴검사란 구조물이나 부품, 소재를 손상시키거나 파괴하지 않고 물리적 현상(초음파 음향 전파, 위상배열 전자 빔 집속, 자속 누설, 모세관 침투 등)을 응용하여 내부 및 표면의 결함 여부와 건전성을 판정하는 공인 정밀 기술 서비스입니다.
+              </p>
+              <p>
+                (주)와이즈텍은 최고의 숙련 기술자와 첨단 검사장비를 통해 신뢰할 수 있는 성적서를 제공합니다.
+              </p>
+            </div>
+          </section>
+
+          <section data-reveal-group id="ndt-technique-details" className="scroll-mt-[84px] px-[5.6%] pb-16 pt-12 sm:pt-[64px]">
+            <h3 className="content-section-heading mb-8 font-bold">
+              NDT 4대 공인 검사 영역 및 기술 소개
+            </h3>
+
+            <div className="ndt-detail-panel relative mx-auto max-w-[1310px] bg-[#f0f7ff] px-4 pb-5 pt-4 sm:px-6 sm:pb-6 lg:min-h-[540px] lg:px-[35px] lg:pb-8 lg:pt-0">
+              <div className="relative z-10 ml-auto flex w-fit overflow-hidden lg:absolute lg:right-[76px] lg:top-0">
+                {NDT_SERVICES.map((method) => {
+                  const isSelected = selectedNdtDetail === method.id;
+                  return (
+                    <button
+                      key={method.id}
+                      type="button"
+                      aria-pressed={isSelected}
+                      onClick={() => setSelectedNdtDetail(method.id)}
+                      className={`relative inline-flex w-[58px] items-center justify-center border-0 font-medium transition-colors sm:w-[75px] ${
+                        isSelected
+                          ? 'h-[46px] bg-[#0048ef] text-[16px] font-bold text-white sm:h-[60px] sm:text-[21px]'
+                          : '-top-[10px] h-[51px] bg-white text-[13px] text-black hover:bg-blue-50 sm:-top-[14px] sm:h-[65px] sm:text-[18px]'
+                      }`}
+                    >
+                      {method.code}
+                    </button>
+                  );
+                })}
               </div>
 
-              <button
-                onClick={() => {
-                  onSelectTab('contact');
-                  onSelectContactSubTab('inquiry');
-                }}
-                className="px-5 py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs font-bold transition-all shadow-md shrink-0 flex items-center gap-2"
-              >
-                <Send className="w-4 h-4" />
-                <span>비파괴검사 견적 문의</span>
-              </button>
-            </div>
+              <div className="isolate grid">
+              <AnimatePresence initial={false}>
+                <motion.div
+                  key={selectedNdt.id}
+                  className="relative lg:pt-[195px]"
+                  style={{ gridArea: '1 / 1', mixBlendMode: 'plus-lighter' }}
+                  initial={{ opacity: reduceMotion ? 1 : 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, pointerEvents: 'none' }}
+                  transition={{ duration: reduceMotion ? 0 : 0.6, ease: 'easeInOut' }}
+                >
+              <div className="relative mt-5 flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-1 lg:absolute lg:left-[23px] lg:top-[55px] lg:mt-0 lg:flex-nowrap">
+                <span className="text-[24px] font-bold leading-none text-[#0048ef] sm:text-[28px]">{selectedNdt.code}</span>
+                <h4 className="min-w-0 text-[18px] font-bold leading-tight text-black sm:text-[23px]">
+                  {selectedNdt.nameKo} ({selectedNdt.nameEn})
+                </h4>
+              </div>
+              <p className="mt-3 text-[13px] font-medium leading-[1.55] text-[rgba(44,44,44,0.8)] sm:text-[15px] lg:absolute lg:left-[23px] lg:right-[23px] lg:top-[110px] lg:mt-0 lg:text-[17px]">
+                {selectedNdt.summary}
+              </p>
 
-            <p className="text-sm text-slate-700 leading-relaxed max-w-4xl">
-              비파괴검사란 구조물이나 부품, 소재를 손상시키거나 파괴하지 않고 물리적 현상(초음파 음향 전파, 위상배열 전자 빔 집속, 자속 누설, 모세관 침투 등)을 응용하여 내부 및 표면의 결함 여부와 건전성을 판정하는 공인 정밀 기술 서비스입니다.
-              (주)와이즈텍은 최고의 숙련 기술자와 첨단 검사장비를 통해 신뢰할 수 있는 성적서를 제공합니다.
-            </p>
-          </div>
+              <div className="mx-auto mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:mt-0 lg:w-[calc(100%-140px)] lg:grid-cols-4 lg:gap-5">
+                <article className="min-h-[190px] rounded-[16px] bg-white px-4 py-5 text-center shadow-[0_4px_4px_rgba(0,0,0,0.25)] sm:min-h-[260px] sm:rounded-[20px] sm:py-[30px] lg:h-[300px] lg:overflow-hidden">
+                  <h5 className="mb-5 translate-y-[2px] text-[14px] font-bold text-black sm:mb-[40px] sm:translate-y-[5px] sm:text-[17px] lg:mb-[54px]">검사원리</h5>
+                  <p className="-translate-y-[10px] break-keep text-[12px] leading-[1.65] text-black sm:text-[14px]">{selectedNdtCopy.principle}</p>
+                </article>
 
-          {/* 4 Major NDT Methods Grid */}
-          <div className="space-y-6">
-            <h3 className="text-xl font-black text-slate-900">NDT 4대 공인 검사 영역 및 기술 소개</h3>
+                <article className="min-h-[190px] rounded-[16px] bg-white px-4 py-5 shadow-[0_4px_4px_rgba(0,0,0,0.25)] sm:min-h-[260px] sm:rounded-[20px] sm:py-[30px] lg:h-[300px] lg:overflow-hidden">
+                  <h5 className="mb-5 translate-y-[2px] text-center text-[14px] font-bold text-black sm:mb-[40px] sm:translate-y-[5px] sm:text-[17px] lg:mb-[54px]">주요 적용 분야</h5>
+                  <ul className="-translate-y-[10px] list-disc space-y-1 break-keep pl-5 text-[12px] leading-[1.55] text-black sm:text-[14px]">
+                    {selectedNdtCopy.applications.map((item) => <li key={item}>{item}</li>)}
+                  </ul>
+                </article>
 
-            {/* Methods Navigation Tabs */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {NDT_SERVICES.map((method) => {
-                const isSelected = selectedNdtDetail === method.id;
-                return (
+                <article className="min-h-[190px] rounded-[16px] bg-white px-4 py-5 shadow-[0_4px_4px_rgba(0,0,0,0.25)] sm:min-h-[260px] sm:rounded-[20px] sm:py-[30px] lg:h-[300px] lg:overflow-hidden">
+                  <h5 className="mb-5 translate-y-[2px] text-center text-[14px] font-bold text-black sm:mb-[40px] sm:translate-y-[5px] sm:text-[17px] lg:mb-[54px]">기술적 강점</h5>
+                  <ul className="-translate-y-[10px] list-disc space-y-1 break-keep pl-5 text-[12px] leading-[1.55] text-black sm:text-[14px]">
+                    {selectedNdtCopy.strengths.map((item) => <li key={item}>{item}</li>)}
+                  </ul>
+                </article>
+
+                <div className="flex flex-col gap-3 sm:gap-4 lg:gap-[18px]">
+                  <article className="min-h-[150px] rounded-[16px] bg-white px-4 py-5 shadow-[0_4px_4px_rgba(0,0,0,0.25)] sm:min-h-[170px] sm:rounded-[20px] sm:py-[20px] lg:h-[197px] lg:min-h-0 lg:overflow-hidden">
+                    <h5 className="mb-7 text-center text-[13px] font-bold text-black sm:mb-5 sm:text-[17px]">주요 보유 검사장비</h5>
+                    <ul className="list-disc space-y-2 break-keep pl-5 text-[12px] leading-[1.5] text-black sm:text-[14px]">
+                      {selectedNdt.equipment.slice(0, 3).map((item) => <li key={item}>{item}</li>)}
+                    </ul>
+                  </article>
                   <button
-                    key={method.id}
-                    onClick={() => setSelectedNdtDetail(method.id)}
-                    className={`p-4 rounded-xl border text-left transition-all ${
-                      isSelected
-                        ? 'bg-blue-50 border-blue-600 ring-2 ring-blue-600/20 shadow-md'
-                        : 'bg-white border-slate-200 hover:border-slate-300'
-                    }`}
+                    type="button"
+                    onClick={() => {
+                      onSelectContactSubTab('inquiry');
+                    }}
+                    className="flex h-[64px] flex-col items-center justify-center rounded-[16px] bg-white text-[14px] font-bold text-black shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition-colors duration-200 hover:bg-[#0048ef] hover:text-white hover:shadow-[0_6px_10px_rgba(0,0,0,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0048ef] sm:h-[76px] sm:rounded-[20px] sm:text-[16px] lg:h-[85px] lg:text-[17px]"
                   >
-                    <span className="text-xs font-mono font-black text-blue-600 block">{method.code}</span>
-                    <span className="text-sm font-bold text-slate-900 block mt-1">{method.nameKo}</span>
-                    <span className="text-[10px] text-slate-400 block truncate">{method.nameEn}</span>
+                    {selectedNdt.code} 검사 견적 문의
+                    <span className="mt-2 text-[20px] font-normal leading-none">⟶</span>
                   </button>
-                );
-              })}
-            </div>
-
-            {/* Detailed Selected NDT Card */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-10 shadow-lg space-y-8">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl font-black text-blue-700 font-mono">{selectedNdt.code}</span>
-                    <h4 className="text-xl sm:text-2xl font-black text-slate-900">{selectedNdt.nameKo}</h4>
-                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold">
-                      {selectedNdt.badge}
-                    </span>
-                  </div>
-                  <p className="text-xs text-slate-500 font-mono mt-1">{selectedNdt.nameEn}</p>
-                </div>
-
-                <div className="text-xs text-slate-500 font-medium">
-                  {selectedNdt.id === 'paut' && (
-                    <span className="bg-blue-50 text-blue-900 border border-blue-300 px-3 py-1 rounded-lg font-bold flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-                      <span>RT 대체 친환경 첨단 검사</span>
-                    </span>
-                  )}
                 </div>
               </div>
-
-              {/* Principle & Summary */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">개요 및 특징</span>
-                  <p className="text-sm text-slate-700 leading-relaxed font-medium">{selectedNdt.summary}</p>
-                  <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-600 leading-relaxed">
-                    <strong className="text-slate-900 block mb-1">검사 원리 (Scientific Principle):</strong>
-                    {selectedNdt.principle}
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">핵심 기술 강점</span>
-                  <ul className="space-y-2 text-xs text-slate-700">
-                    {selectedNdt.advantages.map((adv, i) => (
-                      <li key={i} className="p-3 bg-blue-50/50 rounded-lg border border-blue-100 flex items-start gap-2">
-                        <CheckCircle className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                        <span className="font-medium">{adv}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* Target Applications & Equipment */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
-                <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-                  <span className="text-xs font-bold text-slate-900 block flex items-center gap-1.5">
-                    <Layers className="w-4 h-4 text-blue-600" />
-                    <span>주요 적용 설비 및 검사 대상</span>
-                  </span>
-                  <ul className="space-y-1.5 text-xs text-slate-600">
-                    {selectedNdt.targetApplications.map((app, i) => (
-                      <li key={i} className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
-                        <span>{app}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-                  <span className="text-xs font-bold text-slate-900 block flex items-center gap-1.5">
-                    <Wrench className="w-4 h-4 text-blue-600" />
-                    <span>보유 정밀 검사 장비</span>
-                  </span>
-                  <ul className="space-y-1.5 text-xs text-slate-600">
-                    {selectedNdt.equipment.map((eq, i) => (
-                      <li key={i} className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                        <span>{eq}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                </motion.div>
+              </AnimatePresence>
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* 6-Step Inspection Process */}
-          <div className="bg-slate-900 rounded-2xl border border-slate-800 p-8 sm:p-12 text-white space-y-8">
-            <div>
-              <span className="text-xs font-bold text-blue-400 uppercase tracking-wider block">Workflow</span>
-              <h3 className="text-2xl font-black">비파괴검사 표준 수행 절차 (6단계)</h3>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-              {[
-                { step: '01', title: '의뢰 및 도면 검토', desc: '검사 부위 및 재질, 규격 확인' },
-                { step: '02', title: '검사 계획 수립', desc: 'NDT 기법 선정 및 인력 편성' },
-                { step: '03', title: '현장 방문 & 전처리', desc: '검사면 세척 및 안전 점검' },
-                { step: '04', title: '정밀 비파괴 탐상', desc: 'UT/PAUT/MT/PT 표준 검사 수행' },
-                { step: '05', title: '결함 분석 & 판정', desc: '기술책임자 정밀 데이터 판독' },
-                { step: '06', title: '공식 성적서 발행', desc: '시험성적서 및 보고서 납품' },
-              ].map((p) => (
-                <div key={p.step} className="p-4 bg-slate-800/80 rounded-xl border border-slate-700/80 space-y-1.5">
-                  <span className="text-xs font-mono font-black text-blue-400 block">{p.step}</span>
-                  <h5 className="font-bold text-sm text-white">{p.title}</h5>
-                  <p className="text-[11px] text-slate-400 leading-relaxed">{p.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <InspectionProcess />
         </div>
       )}
     </div>

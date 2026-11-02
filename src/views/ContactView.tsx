@@ -1,32 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  Send,
-  FileText,
-  HelpCircle,
   Search,
   Phone,
   Mail,
   MapPin,
   Clock,
   ChevronRight,
-  Sparkles,
-  Award,
   CheckCircle2,
 } from 'lucide-react';
 import { ContactSubTab, NoticeItem, FaqItem } from '../types';
 import { COMPANY_INFO, NOTICES, FAQS } from '../data/companyData';
 import { InquiryForm } from '../components/InquiryForm';
+import { useScrollReveal } from '../components/useScrollReveal';
+import { SiteSection } from '../components/SectionSwitcher';
+import { SectionNavigation } from '../components/SectionNavigation';
+import { SectionHero } from '../components/SectionHero';
 
 interface ContactViewProps {
+  onSubTabChange?: (sub: ContactSubTab) => void;
   initialSubTab?: ContactSubTab;
   onOpenNoticeModal: (notice: NoticeItem) => void;
+  onSelectSection?: (section: SiteSection) => void;
 }
 
 export const ContactView: React.FC<ContactViewProps> = ({
   initialSubTab = 'inquiry',
+  onSubTabChange,
   onOpenNoticeModal,
+  onSelectSection,
 }) => {
   const [activeSubTab, setActiveSubTab] = useState<ContactSubTab>(initialSubTab);
+  const contentRef = useRef<HTMLElement>(null);
+  useScrollReveal(contentRef, activeSubTab);
+  useEffect(() => setActiveSubTab(initialSubTab), [initialSubTab]);
 
   // Notice State
   const [noticeCategory, setNoticeCategory] = useState<string>('all');
@@ -53,160 +59,71 @@ export const ContactView: React.FC<ContactViewProps> = ({
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10">
-      {/* Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 rounded-2xl p-8 sm:p-12 text-white text-left relative overflow-hidden shadow-xl">
-        <div className="relative z-10 max-w-3xl space-y-3">
-          <span className="text-xs font-bold text-blue-400 uppercase tracking-widest block">
-            Customer Center & Inquiry
-          </span>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight">
-            고객지원 및 온라인 견적·상담 문의
-          </h1>
-          <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-            비파괴검사(NDT: UT, PAUT, MT, PT), 자율안전검사 위탁 등 궁금하신 사항을 남겨주시면
-            전문 엔지니어가 신속하고 정확하게 맞춤 상담을 진행해 드립니다.
-          </p>
-        </div>
-      </div>
+    <main ref={contentRef} className="inner-refresh contact-refresh w-full bg-white">
+      <SectionHero
+        title="고객지원"
+        subtitle="고객지원 및 온라인 견적·상담 문의"
+        backgroundImage="/figma-assets/business-hero-user.png"
+        backgroundPosition="center 45%"
+      />
 
-      {/* Sub-tab Navigation */}
-      <div className="flex border-b border-slate-200 overflow-x-auto scrollbar-none gap-2">
-        <button
-          onClick={() => setActiveSubTab('inquiry')}
-          className={`pb-4 px-4 text-sm font-bold border-b-2 whitespace-nowrap transition-all flex items-center gap-2 ${
-            activeSubTab === 'inquiry'
-              ? 'border-blue-600 text-blue-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
-          }`}
-        >
-          <Send className="w-4 h-4" />
-          <span>견적 및 상담 문의 (Online Inquiry)</span>
-        </button>
-
-        <button
-          onClick={() => setActiveSubTab('notice')}
-          className={`pb-4 px-4 text-sm font-bold border-b-2 whitespace-nowrap transition-all flex items-center gap-2 ${
-            activeSubTab === 'notice'
-              ? 'border-blue-600 text-blue-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
-          }`}
-        >
-          <FileText className="w-4 h-4" />
-          <span>공지사항 / 소식 (Notice)</span>
-        </button>
-
-        <button
-          onClick={() => setActiveSubTab('faq')}
-          className={`pb-4 px-4 text-sm font-bold border-b-2 whitespace-nowrap transition-all flex items-center gap-2 ${
-            activeSubTab === 'faq'
-              ? 'border-blue-600 text-blue-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
-          }`}
-        >
-          <HelpCircle className="w-4 h-4" />
-          <span>자주 묻는 질문 (FAQ)</span>
-        </button>
-      </div>
+      <SectionNavigation
+        section="contact"
+        items={[{ id: 'inquiry', label: '견적 및 상담 문의' }, { id: 'notice', label: '공지사항/소식' }, { id: 'faq', label: '자주 묻는 질문(FAQ)' }]}
+        active={activeSubTab}
+        onChange={(sub) => onSubTabChange ? onSubTabChange(sub) : setActiveSubTab(sub)}
+        onSelectSection={onSelectSection}
+      />
 
       {/* 1. Inquiry Tab */}
       {activeSubTab === 'inquiry' && (
-        <div className="space-y-10 animate-in fade-in duration-200">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Left Contact Overview */}
-            <div className="lg:col-span-4 space-y-6">
-              <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
-                <div>
-                  <span className="text-xs font-bold text-blue-600 uppercase tracking-wider block">Hotline</span>
-                  <h3 className="text-xl font-bold text-slate-900 mt-1">상담 및 접수 안내</h3>
+        <div className="">
+          <section data-reveal-group className="contact-inquiry-layout mx-0 grid w-full grid-cols-1 px-0 pb-0 pt-0 lg:grid-cols-[minmax(0,0.3fr)_minmax(0,0.7fr)]">
+            <aside className="flex h-full min-w-0 flex-col bg-gradient-to-r from-[#f2f8ff] to-white">
+              <div className="py-10 pl-6 pr-6 sm:py-[61px] sm:pl-8 sm:pr-8 md:pl-12 md:pr-10 lg:pl-[70px] lg:pr-[5.35%]">
+                <h3 className="mb-5 text-[18px] font-bold text-black">상담 및 접수 안내</h3>
+                <div className="mb-5 rounded-[20px] border border-slate-200 bg-white px-5 py-3 leading-[1.5]">
+                  <p className="text-[13px] text-black/60">도로명주소</p>
+                  <p className="block text-[15px] font-semibold text-black sm:text-[17px]">{COMPANY_INFO.address}</p>
+                  <p className="mt-1 text-[11px] text-black/70 sm:text-[12px]">지번 : 전남 광양시 중동 (중마청룡길 인근)</p>
                 </div>
-
-                <div className="space-y-4 text-xs text-slate-700">
-                  <div className="p-4 bg-blue-50 rounded-xl border border-blue-200/60 space-y-1">
-                    <span className="font-bold text-blue-950 block">검사 견적 유선 직통</span>
-                    <a
-                      href={`tel:${COMPANY_INFO.phone}`}
-                      className="text-xl font-black text-blue-700 font-mono block hover:underline"
-                    >
-                      {COMPANY_INFO.phone}
-                    </a>
-                    <span className="text-[11px] text-blue-600 font-medium">FAX: {COMPANY_INFO.fax}</span>
-                  </div>
-
-                  <div className="space-y-2.5 pt-2">
-                    <div className="flex items-start gap-2.5">
-                      <Clock className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                      <div>
-                        <strong className="block text-slate-900">운영 시간</strong>
-                        <span className="text-slate-500">{COMPANY_INFO.workingHours}</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2.5">
-                      <Mail className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                      <div>
-                        <strong className="block text-slate-900">이메일 접수</strong>
-                        <span className="font-mono text-slate-500">{COMPANY_INFO.email}</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2.5">
-                      <MapPin className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                      <div>
-                        <strong className="block text-slate-900">본사 주소</strong>
-                        <span className="text-slate-500">{COMPANY_INFO.address}</span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="space-y-4 sm:space-y-3">
+                  <div className="flex items-center gap-4"><Phone className="h-6 w-6 shrink-0 text-black" /><p><span className="block text-[12px] text-black/60">대표전화</span><a href={`tel:${COMPANY_INFO.phone}`} className="text-[12px] text-black sm:text-[14px]">{COMPANY_INFO.phone}</a></p></div>
+                  <div className="flex items-center gap-4"><Mail className="h-6 w-6 shrink-0 text-black" /><p><span className="block text-[12px] text-black/60">이메일 접수</span><a href={`mailto:${COMPANY_INFO.email}`} className="text-[14px] text-black sm:text-[17px]">{COMPANY_INFO.email}</a></p></div>
+                  <div className="flex items-center gap-4"><Clock className="h-6 w-6 shrink-0 text-black" /><p><span className="block text-[12px] text-black/60">운영 시간</span><span className="text-[11px] text-black sm:text-[13px]">{COMPANY_INFO.workingHours}</span></p></div>
                 </div>
               </div>
-
-              {/* Guarantees Box */}
-              <div className="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 space-y-4">
-                <h4 className="font-bold text-sm text-blue-400 flex items-center gap-2">
-                  <Award className="w-4 h-4" />
-                  <span>(주)와이즈텍의 3대 약속</span>
-                </h4>
-                <ul className="space-y-2.5 text-xs text-slate-300">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>영업일 기준 24시간 이내 신속 견적서 회신</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>숙련된 자격 기술자의 책임 검사 및 성적서 발급</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>고객사 기술 보안 및 설계 도면 철저 보호</span>
-                  </li>
+              <div className="border-t border-[#D9D9D9] py-10 pl-6 pr-6 sm:py-12 sm:pl-8 sm:pr-8 md:pl-12 md:pr-10 lg:pl-[70px] lg:pr-[8%]">
+                <h3 className="mb-8 text-[17px] font-bold text-black sm:text-[20px]">(주)와이즈텍의 3대 약속</h3>
+                <ul className="space-y-5 text-[12px] font-medium text-black sm:text-[15px]">
+                  <li className="flex items-center gap-4"><CheckCircle2 className="h-5 w-5 shrink-0 text-[#009a69]" />영업일 기준 24시간 이내 신속 견적서 회신</li>
+                  <li className="flex items-center gap-4"><CheckCircle2 className="h-5 w-5 shrink-0 text-[#009a69]" />숙련된 자격 기술자의 책임 검사 및 성적서 발급</li>
+                  <li className="flex items-center gap-4"><CheckCircle2 className="h-5 w-5 shrink-0 text-[#009a69]" />고객사 기술 보안 및 설계 도면 철저 보호</li>
                 </ul>
               </div>
-            </div>
-
-            {/* Right Inquiry Form Component */}
-            <div className="lg:col-span-8">
+            </aside>
+            <div className="min-w-0 bg-white px-5 py-10 sm:px-8 sm:py-12 lg:py-[61px] lg:pl-[30px] lg:pr-[80px]">
               <InquiryForm initialServiceCategory="ndt" />
             </div>
-          </div>
+          </section>
         </div>
       )}
 
       {/* 2. Notice Tab */}
       {activeSubTab === 'notice' && (
-        <div className="space-y-6 animate-in fade-in duration-200">
+        <div data-reveal-group className="contact-list-panel mx-auto max-w-[1280px] space-y-9 px-5 pt-9 pb-12 ">
           {/* Filter and Search Bar */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200">
+          <div className="flex flex-col items-start justify-between gap-4 border-b border-[#D9D9D9] bg-white pb-6 sm:flex-row sm:items-center">
             {/* Category Pills */}
-            <div className="flex flex-wrap gap-1.5 w-full sm:w-auto">
+            <div className="flex w-full flex-wrap gap-3 sm:w-auto sm:self-start sm:gap-4">
               {['all', '공지', '인증/특허', '안전정보'].map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setNoticeCategory(cat)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  className={`min-h-[39px] rounded-[11px] border px-[19px] text-[11px] font-medium transition-colors sm:min-w-[99px] sm:text-[13px] ${
                     noticeCategory === cat
-                      ? 'bg-blue-600 text-white shadow-xs'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                      ? 'border-[#0646F5] bg-[#0646F5] text-white'
+                      : 'border-[#D9D9D9] bg-white text-[#1D1919] hover:bg-[#f7f7f7]'
                   }`}
                 >
                   {cat === 'all' ? '전체 소식' : cat}
@@ -215,20 +132,20 @@ export const ContactView: React.FC<ContactViewProps> = ({
             </div>
 
             {/* Search Input */}
-            <div className="relative w-full sm:w-64">
+            <div className="relative w-full sm:w-[270px]">
               <input
                 type="text"
                 placeholder="제목 또는 내용 검색"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:border-blue-600"
+                className="h-11 w-full rounded-[11px] border border-[#D9D9D9] bg-white py-2 pl-10 pr-3.5 text-[11px] text-[#1D1919] placeholder:text-[#888] focus:border-[#0646F5] focus:outline-none sm:text-[13px]"
               />
-              <Search className="w-4 h-4 text-slate-400 absolute left-2.5 top-2" />
+              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#888]" />
             </div>
           </div>
 
           {/* Notice Table / List */}
-          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+          <div className="contact-notice-list bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
             <div className="divide-y divide-slate-200">
               {filteredNotices.length === 0 ? (
                 <div className="p-12 text-center text-slate-500 text-xs">
@@ -238,7 +155,15 @@ export const ContactView: React.FC<ContactViewProps> = ({
                 filteredNotices.map((item) => (
                   <div
                     key={item.id}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => onOpenNoticeModal(item)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        onOpenNoticeModal(item);
+                      }
+                    }}
                     className="p-5 hover:bg-blue-50/50 transition-colors cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
                   >
                     <div className="space-y-1.5 flex-1">
@@ -279,17 +204,17 @@ export const ContactView: React.FC<ContactViewProps> = ({
 
       {/* 3. FAQ Tab */}
       {activeSubTab === 'faq' && (
-        <div className="space-y-6 animate-in fade-in duration-200">
+        <div data-reveal-group className="contact-list-panel mx-auto max-w-[1280px] space-y-9 px-5 pt-9 pb-12 ">
           {/* FAQ Category Pills */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-3 border-b border-[#D9D9D9] pb-6 sm:gap-4">
             {['all', 'NDT', '자율안전', '견적/일정', '특허기술'].map((cat) => (
               <button
                 key={cat}
                 onClick={() => setFaqCategory(cat)}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                className={`min-h-[39px] rounded-[11px] border px-[19px] text-[11px] font-medium transition-colors sm:text-[13px] ${
                   faqCategory === cat
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                    ? 'border-[#0646F5] bg-[#0646F5] text-white'
+                    : 'border-[#D9D9D9] bg-white text-[#1D1919] hover:bg-[#f7f7f7]'
                 }`}
               >
                 {cat === 'all' ? '전체 카테고리' : cat}
@@ -304,9 +229,10 @@ export const ContactView: React.FC<ContactViewProps> = ({
               return (
                 <div
                   key={faq.id}
-                  className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs transition-all"
+                  className="contact-faq-item bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs transition-all"
                 >
                   <button
+                    aria-expanded={isOpen}
                     onClick={() => setOpenFaqId(isOpen ? null : faq.id)}
                     className="w-full p-5 text-left text-sm sm:text-base font-bold text-slate-900 hover:text-blue-600 flex justify-between items-center gap-4"
                   >
@@ -344,6 +270,6 @@ export const ContactView: React.FC<ContactViewProps> = ({
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 };

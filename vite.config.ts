@@ -6,6 +6,9 @@ import {defineConfig} from 'vite';
 export default defineConfig(() => {
   return {
     plugins: [react(), tailwindcss()],
+    define: {
+      'import.meta.env.VITE_SITE_URL': JSON.stringify(process.env.VITE_SITE_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : '') || process.env.URL || 'https://wisetec.co.kr'),
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

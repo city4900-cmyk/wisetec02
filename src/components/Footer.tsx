@@ -1,17 +1,7 @@
 import React from 'react';
-import {
-  Shield,
-  Phone,
-  Mail,
-  MapPin,
-  Clock,
-  ArrowUp,
-  FileCheck,
-  Award,
-} from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { COMPANY_INFO } from '../data/companyData';
 import { NavTab, AboutSubTab, ServicesSubTab, TechSubTab, ContactSubTab } from '../types';
-import { WisetechLogo } from './WisetechLogo';
 
 interface FooterProps {
   onSelectTab: (tab: NavTab) => void;
@@ -25,193 +15,106 @@ export const Footer: React.FC<FooterProps> = ({
   onSelectTab,
   onSelectAboutSubTab,
   onSelectServicesSubTab,
-  onSelectTechSubTab,
   onSelectContactSubTab,
 }) => {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const goAbout = (sub: AboutSubTab) => {
+    onSelectTab('about');
+    onSelectAboutSubTab?.(sub);
+  };
+
+  const goService = (sub: ServicesSubTab) => {
+    onSelectTab('services');
+    onSelectServicesSubTab?.(sub);
+  };
+
+  const goContact = () => {
+    onSelectTab('contact');
+    onSelectContactSubTab?.('inquiry');
   };
 
   return (
-    <footer className="bg-slate-950 text-slate-400 pt-16 pb-12 border-t border-slate-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Top Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800/80">
-          {/* Col 1 & 2: Company Intro */}
-          <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center">
-              <WisetechLogo variant="header" theme="dark" size="md" />
+    <footer className="border-t border-[#dfe5eb] bg-[#F5F8FA] text-[#152238]">
+      <div className="mx-auto max-w-[1440px] px-6 pb-[22px] pt-8 sm:px-10 lg:px-16">
+        <div className="flex flex-col gap-8 lg:h-[140px] lg:flex-row lg:justify-between lg:gap-0">
+          <div className="max-w-[620px] lg:flex lg:h-[140px] lg:flex-col">
+            <div className="flex h-12 items-center gap-[14px]">
+              <span className="relative h-[42px] w-[78px] shrink-0 overflow-hidden" aria-hidden="true">
+                <img
+                  src="/figma-assets/header-logo.png"
+                  alt=""
+                  className="absolute left-[-4.88%] top-[-21.47%] h-[165.03%] w-[108.78%] max-w-none"
+                />
+              </span>
+              <span className="flex flex-col whitespace-nowrap font-bold leading-[1.35]">
+                <span className="text-[21px]">(주)와이즈텍</span>
+                <span className="text-[10px] text-[#68758a]">WISETEC</span>
+              </span>
             </div>
 
-            <p className="text-sm text-slate-300 leading-relaxed max-w-md">
-              산업안전보건법에 따른 자율안전검사 위탁 및 비파괴검사(NDT) 전문기술 엔지니어링 기업.
-              첨단 기술력과 ISO 인증 경영시스템을 바탕으로 안전하고 정밀한 검사 서비스를 제공합니다.
+            <p className="mt-3 max-w-[610px] text-[13px] leading-[1.7] text-[#68758a]">
+              자율안전검사와 비파괴검사(NDT) 전문 기업.
+              <br />
+              기술력과 체계적인 품질 관리로 현장의 안전과 신뢰를 함께 지킵니다.
             </p>
 
-            <div className="flex flex-wrap gap-2 pt-2">
-              <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-md bg-slate-900 border border-slate-700 text-slate-300 font-medium">
-                <Award className="w-3.5 h-3.5 text-blue-400" />
-                ISO 9001:2015 인증
+            <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-[15px] font-bold leading-[1.6] text-[#152238]">
+              <span className="inline-flex items-center gap-2">
+                <i className="h-[5px] w-[5px] rounded-full bg-[#0649ed]" />
+                ISO 9001:2015&nbsp; · &nbsp;ISO 45001:2018
               </span>
-              <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-md bg-slate-900 border border-slate-700 text-slate-300 font-medium">
-                <Shield className="w-3.5 h-3.5 text-emerald-400" />
-                ISO 45001:2018 인증
-              </span>
-              <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-md bg-slate-900 border border-amber-500/30 text-amber-300 font-medium">
-                <FileCheck className="w-3.5 h-3.5 text-amber-400" />
-                특허 제 10-2613687 호
+              <span className="inline-flex items-center gap-2">
+                <i className="h-[5px] w-[5px] rounded-full bg-[#f5a400]" />
+                특허 제10-2613687호
               </span>
             </div>
           </div>
 
-          {/* Col 3: Quick Links - 회사소개 */}
-          <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4 border-l-2 border-blue-500 pl-2">
-              회사소개 (About)
-            </h4>
-            <ul className="space-y-2.5 text-sm">
-              <li>
-                <button
-                  onClick={() => {
-                    onSelectTab('about');
-                    if (onSelectAboutSubTab) onSelectAboutSubTab('greeting');
-                  }}
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  대표이사 인사말 (CEO)
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => {
-                    onSelectTab('about');
-                    if (onSelectAboutSubTab) onSelectAboutSubTab('overview');
-                  }}
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  기업개요 및 연혁
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => {
-                    onSelectTab('about');
-                    if (onSelectAboutSubTab) onSelectAboutSubTab('location');
-                  }}
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  오시는 길 (광양 본사)
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 4: Services */}
-          <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4 border-l-2 border-blue-500 pl-2">
-              사업분야 (Services)
-            </h4>
-            <ul className="space-y-2.5 text-sm">
-              <li>
-                <button
-                  onClick={() => {
-                    onSelectTab('services');
-                    if (onSelectServicesSubTab) onSelectServicesSubTab('safety');
-                  }}
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  자율안전검사 위탁 (산업안전보건법)
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => {
-                    onSelectTab('services');
-                    if (onSelectServicesSubTab) onSelectServicesSubTab('ndt');
-                  }}
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  비파괴검사
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => {
-                    onSelectTab('contact');
-                    if (onSelectContactSubTab) onSelectContactSubTab('notice');
-                  }}
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  공지사항 및 회사소식
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 5: Customer Center & Contact */}
-          <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4 border-l-2 border-blue-500 pl-2">
-              고객센터 (Customer)
-            </h4>
-            <div className="space-y-3 text-sm">
-              <div>
-                <span className="text-xs text-slate-400 block">검사 및 견적 상담 직통</span>
-                <a
-                  href={`tel:${COMPANY_INFO.phone}`}
-                  className="text-lg font-black text-white hover:text-blue-400 transition-colors font-mono"
-                >
-                  {COMPANY_INFO.phone}
-                </a>
-              </div>
-              <div className="text-xs text-slate-400 space-y-1">
-                <div className="flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-slate-500" />
-                  <span>{COMPANY_INFO.workingHours}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Mail className="w-3.5 h-3.5 text-slate-500" />
-                  <span>{COMPANY_INFO.email}</span>
-                </div>
-              </div>
-              <button
-                onClick={() => {
-                  onSelectTab('contact');
-                  if (onSelectContactSubTab) onSelectContactSubTab('inquiry');
-                }}
-                className="w-full mt-2 py-2 px-3 bg-blue-700 hover:bg-blue-600 text-white rounded-lg text-xs font-bold transition-colors text-center"
+          <div className="relative flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between lg:h-[140px] lg:w-[315px] lg:shrink-0">
+            <div className="min-w-0 lg:absolute lg:left-[30px] lg:top-1/2 lg:w-[190px] lg:-translate-y-1/2">
+              <p className="text-[14px] font-bold leading-[1.7]">고객지원</p>
+              <a
+                href={`tel:${COMPANY_INFO.phone}`}
+                className="mt-1 block whitespace-nowrap text-[22px] font-bold leading-[1.5] tracking-[-0.02em] hover:text-[#0649ed]"
               >
-                온라인 견적 요청 바로가기
-              </button>
+                {COMPANY_INFO.phone}
+              </a>
+              <div className="mt-2 text-[12px] leading-[1.7] text-[#68758a]">
+                <p>평일 08:30–18:00</p>
+                <p>주말·공휴일 긴급 검사 대응 가능</p>
+              </div>
+              <a href={`mailto:${COMPANY_INFO.email}`} className="mt-0 inline-flex items-center text-[12px] leading-[1.7] text-[#68758a] hover:text-[#0649ed]">
+                {COMPANY_INFO.email}
+              </a>
             </div>
+
+            <button
+              type="button"
+              onClick={goContact}
+              className="flex min-h-[88px] w-full shrink-0 items-center justify-between gap-3 rounded-md bg-[#0649ed] px-5 py-4 text-left text-[13px] font-bold leading-[1.7] text-white transition-colors hover:bg-[#003bd1] sm:w-[180px] lg:absolute lg:left-[219px] lg:top-1/2 lg:h-[131px] lg:w-[96px] lg:-translate-y-1/2 lg:flex-col lg:justify-center lg:gap-3 lg:px-3 lg:py-3 lg:text-center"
+            >
+              <span>온라인 견적 및<br />상담 문의</span>
+              <ArrowRight className="h-[22px] w-[22px] shrink-0" strokeWidth={1} />
+            </button>
           </div>
         </div>
 
-        {/* Official Footer Text Section (Strictly matching prompt specification) */}
-        <div className="pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div className="space-y-1.5 text-xs text-slate-300">
-            <p className="font-semibold text-slate-200">
-              (주)와이즈텍 | 대표자: {COMPANY_INFO.ceo} | 사업자등록번호: {COMPANY_INFO.businessNumber}
-            </p>
-            <p className="flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-              <span>주소: {COMPANY_INFO.address}</span>
-            </p>
-            <p>
-              주요사업: 자율안전검사 위탁, 비파괴검사, 기술시험 및 분석
-            </p>
-            <p className="text-slate-400 pt-1">
-              Copyright © (주)와이즈텍. All Rights Reserved.
-            </p>
+        <div className="mt-[20px] border-t border-[#e6ebf2] pt-[20px]">
+          <div className="flex flex-col gap-5 md:h-[54px] md:flex-row md:items-start md:justify-between">
+            <div className="space-y-1 text-[11px] leading-[1.7] text-[#68758a] md:w-[880px]">
+              <p>(주)와이즈텍&nbsp; · &nbsp;대표자 {COMPANY_INFO.ceo}&nbsp; · &nbsp;사업자등록번호 {COMPANY_INFO.businessNumber}</p>
+              <p>주소&nbsp; {COMPANY_INFO.addressDetail}&nbsp; · &nbsp;주요사업&nbsp; 자율안전검사 / 비파괴검사 / 기술시험 및 분석</p>
+            </div>
+
+            <nav aria-label="푸터 주요 메뉴" className="flex items-center justify-start gap-7 text-[13px] font-medium leading-7 md:h-7 md:w-[315px] md:justify-end">
+              <a href="/about/greeting/" className="hover:text-[#0649ed]">회사소개</a>
+              <a href="/services/safety/" className="hover:text-[#0649ed]">사업분야</a>
+              <a href="/contact/inquiry/" className="hover:text-[#0649ed]">고객지원</a>
+            </nav>
           </div>
 
-          <button
-            onClick={scrollToTop}
-            id="scroll-to-top-btn"
-            className="self-end md:self-auto p-3 rounded-xl bg-slate-900 hover:bg-blue-600 text-slate-300 hover:text-white border border-slate-800 hover:border-blue-500 transition-all shadow-md group"
-            title="맨 위로 이동"
-          >
-            <ArrowUp className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
-          </button>
+          <p className="mt-[20px] text-[11px] leading-[1.7] text-[#68758a]">
+            Copyright © (주)와이즈텍. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

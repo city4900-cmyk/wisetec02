@@ -1,7 +1,7 @@
 export type NavTab = 'home' | 'about' | 'services' | 'technology' | 'contact';
 
 export type AboutSubTab = 'greeting' | 'overview' | 'location';
-export type ServicesSubTab = 'ndt' | 'safety';
+export type ServicesSubTab = 'ndt' | 'safety' | 'construction';
 export type TechSubTab = 'patent-system' | 'comparison' | 'process';
 export type ContactSubTab = 'inquiry' | 'notice' | 'faq';
 
@@ -69,7 +69,7 @@ export interface InquiryFormData {
   position: string;
   phoneNumber: string;
   email: string;
-  serviceCategory: 'ndt' | 'safety' | 'other';
+  serviceCategory: 'ndt' | 'safety' | 'construction' | 'other';
   ndtSubCategories: string[];
   targetEquipment: string;
   location: string;
