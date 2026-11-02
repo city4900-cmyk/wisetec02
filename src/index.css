@@ -941,3 +941,16 @@ html:not(.js) .home-business-image, html:not(.js) .home-refresh-heading h2, html
     overflow-wrap: anywhere;
   }
 }
+
+.about-panel--overview .certificate-gallery h2 {
+  border: 0;
+  padding-bottom: 0;
+  font-size: clamp(27px, 2.7vw, 34px);
+  line-height: 1.35;
+  font-weight: 700;
+  color: #152b40;
+}
+.certificate-gallery { scroll-margin-top: 110px; }
+@media (max-width: 639px) {
+  .certificate-gallery { scroll-margin-top: 90px; }
+}

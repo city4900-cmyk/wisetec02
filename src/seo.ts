@@ -4,7 +4,7 @@ export interface PageRoute { path: string; tab: NavTab; sub?: AboutSubTab | Serv
 export const routes: PageRoute[] = [
  { path:'/', tab:'home', title:'와이즈텍 | 건설기계 안전성 검사·자율안전검사·비파괴검사', description:'크롤러·이동식·카고크레인 및 고소작업차 검사, 자율안전검사, UT·PAUT·MT·PT 비파괴검사. 와이즈텍 검사 상담 061-791-0992.' },
  { path:'/about/greeting/', tab:'about', sub:'greeting', title:'CEO 인사말 | 와이즈텍', description:'현장 중심의 안전 검사와 정밀 진단을 제공하는 와이즈텍의 인사말 및 기술 역량을 소개합니다.' },
- { path:'/about/overview/', tab:'about', sub:'overview', title:'기업개요·연혁 | 와이즈텍', description:'와이즈텍 기업정보, 주요 연혁, ISO 인증 및 곤돌라 고정식 진공상자 누설검사시스템 특허 등록 이력을 확인하세요.' },
+ { path:'/about/overview/', tab:'about', sub:'overview', title:'기업개요·인증·연혁 | 와이즈텍', description:'와이즈텍 기업정보, 주요 연혁, ISO 인증 및 곤돌라 고정식 진공상자 누설검사시스템 특허 등록 이력을 확인하세요.' },
  { path:'/about/location/', tab:'about', sub:'location', title:'오시는 길·연락처 | 와이즈텍', description:'전라남도 광양시 동광길 33, 2층 와이즈텍 본사 위치 및 연락처 안내. 전화 061-791-0992.' },
  { path:'/services/safety/', tab:'services', sub:'safety', title:'자율안전검사·대상 설비 안내 | 와이즈텍', description:'크레인, 리프트, 곤돌라, 압력용기 등 사업장 주요 설비의 자율안전검사 서비스와 검사 항목을 안내합니다.' },
  { path:'/services/construction/', tab:'services', sub:'construction', title:'건설기계 안전성 검사·크레인 점검 | 와이즈텍', description:'건설기계 점검 및 안전성 검사 안내. 크롤러·이동식·카고크레인, 고소작업차의 검사 대상, 점검 항목, 준비서류와 상담 절차를 확인하세요.' },

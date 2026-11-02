@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { BusFront, Clock3, ExternalLink, Mail, MapPin, Phone, CarFront } from 'lucide-react';
 import { AboutSubTab, CertificateItem } from '../types';
 import { COMPANY_INFO } from '../data/companyData';
+import { CertificateGallery } from '../components/CertificateGallery';
 import { NaverMapPreview } from '../components/NaverMapPreview';
 import { SiteSection } from '../components/SectionSwitcher';
 import { SectionNavigation } from '../components/SectionNavigation';
@@ -17,7 +18,7 @@ interface AboutViewProps {
 
 const tabs: { id: AboutSubTab; label: string }[] = [
   { id: 'greeting', label: 'CEO 인사말' },
-  { id: 'overview', label: '기업 개요 및 연혁' },
+  { id: 'overview', label: '기업 개요·인증·연혁' },
   { id: 'location', label: '오시는 길(Location)' },
 ];
 
@@ -28,7 +29,7 @@ const history = [
   { year: '2021.09.01', title: '(주)와이즈텍 법인 설립 및 사업 개시', detail: '' },
 ];
 
-export const AboutView: React.FC<AboutViewProps> = ({ initialSubTab = 'greeting', onSubTabChange, onSelectSection }) => {
+export const AboutView: React.FC<AboutViewProps> = ({ initialSubTab = 'greeting', onSubTabChange, onSelectSection, onOpenCertificateModal }) => {
   const [activeSubTab, setActiveSubTab] = useState<AboutSubTab>(initialSubTab);
 
   const contentRef = useRef<HTMLElement>(null);
@@ -148,6 +149,8 @@ export const AboutView: React.FC<AboutViewProps> = ({ initialSubTab = 'greeting'
                 ))}
               </ol>
             </section>
+
+            <CertificateGallery onOpen={onOpenCertificateModal ?? (() => {})} />
           </div>
         )}
 

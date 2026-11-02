@@ -42,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
         description: '와이즈텍의 시작과 걸어온 길을 만나보세요.',
         items: [
           { label: 'CEO 인사말', caption: '안전과 품질을 향한 우리의 약속', icon: null, onClick: () => handleNavClick('about', () => onSelectAboutSubTab?.('greeting')) },
-          { label: '기업 개요 및 연혁', caption: '와이즈텍이 걸어온 길', icon: null, onClick: () => handleNavClick('about', () => onSelectAboutSubTab?.('overview')) },
+          { label: '기업 개요·인증·연혁', caption: '와이즈텍이 걸어온 길', icon: null, onClick: () => handleNavClick('about', () => onSelectAboutSubTab?.('overview')) },
           { label: '오시는 길', caption: '본사 위치 및 방문 안내', icon: null, onClick: () => handleNavClick('about', () => onSelectAboutSubTab?.('location')) },
         ],
       }

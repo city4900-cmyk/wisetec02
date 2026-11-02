@@ -38,6 +38,9 @@ export interface CertificateItem {
   imageUrl: string;
   altImageUrl?: string;
   downloadName?: string;
+  pdfUrl?: string;
+  pages?: string[];
+  publicCopy?: boolean;
 }
 
 export interface NdtServiceItem {
