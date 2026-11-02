@@ -158,28 +158,28 @@ export const HomeView: React.FC<HomeViewProps> = ({
         />
         <div aria-hidden="true" className="home-hero-shade pointer-events-none absolute inset-0 bg-black/10" />
         <div
-          className="relative mx-auto h-full min-h-[calc(100svh-60px)] max-w-[1440px] px-6 pb-6 pt-6 lg:absolute lg:left-1/2 lg:top-0 lg:ml-[-720px] lg:mx-0 lg:w-[1440px] lg:max-w-none lg:min-h-0 lg:px-0 lg:pb-0 lg:pt-0"
+          className="home-desktop-hero relative mx-auto h-full min-h-[calc(100svh-60px)] max-w-[1440px] px-6 pb-6 pt-6 lg:absolute lg:left-1/2 lg:top-0 lg:ml-[-720px] lg:mx-0 lg:w-[1440px] lg:max-w-none lg:min-h-0 lg:px-0 lg:pb-0 lg:pt-0"
           style={homeFitScale === null ? undefined : { transform: `scale(${homeFitScale})`, transformOrigin: 'top center' }}
         >
-          <div data-scroll-reveal className="home-hero-reveal relative z-10 flex flex-wrap items-center gap-3 lg:absolute lg:left-[96px] lg:top-[178px]" style={{ '--hero-delay': '80ms' } as React.CSSProperties}>
+          <div data-scroll-reveal className="home-hero-badges home-hero-reveal relative z-10 flex flex-wrap items-center gap-3 lg:absolute lg:left-[96px] lg:top-[178px]" style={{ '--hero-delay': '80ms' } as React.CSSProperties}>
             <span className="flex h-[30px] w-[40px] shrink-0 items-center justify-center lg:h-[64px] lg:w-[60px]" aria-label="KCs 인증">
               <img src="/figma-assets/kcs-logo-transparent.png" alt="KCs 인증" className="h-full w-full object-contain" />
             </span>
-            <span className="flex h-[30px] items-center rounded-full bg-[#0048ef] px-3 text-[13px] font-bold text-white sm:px-4 sm:text-[15px] lg:h-[36px] lg:px-5 lg:text-[21px]">
+            <span className="flex h-[30px] items-center rounded-[6px] bg-[#0048ef] px-3 text-[13px] font-bold text-white sm:px-4 sm:text-[15px] lg:h-[36px] lg:px-5 lg:text-[21px]">
               기술신뢰보증
             </span>
-            <span className="flex min-h-[30px] max-w-full items-center rounded-full border border-[rgba(0,0,0,0.25)] px-3 py-1 text-[12px] font-semibold leading-tight text-black sm:px-4 sm:text-[14px] lg:h-[36px] lg:min-h-0 lg:w-max lg:whitespace-nowrap lg:px-5 lg:py-0 lg:text-[21px]">
+            <span className="flex min-h-[30px] max-w-full items-center rounded-[6px] border border-[rgba(0,0,0,0.25)] px-3 py-1 text-[12px] font-semibold leading-tight text-black sm:px-4 sm:text-[14px] lg:h-[36px] lg:min-h-0 lg:w-max lg:whitespace-nowrap lg:px-5 lg:py-0 lg:text-[21px]">
               ISO 9001/45001 인증 &amp; 특허보유
             </span>
           </div>
 
-          <h1 data-scroll-reveal className="home-hero-reveal relative z-10 mt-5 break-keep text-[clamp(25px,7vw,34px)] font-bold leading-[1.2] text-black lg:absolute lg:left-[96px] lg:top-[248px] lg:mt-0 lg:break-normal lg:text-[50px] lg:leading-[normal]" style={{ '--hero-delay': '220ms' } as React.CSSProperties}>
+          <h1 data-scroll-reveal className="home-hero-heading home-hero-reveal relative z-10 mt-5 break-keep text-[clamp(25px,7vw,34px)] font-bold leading-[1.2] text-black lg:absolute lg:left-[96px] lg:top-[248px] lg:mt-0 lg:break-normal lg:text-[50px] lg:leading-[normal]" style={{ '--hero-delay': '220ms' } as React.CSSProperties}>
             자율안전검사 및 비파괴검사 분야의<br />
-            <span className="bg-gradient-to-r from-[#0048ef] to-[#9747ff] bg-clip-text text-transparent">신뢰할 수 있는 파트너</span>,<br />
+            <span className="text-[#0048ef]">신뢰할 수 있는 파트너</span>,<br />
             <span className="lg:text-[52px]">(주)와이즈텍</span>
           </h1>
 
-          <p data-scroll-reveal className="home-hero-reveal relative z-10 mt-5 max-w-[878px] text-[14px] font-normal leading-[1.7] text-black sm:text-[18px] lg:absolute lg:left-[96px] lg:top-[488px] lg:mt-0 lg:w-[1248px] lg:max-w-none lg:text-[22px] lg:leading-[1.45]" style={{ '--hero-delay': '360ms' } as React.CSSProperties}>
+          <p data-scroll-reveal className="home-hero-copy home-hero-reveal relative z-10 mt-5 max-w-[878px] text-[14px] font-normal leading-[1.7] text-[#34495e] sm:text-[18px] lg:absolute lg:left-[96px] lg:top-[488px] lg:mt-0 lg:w-[1248px] lg:max-w-none lg:text-[22px] lg:leading-[1.45]" style={{ '--hero-delay': '360ms' } as React.CSSProperties}>
             <span className="block lg:whitespace-nowrap">(주)와이즈텍은 산업안전보건법에 따른 자율안전검사기관이자, 과학기술정보통신부 등록 비파괴검사기관입니다.</span>
             <span className="block lg:whitespace-nowrap">기중기, 이동식 크레인, 고소작업차, 카고크레인 등 건설기계의 법정 안전성 검사와 정밀 비파괴검사(NDT)를 통해 현장의 안전을 완벽히 지켜드립니다.</span>
           </p>

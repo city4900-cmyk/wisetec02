@@ -8,11 +8,11 @@ export function CertificateGallery({ onOpen }: { onOpen: (cert: CertificateItem)
   return (
     <section id="certificates" className="certificate-gallery scroll-mt-28 bg-[#f5f8fb] px-5 py-16 sm:px-8 lg:px-[5%] lg:py-20">
       <div className="mx-auto max-w-[1280px]">
-        <div className="flex flex-wrap items-end justify-between gap-5">
+        <div data-scroll-reveal className="flex flex-wrap items-end justify-between gap-5">
           <div><h2 className="text-[27px] font-bold tracking-tight text-[#152b40] sm:text-[34px]">기술의 신뢰를 증명합니다</h2><p className="mt-3 text-[14px] leading-relaxed text-[#687787]">와이즈텍의 경영시스템 인증과 전문분야 등록 현황을 확인하세요.</p></div>
           <span className="inline-flex items-center gap-2 text-[12px] text-[#687787]"><ShieldCheck size={16} />개인정보를 보호한 공개용 사본</span>
         </div>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div data-reveal-group className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {documents.map(cert => <article key={cert.id} className="overflow-hidden rounded-[16px] border border-[#e0e6ed] bg-white">
             <button type="button" onClick={() => onOpen(cert)} className="group block w-full bg-[#edf1f5] p-5 lg:p-3 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-[#306395]" aria-label={`${cert.title} 확대 보기`}>
               <div className="relative mx-auto aspect-[210/297] max-w-[225px] bg-white shadow-[0_4px_15px_rgba(30,50,70,0.10)]"><img src={cert.imageUrl} alt={`${cert.title} 공개용 사본 미리보기`} loading="lazy" className="h-full w-full object-contain" /><span className="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#306395] shadow-sm transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"><ArrowUpRight size={18} /></span></div>

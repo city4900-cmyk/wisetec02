@@ -453,7 +453,7 @@ html:has(.figma-home-mode) {
 }
 
 .home-trust-strip { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.3fr; align-items: center; gap: 30px; padding: 36px 7.5%; background: #fff; border-bottom: 1px solid #dfe5ea; color: #152537; }
-.home-trust-intro { font-size: 14px; color: #718295; }
+.home-trust-intro { font-size: 14px; color: #34495e; }
 .home-trust-item { border-left: 1px solid #dfe5ea; padding-left: 30px; }
 .home-trust-item p { font-size: 18px; line-height: 1.5; font-weight: 400; letter-spacing: -.03em; white-space: nowrap; }
 .home-trust-item strong { font-weight: 600; }
@@ -953,4 +953,133 @@ html:not(.js) .home-business-image, html:not(.js) .home-refresh-heading h2, html
 .certificate-gallery { scroll-margin-top: 110px; }
 @media (max-width: 639px) {
   .certificate-gallery { scroll-margin-top: 90px; }
+}
+
+/* Shared motion: touch scroll stays native and content enters once. */
+@media (prefers-reduced-motion: no-preference) {
+  .site-page-motion { animation: site-page-arrive 420ms ease-out both; }
+  .section-entry-subtitle { animation: site-copy-arrive 700ms cubic-bezier(.22,1,.36,1) 140ms both; }
+  .site-dialog-motion { animation: site-copy-arrive 300ms cubic-bezier(.22,1,.36,1) both; }
+  .mobile-navigation { animation: site-copy-arrive 300ms cubic-bezier(.22,1,.36,1) both; }
+  .certificate-gallery article,
+  .construction-equipment-card {
+    transition: opacity 650ms ease-out, translate 700ms cubic-bezier(.22,1,.36,1), box-shadow 400ms ease;
+  }
+  .certificate-gallery article > button,
+  .certificate-gallery a,
+  .section-subnav-tab,
+  .construction-guide-links a {
+    transition: color 250ms ease, background-color 250ms ease, box-shadow 350ms ease, transform 250ms ease;
+  }
+  .certificate-gallery button:active,
+  .construction-guide-links a:active { transform: scale(.985); }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .certificate-gallery article:hover,
+  .construction-equipment-card:hover { box-shadow: 0 10px 26px rgba(28,55,81,.09); }
+}
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .reference-motion [data-scroll-reveal]:not(.home-hero-reveal) {
+    translate: 0 16px;
+    transition-duration: 520ms, 650ms;
+  }
+  .reference-motion [data-scroll-reveal].is-visible:not(.home-hero-reveal) { translate: 0 0; }
+  .section-entry-title { animation-duration: 800ms; }
+  .section-entry-subtitle { animation-duration: 600ms; }
+}
+@keyframes site-page-arrive { from { opacity: .6; } to { opacity: 1; } }
+@keyframes site-copy-arrive { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .site-page-motion, .site-dialog-motion, .mobile-navigation,
+  .section-entry-title, .section-entry-subtitle, .section-entry-backdrop {
+    animation: none !important;
+  }
+  .reference-motion [data-scroll-reveal],
+  .reference-motion [data-scroll-reveal].is-visible {
+    opacity: 1; translate: none; transform: none; filter: none; clip-path: none;
+    transition: none !important;
+  }
+  .home-refresh-heading[data-scroll-reveal] h2,
+  .home-business-tile .home-business-image,
+  .home-contact-map .home-map-frame { clip-path: none; transition: none; }
+}
+@media (max-width: 767px) {
+  .certificate-gallery article { min-width: 0; }
+  .certificate-gallery a, .certificate-gallery button { touch-action: manipulation; }
+  .certificate-gallery article > div:last-child > div:last-child { min-height: 44px; }
+  .certificate-gallery article > div:last-child > div:last-child > a,
+  .certificate-gallery article > div:last-child > div:last-child > button { min-height: 44px; display: inline-flex; align-items: center; }
+}
+
+@media (max-width: 639px) {
+  .section-subnav-inner { flex-wrap: wrap; }
+  .section-subnav-switch { width: 100%; border-bottom: 1px solid #e4eaf0; }
+  .section-subnav-switch .section-switcher { border-right: 0; }
+  .section-subnav-switch .section-switcher-trigger {
+    min-height: 54px;
+    padding: 0 20px;
+    font-size: 16px;
+    letter-spacing: -.02em;
+    color: #193148;
+  }
+  .section-subnav-switch .section-switcher-trigger[aria-expanded="true"] { background: #fffbef; color: #b77b00; }
+  .section-subnav-switch .section-switcher-trigger svg { width: 20px; height: 20px; }
+  .section-switcher-menu {
+    top: calc(100% + 6px);
+    left: 12px;
+    right: 12px;
+    width: auto;
+    padding: 6px;
+    border: 1px solid #e0e7ee;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px #19314824;
+  }
+  .section-subnav-switch .section-switcher-option {
+    min-height: 54px;
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #253b50;
+  }
+  .section-subnav-switch .section-switcher-option[aria-current="page"] { background: #fff7df; color: #b77b00; }
+  .section-subnav-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+    padding: 12px 8px;
+    font-size: 13px;
+    text-align: center;
+    line-height: 1.5;
+  }
+}
+
+/* Keep the original artwork and copy; refine only small-screen typography. */
+@media (max-width: 1023px) {
+  .figma-home-hero { height: auto; min-height: 0; }
+  .figma-home-hero .home-desktop-hero {
+    min-height: calc(100svh - 104px);
+    padding: 32px 24px 42px;
+  }
+  .home-hero-badges { gap: 10px; align-items: center; }
+  .home-hero-badges > span:first-child { width: 32px; height: 32px; }
+  .home-hero-badges > span:nth-child(2) { height: 30px; padding-inline: 13px; font-size: 13px; }
+  .home-hero-badges > span:last-child { flex-basis: auto; min-height: 30px; font-size: 11px; padding: 6px 12px; white-space: nowrap; }
+  .figma-home-hero h1.home-hero-heading {
+    margin-top: 26px;
+    font-size: clamp(25px, 7.7vw, 34px);
+    line-height: 1.38;
+    letter-spacing: -.045em;
+    word-break: keep-all;
+    overflow-wrap: normal;
+    text-wrap: balance;
+  }
+  .home-hero-copy { margin-top: 25px; font-size: 14px; line-height: 1.85; letter-spacing: -.025em; word-break: keep-all; overflow-wrap: break-word; }
+  .home-hero-copy > span + span { margin-top: 12px; }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .figma-home-hero .home-desktop-hero { padding: 48px 40px; }
+  .figma-home-hero h1.home-hero-heading { font-size: 42px; max-width: 680px; }
+  .home-hero-copy { max-width: 680px; font-size: 16px; }
 }

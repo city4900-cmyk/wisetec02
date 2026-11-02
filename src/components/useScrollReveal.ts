@@ -10,6 +10,7 @@ export function useScrollReveal(
     const container = root.current;
     if (!container) return;
     container.classList.add('reference-motion');
+    const compactMotion = window.matchMedia('(max-width: 767px)').matches;
     container.querySelectorAll<HTMLElement>('.home-business-grid, .home-support-columns').forEach(group => {
       Array.from(group.children).forEach((child, index) => {
         if (child instanceof HTMLElement) child.style.setProperty('--reveal-delay', `${index * 130}ms`);
@@ -25,12 +26,18 @@ export function useScrollReveal(
         if (child.matches('[data-reveal-group]') || child.querySelector('[data-scroll-reveal], [data-reveal-group]')) return;
         child.dataset.scrollReveal = '';
         if (!child.style.getPropertyValue('--reveal-delay')) {
-          child.style.setProperty('--reveal-delay', `${Math.min(index * 90, 360)}ms`);
+          child.style.setProperty('--reveal-delay', `${Math.min(index * (compactMotion ? 55 : 90), compactMotion ? 165 : 360)}ms`);
         }
       });
     });
     const targets = container.querySelectorAll<HTMLElement>(selector);
-    targets.forEach((target) => { target.dataset.scrollReveal = ''; });
+    targets.forEach((target) => {
+      target.dataset.scrollReveal = '';
+      if (compactMotion) {
+        const delay = parseFloat(target.style.getPropertyValue('--reveal-delay') || '0');
+        target.style.setProperty('--reveal-delay', `${Math.min(delay, 165)}ms`);
+      }
+    });
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const showAll = () => targets.forEach((target) => target.classList.add('is-visible'));
     if (!('IntersectionObserver' in window) || reducedMotion.matches) {
@@ -56,7 +63,7 @@ export function useScrollReveal(
         }
         reveal(target);
       });
-    }, { threshold: 0, rootMargin: '0px 0px -48px 0px' });
+    }, { threshold: 0, rootMargin: compactMotion ? '0px 0px -16px 0px' : '0px 0px -48px 0px' });
     targets.forEach((target) => observer.observe(target));
     const handleScroll = () => {
       if (window.scrollY <= 4) return;

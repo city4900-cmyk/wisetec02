@@ -37,7 +37,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ certificate,
   const file = certificate.pdfUrl ?? encodeURI(certificate.imageUrl);
   return (
     <div id="certificate-modal-overlay" className="fixed inset-0 z-[70] flex items-center justify-center bg-[#102235]/80 p-2 backdrop-blur-sm sm:p-5" onClick={event => { if (event.target === event.currentTarget) onClose(); }}>
-      <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="certificate-viewer-title" className="flex h-[94dvh] w-full max-w-[1000px] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="certificate-viewer-title" className="site-dialog-motion flex h-[94dvh] w-full max-w-[1000px] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
         <div className="flex shrink-0 items-start justify-between gap-3 border-b border-[#e0e6ed] px-4 py-4 sm:px-6">
           <div className="min-w-0"><p className="mb-1 text-[11px] font-bold text-[#306395]">{certificate.badge}{certificate.publicCopy ? ' · 공개용 사본' : ''}</p><h2 id="certificate-viewer-title" className="text-[17px] font-bold leading-snug text-[#152b40] sm:text-[21px]">{certificate.title}</h2><p className="mt-1 text-[11px] text-[#687787]">{certificate.issuer}</p></div>
           <button ref={closeRef} id="modal-close-btn" type="button" onClick={onClose} aria-label="인증서 닫기" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f1f5f9] text-[#152b40] hover:bg-[#e1e9f1]"><X size={20} /></button>

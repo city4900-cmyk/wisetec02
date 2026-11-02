@@ -96,7 +96,7 @@ export default function App({ initialPath }: { initialPath?: string } = {}) {
       <main className="flex-1 bg-white">
         <div
           key={currentTab}
-          className="h-full"
+          className="site-page-motion h-full"
         >
         {currentTab === 'home' && (
           <HomeView

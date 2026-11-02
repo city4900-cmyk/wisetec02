@@ -43,10 +43,10 @@ export const ConstructionInspection = () => (
         ))}
       </div>
     </section>
-    <section className="construction-search-guide">
+    <section data-reveal-group className="construction-search-guide">
       <h2>건설기계 점검, 무엇을 준비하면 되나요?</h2>
       <p>건설기계 안전성 검사는 장비의 구조와 작동 상태를 확인해 현장 작업 전 위험요인을 파악하는 과정입니다. 장비 종류와 등록 구분에 따라 적용되는 검사와 범위가 달라질 수 있으므로, 장비 정보를 먼저 확인한 뒤 상담을 진행합니다.</p>
-      <div className="construction-guide-grid">
+      <div data-reveal-group className="construction-guide-grid">
         <div><h3>검사 상담 준비사항</h3><ul><li>장비 종류, 모델명 및 제작 연도</li><li>등록증·검사증 등 장비 확인 자료</li><li>검사 현장 위치와 희망 일정</li><li>주요 작업 조건 및 점검이 필요한 부위</li></ul></div>
         <div><h3>검사는 어떻게 진행되나요?</h3><ol><li>장비 자료 확인 및 검사 범위 협의</li><li>일정 조율과 현장 안전 조건 확인</li><li>구조부·작동장치 점검 및 필요 시 비파괴검사</li><li>검사 결과 안내와 성적서·보고서 전달</li></ol></div>
       </div>
