@@ -1,6 +1,6 @@
 # 검색 최적화 배포 안내
 
-`npm run build`는 각 공개 주소의 본문과 메타데이터를 포함한 HTML을 `dist/<경로>/index.html`로 생성합니다. `dist` 전체를 정적 호스팅에 배포해야 합니다. 현재 canonical·사이트맵의 기준 도메인은 기존 설정인 `https://wisetec.co.kr`입니다. 실제 운영 도메인이 다르면 `src/seo.ts`, `index.html` 이미지 URL과 `public/robots.txt`를 함께 변경해야 합니다.
+`npm run build`는 각 공개 주소의 본문과 메타데이터를 포함한 HTML을 `dist/<경로>/index.html`로 생성합니다. `dist` 전체를 정적 호스팅에 배포해야 합니다. canonical·사이트맵의 기본 도메인은 실제 운영 주소인 `https://wisetec.kr`입니다. 배포 환경의 `VITE_SITE_URL`도 이 주소로 설정하세요. 메인과 서비스별 검색 제목·설명 및 공유 메타데이터에 실제 제공하는 산업안전 기계 점검·자율안전검사·비파괴검사 내용을 반영했습니다.
 
 - 서버는 `/services/construction/` 같은 하위 주소에서 해당 폴더의 `index.html`을 제공해야 합니다. 모든 주소를 루트 HTML로 덮어쓰는 SPA 설정을 사용하지 마세요.
 - 존재하지 않는 주소는 HTTP 404와 `404.html`을 제공하도록 호스팅을 설정하세요.

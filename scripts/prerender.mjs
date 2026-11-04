@@ -4,7 +4,7 @@ import { render, routes, SITE_URL, pageSchema } from '../.ssr/entry-server.js';
 const template = await readFile('dist/index.html','utf8');
 const escape = value => value.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 for(const route of routes) {
- let html=template.replaceAll('https://wisetec.co.kr', SITE_URL).replace(/<title>[\s\S]*?<\/title>/,`<title>${escape(route.title)}</title>`);
+ let html=template.replaceAll('https://wisetec.kr', SITE_URL).replace(/<title>[\s\S]*?<\/title>/,`<title>${escape(route.title)}</title>`);
  for(const [attribute,key,value] of [ ['name','description',route.description],['property','og:title',route.title],['property','og:description',route.description],['property','og:url',SITE_URL+route.path],['name','twitter:title',route.title],['name','twitter:description',route.description] ]) {
   html=html.replace(new RegExp(`<meta ${attribute}="${key}" content="[^"]*"\\s*/?>`),`<meta ${attribute}="${key}" content="${escape(value)}" />`);
  }

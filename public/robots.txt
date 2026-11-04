@@ -11,4 +11,4 @@ User-agent: Daumoa
 Allow: /
 
 # Sitemap location
-Sitemap: https://wisetec.co.kr/sitemap.xml
+Sitemap: https://wisetec.kr/sitemap.xml

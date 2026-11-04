@@ -181,7 +181,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
           <p data-scroll-reveal className="home-hero-copy home-hero-reveal relative z-10 mt-5 max-w-[878px] text-[14px] font-normal leading-[1.7] text-[#34495e] sm:text-[18px] lg:absolute lg:left-[96px] lg:top-[488px] lg:mt-0 lg:w-[1248px] lg:max-w-none lg:text-[22px] lg:leading-[1.45]" style={{ '--hero-delay': '360ms' } as React.CSSProperties}>
             <span className="block lg:whitespace-nowrap">(주)와이즈텍은 산업안전보건법에 따른 자율안전검사기관이자, 과학기술정보통신부 등록 비파괴검사기관입니다.</span>
-            <span className="block lg:whitespace-nowrap">기중기, 이동식 크레인, 고소작업차, 카고크레인 등 건설기계의 법정 안전성 검사와 정밀 비파괴검사(NDT)를 통해 현장의 안전을 완벽히 지켜드립니다.</span>
+            <span className="block lg:whitespace-nowrap">산업안전을 위한 기계 점검과 기중기·이동식 크레인·고소작업차·카고크레인의 안전성 검사, 정밀 비파괴검사(NDT)를 제공합니다.</span>
           </p>
 
 
