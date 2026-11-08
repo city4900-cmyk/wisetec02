@@ -486,7 +486,7 @@ html:has(.figma-home-mode) {
 .home-refresh-heading h2 em { font-style: normal; color: #7d8a97; }
 .home-refresh-heading > p { color: #7a8895; font-size: 14px; line-height: 1.9; }
 .home-business-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 26px; }
-.home-business-tile { text-align: left; cursor: pointer; }
+.home-business-tile { display: block; color: inherit; text-decoration: none; text-align: left; cursor: pointer; }
 .home-business-image { position: relative; height: clamp(230px, 25vw, 370px); overflow: hidden; background: #1c344d; }
 .home-business-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg,#0a1d3350,transparent 70%); pointer-events: none; }
 .home-business-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .65s; }

@@ -1,3 +1,4 @@
+import { routeFor } from '../seo';
 import { useScrollReveal } from '../components/useScrollReveal';
 import { useHomeSectionScroll } from '../components/useHomeSectionScroll';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -203,7 +204,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             { id: 'safety' as const, tone: '#007c53', hover: '자율안전검사 주요 대상 설비 및 법정 검사 주기', title: '자율안전검사', label: 'SAFETY INSPECTION', image: 'frame189-safety.png', copy: '주요 위험 설비의 안전 성능과 건전성을 확인합니다.' },
             { id: 'construction' as const, tone: '#306395', hover: '건설기계 주요 검사 대상 및 주기 안내', title: '건설기계 안전성 검사', label: 'CONSTRUCTION EQUIPMENT', image: 'construction-crane-reference.png', copy: '구조부부터 작동 성능까지, 현장의 안전을 살핍니다.' },
             { id: 'ndt' as const, tone: '#0048ef', hover: '비파괴검사 4대 분야 상세 보기', title: '비파괴검사', label: 'NON-DESTRUCTIVE TESTING', image: 'frame189-ndt.jpeg', copy: '손상 없이 내부와 표면의 결함을 정밀하게 진단합니다.' },
-          ].map((service, index) => <button key={service.id} data-scroll-reveal style={{ transitionDelay: `${index * 90}ms`, '--service-tone': service.tone } as React.CSSProperties} onClick={() => onSelectServicesSubTab(service.id)} className="home-business-tile"><div className="home-business-image"><img src={'/figma-assets/' + service.image} alt={service.title + ' 현장'} loading="lazy" /><span>0{index + 1}</span><i><ArrowRight size={23} /></i><span className="home-service-overlay"><strong>{service.hover}</strong><ArrowRight size={40} strokeWidth={1} /></span></div><span className="home-kicker">{service.label}</span><h3>{service.title}</h3><p>{service.copy}</p></button>)}
+          ].map((service, index) => <a href={routeFor('services', service.id).path} key={service.id} data-scroll-reveal style={{ transitionDelay: `${index * 90}ms`, '--service-tone': service.tone } as React.CSSProperties} onClick={(event) => { if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); onSelectServicesSubTab(service.id); }} className="home-business-tile"><div className="home-business-image"><img src={'/figma-assets/' + service.image} alt={service.title + ' 현장'} loading="lazy" /><span>0{index + 1}</span><i><ArrowRight size={23} /></i><span className="home-service-overlay"><strong>{service.hover}</strong><ArrowRight size={40} strokeWidth={1} /></span></div><span className="home-kicker">{service.label}</span><h3>{service.title}</h3><p>{service.copy}</p></a>)}
         </div>
       </div>
       </section>
