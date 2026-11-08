@@ -2,7 +2,7 @@ import type { NavTab, AboutSubTab, ServicesSubTab, TechSubTab, ContactSubTab } f
 export const SITE_URL = (import.meta.env.VITE_SITE_URL || 'https://wisetec.kr').replace(/\/+$/, '');
 export interface PageRoute { path: string; tab: NavTab; sub?: AboutSubTab | ServicesSubTab | TechSubTab | ContactSubTab; title: string; description: string }
 export const routes: PageRoute[] = [
- { path:'/', tab:'home', title:'(주)와이즈텍 | 자율안전검사·비파괴검사·기계 점검', description:'전남 광양 (주)와이즈텍. 산업안전을 위한 자율안전검사, 건설기계 안전성 검사와 UT·PAUT·MT·PT 비파괴검사를 제공합니다. 검사 대상·절차·준비사항 확인 및 견적 상담.' },
+ { path:'/', tab:'home', title:'(주)와이즈텍 | 건설기계·자율안전검사·비파괴검사', description:'전남 광양 (주)와이즈텍. 산업안전을 위한 자율안전검사, 건설기계 안전성 검사와 UT·PAUT·MT·PT 비파괴검사를 제공합니다. 검사 대상·절차·준비사항 확인 및 견적 상담.' },
  { path:'/about/greeting/', tab:'about', sub:'greeting', title:'CEO 인사말 | 와이즈텍', description:'현장 중심의 안전 검사와 정밀 진단을 제공하는 와이즈텍의 인사말 및 기술 역량을 소개합니다.' },
  { path:'/about/overview/', tab:'about', sub:'overview', title:'기업개요·인증·연혁 | 와이즈텍', description:'와이즈텍 기업정보, 주요 연혁, ISO 인증 및 곤돌라 고정식 진공상자 누설검사시스템 특허 등록 이력을 확인하세요.' },
  { path:'/about/location/', tab:'about', sub:'location', title:'오시는 길·연락처 | 와이즈텍', description:'전라남도 광양시 동광길 33, 2층 와이즈텍 본사 위치 및 연락처 안내. 전화 061-791-0992.' },
