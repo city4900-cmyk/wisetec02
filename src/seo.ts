@@ -20,6 +20,7 @@ export function pageSchema(route: PageRoute) {
  const organization = { '@type':'Organization', '@id':SITE_URL+'/#organization', name:'(주)와이즈텍', alternateName:['와이즈텍','WISETEC'], url:SITE_URL+'/', logo:SITE_URL+'/figma-assets/header-logo.png', telephone:'061-791-0992', email:'wisetec@wisetec.kr', address:{ '@type':'PostalAddress', streetAddress:'동광길 33 2층', addressLocality:'광양시', addressRegion:'전라남도', addressCountry:'KR' } };
  const page = { '@type':'WebPage', '@id':SITE_URL+route.path+'#webpage', url:SITE_URL+route.path, name:route.title, description:route.description, inLanguage:'ko-KR', publisher:{'@id':organization['@id']} };
  const graph: object[] = [organization,page];
+ if(route.tab === 'home') graph.push({'@type':'WebSite','@id':SITE_URL+'/#website',url:SITE_URL+'/',name:'와이즈텍',alternateName:['(주)와이즈텍','WISETEC'],inLanguage:'ko-KR',publisher:{'@id':organization['@id']}});
  if(route.tab !== 'home') graph.push({'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'홈',item:SITE_URL+'/'},{'@type':'ListItem',position:2,name:route.title.split(' | ')[0],item:SITE_URL+route.path}]});
  if(route.tab === 'services') graph.push({'@type':'Service', name:route.title.split(' | ')[0],description:route.description,url:SITE_URL+route.path,provider:{'@id':organization['@id']}});
  return {'@context':'https://schema.org','@graph':graph};
