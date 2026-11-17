@@ -12,10 +12,10 @@ export const NoticeModal: React.FC<NoticeModalProps> = ({ notice, onClose }) => 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[85vh]">
+      <div className="relative w-full max-w-2xl bg-white text-left rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[85vh]">
         {/* Modal Header */}
         <div className="p-6 sm:p-8 bg-slate-50 border-b border-slate-200">
-          <div className="flex items-center justify-between gap-4 mb-3">
+          <div className="relative mb-3 flex min-h-9 items-center pr-9">
             <div className="flex items-center gap-2">
               <span
                 className={`text-xs font-bold px-2.5 py-1 rounded-md ${
@@ -35,13 +35,15 @@ export const NoticeModal: React.FC<NoticeModalProps> = ({ notice, onClose }) => 
 
             <button
               onClick={onClose}
-              className="p-2 rounded-xl bg-slate-200/70 hover:bg-slate-300 text-slate-700 transition-colors"
+              type="button"
+              aria-label="공지 닫기"
+              className="absolute right-0 top-0 p-2 text-slate-700 hover:text-slate-950 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-snug">
+          <h3 className="break-keep text-xl sm:text-2xl font-black text-slate-900 leading-snug">
             {notice.title}
           </h3>
 
@@ -62,25 +64,13 @@ export const NoticeModal: React.FC<NoticeModalProps> = ({ notice, onClose }) => 
         </div>
 
         {/* Modal Body */}
-        <div className="flex-1 overflow-y-auto p-6 sm:p-8 bg-white space-y-6">
-          <div className="text-slate-800 text-sm sm:text-base leading-relaxed whitespace-pre-line font-normal">
-            {notice.content}
+        <div className="flex-1 overflow-y-auto p-6 pb-9 sm:p-8 sm:pb-12 bg-white">
+          <div className="text-slate-800 text-sm sm:text-base leading-relaxed break-keep [overflow-wrap:anywhere] space-y-4 font-normal">
+            {notice.content.split('\n\n').map((paragraph, index) => (
+              <p key={index} className="whitespace-pre-line">{paragraph}</p>
+            ))}
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 flex items-center justify-between">
-            <span>(주)와이즈텍 공식 공지사항</span>
-            <span className="text-slate-400 font-mono">WISETEC Notice Board</span>
-          </div>
-        </div>
-
-        {/* Modal Footer */}
-        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex justify-end gap-2">
-          <button
-            onClick={onClose}
-            className="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-bold transition-colors"
-          >
-            목록으로 돌아가기
-          </button>
         </div>
       </div>
     </div>

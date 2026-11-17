@@ -503,7 +503,7 @@ html:has(.figma-home-mode) {
 .home-support-title > button { display: flex; align-items: center; gap: 12px; color: #7d8995; font-size: 11px; cursor: pointer; }
 .home-news-rows > button { display: grid; grid-template-columns: 1fr 18px; width: 100%; gap: 8px 18px; text-align: left; padding: 22px 0; border-bottom: 1px solid #e3e8ee; cursor: pointer; }
 .home-news-rows time { grid-column: 1 / -1; font-size: 10px; letter-spacing: .03em; color: #8b98a4; }
-.home-news-rows button > span { font-size: 14px; line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.home-news-rows button > span { font-size: 14px; font-weight: 700; line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .home-news-rows button > svg { align-self: center; color: #8093a7; }
 .home-news-rows button:hover > span { color: #1464db; }
 .home-faq-rows > div { border-bottom: 1px solid #e3e8ee; }

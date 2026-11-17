@@ -122,7 +122,7 @@ export const ContactView: React.FC<ContactViewProps> = ({
                   onClick={() => setNoticeCategory(cat)}
                   className={`min-h-[39px] rounded-[11px] border px-[19px] text-[11px] font-medium transition-colors sm:min-w-[99px] sm:text-[13px] ${
                     noticeCategory === cat
-                      ? 'border-[#0646F5] bg-[#0646F5] text-white'
+                      ? 'border-[#b5cef5] bg-[#e5efff] text-[#235591]'
                       : 'border-[#D9D9D9] bg-white text-[#1D1919] hover:bg-[#f7f7f7]'
                   }`}
                 >
@@ -180,9 +180,9 @@ export const ContactView: React.FC<ContactViewProps> = ({
                         {item.isImportant && (
                           <span className="text-[10px] font-bold text-rose-600">중요</span>
                         )}
-                        <span className="text-xs text-slate-400 font-mono">{item.date}</span>
+                        <span className="font-sans text-xs tabular-nums text-slate-400">{item.date}</span>
                       </div>
-                      <h4 className="font-bold text-sm sm:text-base text-slate-900 group-hover:text-blue-600 transition-colors">
+                      <h4 className="font-extrabold text-sm sm:text-base text-slate-900 group-hover:text-blue-600 transition-colors">
                         {item.title}
                       </h4>
                       <p className="text-xs text-slate-500 line-clamp-1">
@@ -213,7 +213,7 @@ export const ContactView: React.FC<ContactViewProps> = ({
                 onClick={() => setFaqCategory(cat)}
                 className={`min-h-[39px] rounded-[11px] border px-[19px] text-[11px] font-medium transition-colors sm:text-[13px] ${
                   faqCategory === cat
-                    ? 'border-[#0646F5] bg-[#0646F5] text-white'
+                    ? 'border-[#b5cef5] bg-[#e5efff] text-[#235591]'
                     : 'border-[#D9D9D9] bg-white text-[#1D1919] hover:bg-[#f7f7f7]'
                 }`}
               >

@@ -130,6 +130,23 @@ export const CERTIFICATES: CertificateItem[] = [
     "downloadName": "kgs-outsourcing-public.pdf"
   },
   {
+    id: 'cert-safety-inspection-registration',
+    title: '자율안전검사기관 등록',
+    category: 'license',
+    code: '제2026-040019호',
+    issueDate: '2026.09.08',
+    issuer: '광주지방고용노동청',
+    scope: '전국',
+    description: '자율안전검사기관 지정서입니다.',
+    badge: '자율안전검사기관 등록',
+    imagePlaceholderColor: 'from-blue-600 to-blue-800',
+    publicCopy: true,
+    imageUrl: '/certificates/safety-inspection-registration-1.jpg',
+    pages: ['/certificates/safety-inspection-registration-1.jpg'],
+    pdfUrl: '/certificates/safety-inspection-registration-public.pdf',
+    downloadName: 'safety-inspection-registration-public.pdf',
+  },
+  {
     id: 'cert-patent-1',
     title: '특허증 (Patent Certificate)',
     category: 'patent',
@@ -291,55 +308,51 @@ export const SAFETY_INSPECTION_ITEMS: SafetyInspectionItem[] = [
 export const NOTICES: NoticeItem[] = [
   {
     id: 1,
-    title: '[특허등록] (주)와이즈텍 "곤돌라 고정식 진공상자 누설검사시스템" 특허청 등록 완료',
+    title: '곤돌라 고정식 진공상자 누설검사시스템 특허 등록',
     category: '인증/특허',
     date: '2023.12.15',
     author: '관리자',
     views: 842,
     isImportant: true,
-    content: `(주)와이즈텍이 출원한 독자 기술 "곤돌라 고정식 진공상자 누설검사시스템(등록번호 제 10-2613687 호)"이 2023년 12월 11일부로 대한민국 특허청에 정식 등록되었습니다.
+    content: `(주)와이즈텍의 곤돌라 고정식 진공상자 누설검사시스템이 2023년 12월 11일 특허청에 등록됐습니다. 등록번호는 제10-2613687호입니다.
 
-본 특허는 고소 대형 저장탱크 및 배관 누설검사 시 작업자의 추락 위험을 원천 방지하고, 곤돌라 프레임에 일체형으로 고정되어 흔들림 없이 일정한 진공도를 유지할 수 있도록 설계된 차세대 NDT 검사 솔루션입니다.
-
-앞으로도 (주)와이즈텍은 기술 혁신을 통해 더욱 안전하고 정밀한 검사 서비스를 제공하겠습니다. 고객 여러분의 많은 관심 부탁드립니다.`,
+대형 저장탱크나 배관의 높은 곳을 검사할 때 사용하는 장치입니다. 진공상자를 곤돌라 프레임에 고정해 작업 중 흔들림과 추락 위험을 줄이고, 검사에 필요한 진공도를 일정하게 유지할 수 있습니다.`,
   },
   {
     id: 2,
-    title: '[인증획득] 한국가스안전공사(KGS) ISO 9001 품질 및 ISO 45001 안전보건경영시스템 인증 획득',
+    title: '한국가스안전공사 ISO 9001·45001 인증 획득',
     category: '인증/특허',
     date: '2023.08.20',
     author: '품질안전팀',
     views: 619,
     isImportant: true,
-    content: `(주)와이즈텍은 비파괴검사 및 기술시험 서비스 전 부문에 걸쳐 공인인증기관인 한국가스안전공사(KGS)로부터 ISO 9001(품질경영시스템)과 ISO 45001(안전보건경영시스템) 인증을 획득하였습니다.
+    content: `(주)와이즈텍은 한국가스안전공사(KGS)에서 ISO 9001(품질경영시스템)과 ISO 45001(안전보건경영시스템) 인증을 받았습니다.
 
-이를 통해 당사는 국제 표준에 부합하는 철저한 품질 관리 프로세스와 현장 무재해 원칙을 공인받았습니다. 고객사의 안전과 품질을 완벽히 책임지는 든든한 파트너가 되겠습니다.`,
+인증 범위는 비파괴검사 및 기술시험 서비스입니다. 인증서는 회사소개 페이지의 인증·등록 영역에서 확인하실 수 있습니다.`,
   },
   {
     id: 3,
-    title: '[안내] 산업안전보건법 제98조에 따른 자율안전검사 신청 및 정기 검사 일정 안내',
+    title: '자율안전검사 신청 및 정기검사 일정 안내',
     category: '안전정보',
     date: '2024.01.10',
     author: '안전진단팀',
     views: 534,
     isImportant: false,
-    content: `사업장 내 유해·위험 기계·기구(크레인, 리프트, 곤돌라, 압력용기, 프레스 등)는 산업안전보건법 제98조에 의거하여 정기적인 자율안전검사를 수행하여야 합니다.
+    content: `크레인, 리프트, 곤돌라, 압력용기, 프레스 등 유해·위험 기계·기구의 정기검사를 안내합니다. 관련 근거는 산업안전보건법 제98조입니다.
 
-(주)와이즈텍은 법적 자격을 갖춘 전문 검사원이 사업장을 직접 방문하여 신속하고 정확한 성능 검사와 성적서 발급, 개선 권고안을 원스톱으로 제공하고 있습니다. 검사 주기가 도래한 사업장께서는 사전 상담을 통해 법적 과태료 예방 및 안전한 작업장을 구축하시기 바랍니다.`,
+검사원이 사업장을 방문해 성능을 점검하고 검사 성적서를 발급합니다. 개선이 필요한 사항도 함께 안내합니다. 검사 시기가 다가오면 상담을 통해 방문 일정을 조율해 주세요.`,
   },
   {
     id: 4,
-    title: '[공지] (주)와이즈텍 홈페이지 개편 및 온라인 견적·상담 문의 시스템 오픈',
+    title: '홈페이지 개편 및 온라인 견적·상담 안내',
     category: '공지',
     date: '2024.03.02',
     author: '운영팀',
     views: 420,
     isImportant: false,
-    content: `고객 여러분의 편의성을 높이고자 (주)와이즈텍 공식 웹사이트를 새롭게 개편하였습니다.
+    content: `(주)와이즈텍 홈페이지를 개편했습니다. 자율안전검사와 비파괴검사(UT, PAUT, MT, PT) 안내, 등록 면허와 ISO 인증 현황을 확인하실 수 있습니다.
 
-홈페이지를 통해 자율안전검사, 비파괴검사 공인 핵심 분야(UT, PAUT, MT, PT), 등록 면허 및 ISO 인증 현황을 손쉽게 확인하실 수 있으며, '온라인 견적 문의'를 통해 빠르고 정확한 비용 산출 및 일정 조율이 가능합니다.
-
-언제나 최상의 서비스를 제공하는 (주)와이즈텍이 되겠습니다. 감사합니다.`,
+견적이 필요하시면 온라인으로 문의해 주세요. 검사 비용과 가능한 일정을 안내해 드립니다.`,
   },
 ];
 
