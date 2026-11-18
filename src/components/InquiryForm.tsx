@@ -92,7 +92,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({
       return;
     }
 
-    setErrorMsg('온라인 접수 연결 준비 중입니다. 061-791-0992 또는 wisetec@wisetec.kr로 문의해 주세요.');
+    setErrorMsg('온라인 접수 연결 준비 중입니다. 061-791-0992 또는 wisetec0992@naver.com로 문의해 주세요.');
 
   };
 
@@ -180,7 +180,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({
         /* Form Inputs */
         <form onSubmit={handleSubmit} className="space-y-[27px]">
           <div role="status" className="border border-amber-200 bg-amber-50 p-4 text-sm leading-7 text-slate-700">
-            온라인 접수는 연결 준비 중입니다. 검사 상담은 <a href="tel:061-791-0992" className="font-semibold underline">061-791-0992</a> 또는 <a href="mailto:wisetec@wisetec.kr" className="font-semibold underline break-all">wisetec@wisetec.kr</a>로 문의해 주세요.
+            온라인 접수는 연결 준비 중입니다. 검사 상담은 <a href="tel:061-791-0992" className="font-semibold underline">061-791-0992</a> 또는 <a href="mailto:wisetec0992@naver.com" className="font-semibold underline break-all">wisetec0992@naver.com</a>로 문의해 주세요.
           </div>
           <div className="mb-10">
             <h3 className="text-[18px] font-bold tracking-tight text-[#111827]">온라인 견적 및 기술상담 문의</h3>
