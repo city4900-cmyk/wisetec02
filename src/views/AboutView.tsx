@@ -96,7 +96,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ initialSubTab = 'greeting'
                     <dt className="font-bold text-[#171717]">대표자</dt><dd className="text-[#171717]">{COMPANY_INFO.ceo}</dd>
                   </div>
                   <div className="grid grid-cols-[118px_1fr] gap-3 py-3 sm:grid-cols-[148px_1fr] sm:gap-4 sm:py-4">
-                    <dt className="font-bold text-[#171717]">소재지</dt><dd className="text-[#171717]">전남광주 광양시 동광길33 2층</dd>
+                    <dt className="font-bold text-[#171717]">소재지</dt><dd className="text-[#171717]">{COMPANY_INFO.address}</dd>
                   </div>
                   <div className="grid grid-cols-[118px_1fr] gap-3 py-3 sm:grid-cols-[148px_1fr] sm:gap-4 sm:py-4">
                     <dt className="font-bold text-[#171717]">설립일</dt><dd className="text-[#171717]">2021년 09월 01일</dd>

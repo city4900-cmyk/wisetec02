@@ -77,7 +77,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
       <SectionHero
         title={activeSubTab === 'safety' ? '자율안전검사' : activeSubTab === 'construction' ? '건설기계 안전성 검사' : '비파괴검사'}
         subtitle="산업 현장의 안전과 품질을 검증하는 전문 검사 솔루션"
-        backgroundImage="/figma-assets/business-hero-frame21.png"
+        backgroundImage={activeSubTab === 'construction' ? "/figma-assets/business-hero-frame21.webp" : "/figma-assets/business-hero-frame21.png"}
         backgroundSize="cover"
         backgroundPosition="center 39%"
       />

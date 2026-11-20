@@ -20,8 +20,8 @@ declare global {
 export const NaverMapPreview: React.FC = () => {
   const mapElement = useRef<HTMLDivElement>(null);
   const [isNaverMapReady, setIsNaverMapReady] = useState(false);
-  const address = '전라남도 광양시 동광길 33';
-  const naverMapUrl = `https://map.naver.com/p/search/${encodeURIComponent(address)}`;
+  const address = '전남광주 광양시 동광길 33';
+  const naverMapUrl = `https://map.naver.com/p/search/${encodeURIComponent('전라남도 광양시 동광길 33')}`;
 
   useEffect(() => {
     if (!NAVER_MAP_CLIENT_ID || !mapElement.current) return;

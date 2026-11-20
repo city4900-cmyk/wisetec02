@@ -301,7 +301,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       <section className="home-refresh-panel home-contact-panel" style={{ height: homeFitScale === null ? undefined : `${904 * homeFitScale}px` }}>
         <div className="home-refresh-panel-inner home-contact-refresh" >
         <div className="home-contact-copy" data-scroll-reveal><p>검사 대상과 현장 조건을 알려주시면<br />필요한 검사부터 함께 확인하겠습니다.</p><div className="home-contact-details"><a href={`tel:${COMPANY_INFO.phone}`}>{COMPANY_INFO.phone}</a><a href={`mailto:${COMPANY_INFO.email}`}>{COMPANY_INFO.email}</a><span>평일 08:30–18:00 · 주말/공휴일 긴급 검사 대응 가능</span></div></div>
-        <div className="home-contact-map" data-scroll-reveal><div className="home-map-frame"><NaverMapPreview /></div><div className="home-map-caption"><span>OUR OFFICE</span><p>전라남도 광양시 동광길 33, 2층</p></div></div>
+        <div className="home-contact-map" data-scroll-reveal><div className="home-map-frame"><NaverMapPreview /></div><div className="home-map-caption"><span>OUR OFFICE</span><p>{COMPANY_INFO.address}</p></div></div>
       </div>
       </section>
 

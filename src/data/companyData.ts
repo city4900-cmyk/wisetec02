@@ -305,7 +305,19 @@ export const SAFETY_INSPECTION_ITEMS: SafetyInspectionItem[] = [
   },
 ];
 
-export const NOTICES: NoticeItem[] = [
+export const NOTICES: NoticeItem[] = ([
+  {
+    id: 5,
+    title: '와이즈텍, 자율안전검사기관 지정',
+    category: '인증/특허',
+    date: '2026.09.08',
+    author: '운영팀',
+    views: 0,
+    isImportant: true,
+    content: `(주)와이즈텍은 2026년 9월 8일 광주지방고용노동청으로부터 자율안전검사기관으로 지정됐습니다. 지정번호는 제2026-040019호이며, 지정 업무 지역은 전국입니다.
+
+자율안전검사 대상 설비와 검사 일정이 궁금하시면 설비 종류, 현장 위치, 희망 일정을 알려주세요. 검사 범위와 출장 일정을 안내해 드립니다.`,
+  },
   {
     id: 1,
     title: '곤돌라 고정식 진공상자 누설검사시스템 특허 등록',
@@ -354,7 +366,7 @@ export const NOTICES: NoticeItem[] = [
 
 견적이 필요하시면 온라인으로 문의해 주세요. 검사 비용과 가능한 일정을 안내해 드립니다.`,
   },
-];
+] satisfies NoticeItem[]).sort((a, b) => b.date.localeCompare(a.date));
 
 export const FAQS: FaqItem[] = [
   {
