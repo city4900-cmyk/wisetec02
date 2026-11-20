@@ -14,7 +14,7 @@ export const COMPANY_INFO: CompanyInfo = {
   establishedDate: '2021년 09월 01일',
   businessNumber: '581-86-02568',
   address: '전남광주 광양시 동광길 33 2층',
-  addressDetail: '광양시 동광길 33 2층',
+  addressDetail: '전남광주 광양시 동광길 33 2층',
   businessType: '전문, 과학 및 기술서비스업',
   businessItem: '자율안전검사, 비파괴 기술시험 및 분석업',
   phone: '061-791-0992',

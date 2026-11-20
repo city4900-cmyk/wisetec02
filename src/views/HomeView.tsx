@@ -175,14 +175,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </div>
 
           <h1 data-scroll-reveal className="home-hero-heading home-hero-reveal relative z-10 mt-5 break-keep text-[clamp(25px,7vw,34px)] font-bold leading-[1.2] text-black lg:absolute lg:left-[96px] lg:top-[248px] lg:mt-0 lg:break-normal lg:text-[50px] lg:leading-[normal]" style={{ '--hero-delay': '220ms' } as React.CSSProperties}>
-            자율안전검사 및 비파괴검사 분야의<br />
-            <span className="text-[#0048ef]">신뢰할 수 있는 파트너</span>,<br />
+            건설기계 검사부터 자율안전검사·비파괴검사까지<br />
+            <span className="text-[#0048ef]">현장의 안전을 점검하는</span><br />
             <span className="lg:text-[52px]">(주)와이즈텍</span>
           </h1>
 
           <p data-scroll-reveal className="home-hero-copy home-hero-reveal relative z-10 mt-5 max-w-[878px] text-[14px] font-normal leading-[1.7] text-[#34495e] sm:text-[18px] lg:absolute lg:left-[96px] lg:top-[488px] lg:mt-0 lg:w-[1248px] lg:max-w-none lg:text-[22px] lg:leading-[1.45]" style={{ '--hero-delay': '360ms' } as React.CSSProperties}>
-            <span className="block lg:whitespace-nowrap">(주)와이즈텍은 산업안전보건법에 따른 자율안전검사기관이자, 과학기술정보통신부 등록 비파괴검사기관입니다.</span>
-            <span className="block lg:whitespace-nowrap">산업안전을 위한 기계 점검과 기중기·이동식 크레인·고소작업차·카고크레인의 안전성 검사, 정밀 비파괴검사(NDT)를 제공합니다.</span>
+            (주)와이즈텍은 건설기계 안전성검사 전문 서비스를 제공합니다. 기중기, 이동식 크레인, 카고크레인, 고소작업차 등 다양한 건설기계를 대상으로 구조부 및 주요 장치의 안전성을 점검하고, 필요에 따라 초음파탐상(UT), 자분탐상(MT) 등 비파괴검사를 수행합니다. 검사 대상과 일정에 맞춰 현장을 방문하고, 점검 결과를 안내합니다.
           </p>
 
 
